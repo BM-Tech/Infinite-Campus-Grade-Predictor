@@ -1,0 +1,32 @@
+{
+  "name": "EasyInfiniteCampus",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Predict your grades for Infinite Campus",
+  "homepage_url": "http://benjaminman.com",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "default_locale": "en",
+  "background": {
+    "page": "src/bg/background.html",
+    "persistent": true
+  },
+  "page_action": {
+    "default_icon": "icons/icon19.png",
+    "default_title": "page action demo",
+    "default_popup": "src/page_action/page_action.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.infinitecampus.org/*"
+      ],
+      "js": [
+        "src/inject/inject.js"
+      ]
+    }
+  ]
+}

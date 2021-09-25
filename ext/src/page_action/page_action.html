@@ -1,0 +1,24 @@
+<!doctype html>
+<style type="text/css">
+	#mainPopup {
+		padding: 10px;
+		height: 200px;
+		width: 400px;
+		font-family: Helvetica, Ubuntu, Arial, sans-serif;
+	}
+	h1 {
+		font-size: 2em;
+	}
+</style>
+
+<div id="mainPopup">
+	<h1>EasyInfiniteCampus</h1>
+	<p>Make sure your'e in your gradebook page for one of your classes, then click the button below.</p>
+	<button id="e">Start Predicting</button>
+</div>
+
+<script>
+	document.getElementById("e").addEventListener("click", () => {
+		chrome.tabs.sendMessage(tabs[0].id,"action"); 
+	})
+</script>
