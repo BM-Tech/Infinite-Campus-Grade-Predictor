@@ -1,22 +1,21 @@
 {
-  "name": "CHANGE THIS : Extension boilerplate",
+  "name": "Infinite Campus Grade Predictor",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "This extension was created with the awesome extensionizr.com",
-  "homepage_url": "http://extensionizr.com",
+  "description": "Predict future grades based on what you think you'll get on your next assignment",
+  "homepage_url": "http://github.com/benman604",
   "icons": {
     "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "120": "icons/icon120.png"
   },
   "default_locale": "en",
-  "page_action": {
-    "default_icon": "icons/icon19.png",
+  "browser_action": {
+    "default_icon": "icons/icon120.png",
     "default_title": "page action demo",
     "default_popup": "src/page_action/page_action.html"
   },
   "permissions": [
-    "https://*.infinitecampus.org/*", "tabs", "webNavigation"
+    "https://*.infinitecampus.org/*", "tabs", "webNavigation", "contextMenus"
   ],
   "background": {
     "scripts": ["src/background.js"]
@@ -28,7 +27,8 @@
       ],
       "js": [
         "src/inject.js"
-      ]
+      ],
+      "all_frames":true
     }
   ]
 }

@@ -1,25 +1,41 @@
-chrome.extension.sendMessage({}, function(response) {
-	var readyStateCheckInterval = setInterval(function() {
-		if (document.readyState === "complete") {
-			clearInterval(readyStateCheckInterval);
-			if(window.location.href.includes("student/classroom") && window.location.href.includes("/grades")){
-				console.log("You can now edit grades")
-				let button = document.createElement("button")
-				button.innerText = "Start Editing"
-				button.onclick = (j) => {
-					alert("wowzies")
-				}
-				document.body.style.backgroundColor = "yellow"
-				//console.log(document.querySelectorAll("body > app-root > ng-component > app-section > app-portal-page > div.workspace-content.workspace-content--with-toolbar > div > div > div > h2"))
-				document.querySelector("body > app-root > ng-component > app-section > app-portal-page > div.toolbar").appendChild(button)
-				console.log(document.getElementById("main-workspace").contentWindow.document)
+console.log("IC Grade Predictor is active.")
+var IC_GRADE_SELECTOR = "#k-tabstrip-tabpanel-3 > app-grading-detail:nth-child(4) > div > div > div:nth-child(1) > div > app-grading-task-list > table > tbody > tr > div > div > div.grades__flex-row__item.grades__flex-row__item--right > app-grading-score > div > div:nth-child(2)"
+var IC_LETTERGRADE_SELECTOR = "#k-tabstrip-tabpanel-3 > app-grading-detail:nth-child(4) > div > div > div > div > app-grading-task-list > table > tbody > tr > div > div > div.grades__flex-row__item.grades__flex-row__item--right > app-grading-score > div > div:nth-child(1)"
+var IC_SECTIONBTN_SELECTOR = "#k-tabstrip-tabpanel-3 > app-grading-detail:nth-child(4) > div > div > button"
+var IC_CLASSNAME_SELECTOR = "body > app-root > ng-component > app-section > app-portal-page > div.workspace-content.workspace-content--with-toolbar > div > div > div > h2"
 
-			}
-		}
-	}, 10);
-});
+chrome.runtime.onMessage.addListener(
+    function(req, sender, res){
+        if(req.action == "save"){
+            let buttons = document.querySelectorAll(IC_SECTIONBTN_SELECTOR)
+            let categoryData = []
 
-document.addEventListener("load", () => {
-	console.log("ok")
-	document.querySelector("body > app-root > ng-component > app-section > app-portal-page > div.toolbar").appendChild(button)
-})
+            for(const button of buttons){
+                button.click()
+                let categoryName = button.querySelector("div:nth-child(1)").innerText
+                let categoryWeight = button.querySelector("div:nth-child(1) > div").innerText
+                let categoryScore = button.querySelector("div.totals__row.totals__row--assignment.ng-star-inserted > div:nth-child(1)").innerText
+
+                categoryData.push({
+                    "name": categoryName.split("\n")[0],
+                    "weight": parseFloat(categoryWeight.split(": ")[1]),
+                    "score": {
+                        "val": parseFloat(categoryScore.split("/")[0]),
+                        "outOf": parseFloat(categoryScore.split("/")[1])
+                    }
+                })
+            }
+
+            let overallScore = document.querySelector(IC_GRADE_SELECTOR).innerText.slice(1, -1)
+            let overallGrade = document.querySelector(IC_LETTERGRADE_SELECTOR).innerText
+            let className = document.querySelector(IC_CLASSNAME_SELECTOR).innerText
+
+            res({
+                "className": className,
+                "score": parseFloat(overallScore),
+                "grade": overallGrade,
+                "categories": categoryData
+            })
+        }
+    }
+)
