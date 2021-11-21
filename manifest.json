@@ -15,7 +15,7 @@
     "default_popup": "src/page_action/page_action.html"
   },
   "permissions": [
-    "https://*.infinitecampus.org/*", "tabs", "webNavigation", "contextMenus"
+    "https://*.infinitecampus.org/*", "tabs", "webNavigation", "contextMenus", "tabs", "storage"
   ],
   "background": {
     "scripts": ["src/background.js"]

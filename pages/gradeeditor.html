@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IC Grade Predictor</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+</head>
+<body>
+    <div class="container">
+        <br><br>
+        <h5>IC Grade Predictor</h5>
+    </div>
+    <div class="container">
+        <article>
+            <header>
+                <h1 id="className"></h1>
+            </header>
+
+            <div>
+                <strong>Origional Grade</strong>
+                <strong id="grade" style="float: right;"></strong>
+            </div>
+            <div>
+                <strong>New Grade</strong>
+                <strong id="gradeNew" style="float: right;"></strong>
+            </div>
+
+            <article>
+                <header>
+                    <strong>Category 1</strong>
+                    <strong style="float: right;">100% (40/40)</strong>
+                </header>
+                <div class="grid">
+                    <button>Add New Grade</button>
+                    <button>Modify Existing Grade</button>
+                </div>
+            </article>
+        </article>
+    </div>
+
+    <script src="editor.js"></script>
+</body>
+</html>

@@ -11,10 +11,12 @@ window.onload = function(){
 startBtn.addEventListener('click', () => {
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
         chrome.tabs.sendMessage(tabs[0].id, {action: "save"}, function(res) {
-            var parser = new DOMParser()
-            var doc = parser.parseFromString(res, "text/html")
-            console.log(doc)
-            console.log(res)
+            chrome.storage.local.set({"data": res}, () => {
+                chrome.tabs.create({
+                    url: "/pages/gradeeditor.html"
+                })
+                console.log(res)
+            })
         })
     })
 })
