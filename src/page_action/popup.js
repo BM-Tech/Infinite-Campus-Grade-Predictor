@@ -13,7 +13,7 @@ startBtn.addEventListener('click', () => {
         chrome.tabs.sendMessage(tabs[0].id, {action: "save"}, function(res) {
             chrome.storage.local.set({"data": res}, () => {
                 chrome.tabs.create({
-                    url: "/pages/gradeeditor.html"
+                    url: "/pages/editor/public/index.html"
                 })
                 console.log(res)
             })
