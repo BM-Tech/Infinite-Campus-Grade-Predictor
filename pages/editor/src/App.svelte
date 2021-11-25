@@ -14,7 +14,8 @@
 		for(let i of data.categories){
 			modifications[i.name] = []
 		}
-		console.log(data.categories)
+		normalizeWeights()
+		//console.log(data)
 	})
 
 	function percent(grade){
@@ -61,6 +62,16 @@
 					console.log(mod)
 				}
 			}
+		}
+	}
+
+	function normalizeWeights(){
+		let sum = 0
+		for(let category of data.categories){
+			sum += category.weight
+		}
+		for(let i=0; i<data.categories.length; i++){
+			data.categories[i]["normalizedWeight"] = data.categories[i].weight / sum
 		}
 	}
 </script>

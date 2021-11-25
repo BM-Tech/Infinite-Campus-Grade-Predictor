@@ -6,9 +6,9 @@ var IC_CLASSNAME_SELECTOR = "body > app-root > ng-component > app-section > app-
 
 chrome.runtime.onMessage.addListener(
     function(req, sender, res){
-        if(req.action == "save"){
+        if(req.action == "save"){ // recieve message to collect page data from popup
             let categoryData = []
-            for(let i=1; i<20; i++){
+            for(let i=1; i<20; i++){ // loop through category buttons
 
                 let buttons = document.querySelectorAll(IC_SECTIONBTN_SELECTOR.replace("4", i))
                 try{
@@ -41,6 +41,7 @@ chrome.runtime.onMessage.addListener(
             let overallGrade = document.querySelector(IC_LETTERGRADE_SELECTOR).innerText
             let className = document.querySelector(IC_CLASSNAME_SELECTOR).innerText
 
+            // send data back to popup to process
             res({
                 "className": className,
                 "score": parseFloat(overallScore),
