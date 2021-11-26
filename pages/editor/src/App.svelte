@@ -8,18 +8,23 @@
 
 	let modifications = {}
 
-	let newGrade = 100
+	let moddedData = clone(data)
 	chrome.storage.local.get(["data"], (res) => {
 		data = res.data
+		moddedData = clone(data)
 		for(let i of data.categories){
 			modifications[i.name] = []
 		}
 		normalizeWeights()
-		//console.log(data)
+		console.log(data)
 	})
 
 	function percent(grade){
 		return ((grade.val / grade.outOf) * 100).toFixed(2)
+	}
+
+	function clone(e){
+		return Object.assign({}, e)
 	}
 
 	let theme = document.getElementsByTagName("html")[0].getAttribute("data-theme")
@@ -46,22 +51,41 @@
 			"outOf": null
 		}
 	}
-	let defaultMod = Object.assign({}, currentMod)
+	let defaultMod = clone(currentMod)
 
 	function handleSubmit(){
-		modifications[currentMod.category].push(Object.assign({}, currentMod))
+		modifications[currentMod.category].push(clone(currentMod))
 		modifications = modifications
-		currentMod = Object.assign({}, defaultMod)
+		currentMod = clone(defaultMod)
 		calculateGrades()
 	}
 
 	function calculateGrades(){
-		for(let category of data.categories){
-			if(modifications[category] != null){
-				for(let mod of modifications[category]){
+		for(let category of moddedData.categories){
+			if(modifications[category.name] != null){
+				for(let mod of modifications[category.name]){
 					console.log(mod)
+					let index = 0
+					for(let c of data.categories){
+						if(c.name == mod.name){
+							index = data.categories.indexOf(c)
+						}
+					}
+
+					if(mod.type == "NEW"){
+						moddedData.categories[index].score.val += mod.score.val
+						moddedData.categories[index].score.outOf += mod.score.outOf
+					}
+					else{
+						moddedData.categories[index].score.val -= mod.score.outof + mod.score.val
+					}
 				}
 			}
+		}
+
+		moddedData.score = 0
+		for(let i of moddedData.categories){
+			moddedData.score += percent(i.score) * i.normalizedWeight
 		}
 	}
 
@@ -71,9 +95,10 @@
 			sum += category.weight
 		}
 		for(let i=0; i<data.categories.length; i++){
-			data.categories[i]["normalizedWeight"] = data.categories[i].weight / sum
+			moddedData.categories[i]["normalizedWeight"] = moddedData.categories[i].weight / sum
 		}
 	}
+
 </script>
 
 <main>
@@ -81,36 +106,37 @@
         <article style="margin-top: 0px; margin-bottom: 10px;">
             <header>
                 <h1>{data.className}</h1>
-				<div>
-					<strong>Origional Grade:</strong>
-					<strong style="float: right;">{data.grade} ({data.score}%)</strong>
+				<div class="strong grid">
+					<p>Origional Grade:</p>
+					<p>{data.grade} ({data.score}%)</p>
 				</div>
-				<div>
-					<strong>New Grade: </strong>
-					<strong style="float: right;">{newGrade}%</strong>
+				<div class="strong grid">
+					<p>New Grade: </p>
+					<p>{moddedData.score.toFixed(2)}%</p>
 				</div>
             </header>
 
-			<input type="text" placeholder="Assignment Name" bind:value={currentMod.name}>
+			<label for="name">Assignment Name<input name="name" type="text" placeholder="Assignment Name" autocomplete="off" bind:value={currentMod.name}></label>
 
 			<div class="grid">
-				<input type="number" placeholder="Score" bind:value={currentMod.score.val}>
-				<input type="number" placeholder="Out Of" bind:value={currentMod.score.outOf}>
+				<label for="score"> Score<input name="score" type="number" placeholder="Score" bind:value={currentMod.score.val}> </label>
+				<label for="outOf"> {(currentMod.type == "NEW") ? "Out Of" : "Old Score"}<input name="outOf" type="number" placeholder={(currentMod.type == "NEW") ? "Out Of" : "Old Score"} bind:value={currentMod.score.outOf}> </label>
 			</div>
 
 			<div class="grid">
-				<select name="category" bind:value={currentMod.category}>
+				<label for="category">Category<select name="category" bind:value={currentMod.category}>
 					{#each data.categories as category}
 						<option value={category.name}>{category.name}</option>
 					{/each}
-				</select>
+				</select></label>
 				<fieldset>
+					<br>
 					<label for="add">
-						<input type="radio" id="small" name="size" value="NEW" checked on:change={(e)=>{currentMod.type = e.target.value}}>
+						<input name="type" type="radio" value="NEW" checked on:change={(e)=>{currentMod.type = e.target.value}}>
 						Adding New Grade
 					</label>
 					<label for="modify">
-						<input type="radio" id="medium" name="size" value="EDITED" on:change={(e)=>{currentMod.type = e.target.value}}>
+						<input name="type" type="radio" value="EDITED" on:change={(e)=>{currentMod.type = e.target.value}}>
 						Modifying Existing Grade
 					</label>
 				</fieldset>
@@ -118,23 +144,27 @@
 
 			<button on:click={handleSubmit}>Submit</button>
 
-			{#each data.categories as category}
+			{#each moddedData.categories as category}
 				<hr>
-				<strong>{category.name} (Weight: {category.weight}%)</strong>
-				<strong style="float: right;">{percent(category.score)}% ({category.score.val}/{category.score.outOf})</strong>
-				<br>
+				<div class="grid strong">
+					<p>{category.name} (Weight: {category.weight}%)</p>
+					<p>{percent(category.score)}% ({category.score.val}/{category.score.outOf})</p>
+				</div>
 				{#if modifications[category.name] != null}
 					{#each modifications[category.name] as mod}
-						<small>
-							<i><ins>{mod.type}</ins></i> 
-							{mod.name}
-							<small>
+						<div class="grid">
+							<p>
+								<i><ins>{mod.type}</ins></i> 
+								{mod.name}
 								<a href="#d">Edit</a>
 								<a href="#d">Delete</a>
-							</small>
-						</small>
-						<small style="float: right;">100%</small>
-						<br>
+							</p>
+							{#if mod.type == "NEW"}
+								<p>{percent(mod.score)}% ({mod.score.val}/{mod.score.outOf})</p>
+							{:else}
+								<p>{mod.score.val} (previously {mod.score.outOf})</p>
+							{/if}
+						</div>
 					{/each}
 				{/if}
 			{/each}

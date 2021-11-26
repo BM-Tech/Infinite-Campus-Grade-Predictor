@@ -4,3 +4,15 @@
 .hoverable:hover + .hidden{
 	display:block !important;
 }
+
+p{
+	margin-bottom: 0;
+}
+
+.strong > *{
+	font-weight: bold;
+}
+
+.grid p:last-of-type{
+	text-align: right !important;
+}

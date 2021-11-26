@@ -392,26 +392,26 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[15] = list[i];
+    	child_ctx[16] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[18] = list[i];
+    	child_ctx[19] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[15] = list[i];
+    	child_ctx[16] = list[i];
     	return child_ctx;
     }
 
-    // (92:5) {#each data.categories as category}
+    // (128:5) {#each data.categories as category}
     function create_each_block_2(ctx) {
     	let option;
-    	let t_value = /*category*/ ctx[15].name + "";
+    	let t_value = /*category*/ ctx[16].name + "";
     	let t;
     	let option_value_value;
 
@@ -419,18 +419,18 @@ var app = (function () {
     		c: function create() {
     			option = element("option");
     			t = text(t_value);
-    			option.__value = option_value_value = /*category*/ ctx[15].name;
+    			option.__value = option_value_value = /*category*/ ctx[16].name;
     			option.value = option.__value;
-    			add_location(option, file, 92, 6, 2241);
+    			add_location(option, file, 128, 6, 3376);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
     			append_dev(option, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*data*/ 1 && t_value !== (t_value = /*category*/ ctx[15].name + "")) set_data_dev(t, t_value);
+    			if (dirty & /*data*/ 1 && t_value !== (t_value = /*category*/ ctx[16].name + "")) set_data_dev(t, t_value);
 
-    			if (dirty & /*data*/ 1 && option_value_value !== (option_value_value = /*category*/ ctx[15].name)) {
+    			if (dirty & /*data*/ 1 && option_value_value !== (option_value_value = /*category*/ ctx[16].name)) {
     				prop_dev(option, "__value", option_value_value);
     				option.value = option.__value;
     			}
@@ -444,17 +444,17 @@ var app = (function () {
     		block,
     		id: create_each_block_2.name,
     		type: "each",
-    		source: "(92:5) {#each data.categories as category}",
+    		source: "(128:5) {#each data.categories as category}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (115:4) {#if modifications[category.name] != null}
+    // (153:4) {#if modifications[category.name] != null}
     function create_if_block(ctx) {
     	let each_1_anchor;
-    	let each_value_1 = /*modifications*/ ctx[1][/*category*/ ctx[15].name];
+    	let each_value_1 = /*modifications*/ ctx[1][/*category*/ ctx[16].name];
     	validate_each_argument(each_value_1);
     	let each_blocks = [];
 
@@ -478,8 +478,8 @@ var app = (function () {
     			insert_dev(target, each_1_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*modifications, data*/ 3) {
-    				each_value_1 = /*modifications*/ ctx[1][/*category*/ ctx[15].name];
+    			if (dirty & /*modifications, moddedData, percent*/ 6) {
+    				each_value_1 = /*modifications*/ ctx[1][/*category*/ ctx[16].name];
     				validate_each_argument(each_value_1);
     				let i;
 
@@ -512,92 +512,202 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(115:4) {#if modifications[category.name] != null}",
+    		source: "(153:4) {#if modifications[category.name] != null}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (116:5) {#each modifications[category.name] as mod}
-    function create_each_block_1(ctx) {
-    	let small1;
-    	let i;
-    	let ins;
-    	let t0_value = /*mod*/ ctx[18].type + "";
+    // (164:7) {:else}
+    function create_else_block(ctx) {
+    	let p;
+    	let t0_value = /*mod*/ ctx[19].score.val + "";
     	let t0;
     	let t1;
-    	let t2_value = /*mod*/ ctx[18].name + "";
+    	let t2_value = /*mod*/ ctx[19].score.outOf + "";
     	let t2;
     	let t3;
-    	let small0;
+
+    	const block = {
+    		c: function create() {
+    			p = element("p");
+    			t0 = text(t0_value);
+    			t1 = text(" (previously ");
+    			t2 = text(t2_value);
+    			t3 = text(")");
+    			add_location(p, file, 164, 8, 4545);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, p, anchor);
+    			append_dev(p, t0);
+    			append_dev(p, t1);
+    			append_dev(p, t2);
+    			append_dev(p, t3);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*modifications, moddedData*/ 6 && t0_value !== (t0_value = /*mod*/ ctx[19].score.val + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*modifications, moddedData*/ 6 && t2_value !== (t2_value = /*mod*/ ctx[19].score.outOf + "")) set_data_dev(t2, t2_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(p);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block.name,
+    		type: "else",
+    		source: "(164:7) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (162:7) {#if mod.type == "NEW"}
+    function create_if_block_1(ctx) {
+    	let p;
+    	let t0_value = percent(/*mod*/ ctx[19].score) + "";
+    	let t0;
+    	let t1;
+    	let t2_value = /*mod*/ ctx[19].score.val + "";
+    	let t2;
+    	let t3;
+    	let t4_value = /*mod*/ ctx[19].score.outOf + "";
+    	let t4;
+    	let t5;
+
+    	const block = {
+    		c: function create() {
+    			p = element("p");
+    			t0 = text(t0_value);
+    			t1 = text("% (");
+    			t2 = text(t2_value);
+    			t3 = text("/");
+    			t4 = text(t4_value);
+    			t5 = text(")");
+    			add_location(p, file, 162, 8, 4457);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, p, anchor);
+    			append_dev(p, t0);
+    			append_dev(p, t1);
+    			append_dev(p, t2);
+    			append_dev(p, t3);
+    			append_dev(p, t4);
+    			append_dev(p, t5);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*modifications, moddedData*/ 6 && t0_value !== (t0_value = percent(/*mod*/ ctx[19].score) + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*modifications, moddedData*/ 6 && t2_value !== (t2_value = /*mod*/ ctx[19].score.val + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*modifications, moddedData*/ 6 && t4_value !== (t4_value = /*mod*/ ctx[19].score.outOf + "")) set_data_dev(t4, t4_value);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(p);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1.name,
+    		type: "if",
+    		source: "(162:7) {#if mod.type == \\\"NEW\\\"}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (154:5) {#each modifications[category.name] as mod}
+    function create_each_block_1(ctx) {
+    	let div;
+    	let p;
+    	let i;
+    	let ins;
+    	let t0_value = /*mod*/ ctx[19].type + "";
+    	let t0;
+    	let t1;
+    	let t2_value = /*mod*/ ctx[19].name + "";
+    	let t2;
+    	let t3;
     	let a0;
     	let t5;
     	let a1;
     	let t7;
-    	let small2;
-    	let t9;
-    	let br;
+    	let t8;
+
+    	function select_block_type(ctx, dirty) {
+    		if (/*mod*/ ctx[19].type == "NEW") return create_if_block_1;
+    		return create_else_block;
+    	}
+
+    	let current_block_type = select_block_type(ctx);
+    	let if_block = current_block_type(ctx);
 
     	const block = {
     		c: function create() {
-    			small1 = element("small");
+    			div = element("div");
+    			p = element("p");
     			i = element("i");
     			ins = element("ins");
     			t0 = text(t0_value);
     			t1 = space();
     			t2 = text(t2_value);
     			t3 = space();
-    			small0 = element("small");
     			a0 = element("a");
     			a0.textContent = "Edit";
     			t5 = space();
     			a1 = element("a");
     			a1.textContent = "Delete";
     			t7 = space();
-    			small2 = element("small");
-    			small2.textContent = "100%";
-    			t9 = space();
-    			br = element("br");
-    			add_location(ins, file, 117, 10, 3147);
-    			add_location(i, file, 117, 7, 3144);
+    			if_block.c();
+    			t8 = space();
+    			add_location(ins, file, 156, 11, 4298);
+    			add_location(i, file, 156, 8, 4295);
     			attr_dev(a0, "href", "#d");
-    			add_location(a0, file, 120, 8, 3215);
+    			add_location(a0, file, 158, 8, 4352);
     			attr_dev(a1, "href", "#d");
-    			add_location(a1, file, 121, 8, 3245);
-    			add_location(small0, file, 119, 7, 3199);
-    			add_location(small1, file, 116, 6, 3129);
-    			set_style(small2, "float", "right");
-    			add_location(small2, file, 124, 6, 3306);
-    			add_location(br, file, 125, 6, 3354);
+    			add_location(a1, file, 159, 8, 4382);
+    			add_location(p, file, 155, 7, 4283);
+    			attr_dev(div, "class", "grid");
+    			add_location(div, file, 154, 6, 4257);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, small1, anchor);
-    			append_dev(small1, i);
+    			insert_dev(target, div, anchor);
+    			append_dev(div, p);
+    			append_dev(p, i);
     			append_dev(i, ins);
     			append_dev(ins, t0);
-    			append_dev(small1, t1);
-    			append_dev(small1, t2);
-    			append_dev(small1, t3);
-    			append_dev(small1, small0);
-    			append_dev(small0, a0);
-    			append_dev(small0, t5);
-    			append_dev(small0, a1);
-    			insert_dev(target, t7, anchor);
-    			insert_dev(target, small2, anchor);
-    			insert_dev(target, t9, anchor);
-    			insert_dev(target, br, anchor);
+    			append_dev(p, t1);
+    			append_dev(p, t2);
+    			append_dev(p, t3);
+    			append_dev(p, a0);
+    			append_dev(p, t5);
+    			append_dev(p, a1);
+    			append_dev(div, t7);
+    			if_block.m(div, null);
+    			append_dev(div, t8);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*modifications, data*/ 3 && t0_value !== (t0_value = /*mod*/ ctx[18].type + "")) set_data_dev(t0, t0_value);
-    			if (dirty & /*modifications, data*/ 3 && t2_value !== (t2_value = /*mod*/ ctx[18].name + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*modifications, moddedData*/ 6 && t0_value !== (t0_value = /*mod*/ ctx[19].type + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*modifications, moddedData*/ 6 && t2_value !== (t2_value = /*mod*/ ctx[19].name + "")) set_data_dev(t2, t2_value);
+
+    			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
+    				if_block.p(ctx, dirty);
+    			} else {
+    				if_block.d(1);
+    				if_block = current_block_type(ctx);
+
+    				if (if_block) {
+    					if_block.c();
+    					if_block.m(div, t8);
+    				}
+    			}
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(small1);
-    			if (detaching) detach_dev(t7);
-    			if (detaching) detach_dev(small2);
-    			if (detaching) detach_dev(t9);
-    			if (detaching) detach_dev(br);
+    			if (detaching) detach_dev(div);
+    			if_block.d();
     		}
     	};
 
@@ -605,52 +715,52 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(116:5) {#each modifications[category.name] as mod}",
+    		source: "(154:5) {#each modifications[category.name] as mod}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (110:3) {#each data.categories as category}
+    // (147:3) {#each moddedData.categories as category}
     function create_each_block(ctx) {
     	let hr;
     	let t0;
-    	let strong0;
-    	let t1_value = /*category*/ ctx[15].name + "";
+    	let div;
+    	let p0;
+    	let t1_value = /*category*/ ctx[16].name + "";
     	let t1;
     	let t2;
-    	let t3_value = /*category*/ ctx[15].weight + "";
+    	let t3_value = /*category*/ ctx[16].weight + "";
     	let t3;
     	let t4;
     	let t5;
-    	let strong1;
-    	let t6_value = percent(/*category*/ ctx[15].score) + "";
+    	let p1;
+    	let t6_value = percent(/*category*/ ctx[16].score) + "";
     	let t6;
     	let t7;
-    	let t8_value = /*category*/ ctx[15].score.val + "";
+    	let t8_value = /*category*/ ctx[16].score.val + "";
     	let t8;
     	let t9;
-    	let t10_value = /*category*/ ctx[15].score.outOf + "";
+    	let t10_value = /*category*/ ctx[16].score.outOf + "";
     	let t10;
     	let t11;
     	let t12;
-    	let br;
-    	let t13;
     	let if_block_anchor;
-    	let if_block = /*modifications*/ ctx[1][/*category*/ ctx[15].name] != null && create_if_block(ctx);
+    	let if_block = /*modifications*/ ctx[1][/*category*/ ctx[16].name] != null && create_if_block(ctx);
 
     	const block = {
     		c: function create() {
     			hr = element("hr");
     			t0 = space();
-    			strong0 = element("strong");
+    			div = element("div");
+    			p0 = element("p");
     			t1 = text(t1_value);
     			t2 = text(" (Weight: ");
     			t3 = text(t3_value);
     			t4 = text("%)");
     			t5 = space();
-    			strong1 = element("strong");
+    			p1 = element("p");
     			t6 = text(t6_value);
     			t7 = text("% (");
     			t8 = text(t8_value);
@@ -658,46 +768,43 @@ var app = (function () {
     			t10 = text(t10_value);
     			t11 = text(")");
     			t12 = space();
-    			br = element("br");
-    			t13 = space();
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
-    			add_location(hr, file, 110, 4, 2831);
-    			add_location(strong0, file, 111, 4, 2840);
-    			set_style(strong1, "float", "right");
-    			add_location(strong1, file, 112, 4, 2906);
-    			add_location(br, file, 113, 4, 3022);
+    			add_location(hr, file, 147, 4, 3967);
+    			add_location(p0, file, 149, 5, 4007);
+    			add_location(p1, file, 150, 5, 4064);
+    			attr_dev(div, "class", "grid strong");
+    			add_location(div, file, 148, 4, 3976);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, hr, anchor);
     			insert_dev(target, t0, anchor);
-    			insert_dev(target, strong0, anchor);
-    			append_dev(strong0, t1);
-    			append_dev(strong0, t2);
-    			append_dev(strong0, t3);
-    			append_dev(strong0, t4);
-    			insert_dev(target, t5, anchor);
-    			insert_dev(target, strong1, anchor);
-    			append_dev(strong1, t6);
-    			append_dev(strong1, t7);
-    			append_dev(strong1, t8);
-    			append_dev(strong1, t9);
-    			append_dev(strong1, t10);
-    			append_dev(strong1, t11);
+    			insert_dev(target, div, anchor);
+    			append_dev(div, p0);
+    			append_dev(p0, t1);
+    			append_dev(p0, t2);
+    			append_dev(p0, t3);
+    			append_dev(p0, t4);
+    			append_dev(div, t5);
+    			append_dev(div, p1);
+    			append_dev(p1, t6);
+    			append_dev(p1, t7);
+    			append_dev(p1, t8);
+    			append_dev(p1, t9);
+    			append_dev(p1, t10);
+    			append_dev(p1, t11);
     			insert_dev(target, t12, anchor);
-    			insert_dev(target, br, anchor);
-    			insert_dev(target, t13, anchor);
     			if (if_block) if_block.m(target, anchor);
     			insert_dev(target, if_block_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*data*/ 1 && t1_value !== (t1_value = /*category*/ ctx[15].name + "")) set_data_dev(t1, t1_value);
-    			if (dirty & /*data*/ 1 && t3_value !== (t3_value = /*category*/ ctx[15].weight + "")) set_data_dev(t3, t3_value);
-    			if (dirty & /*data*/ 1 && t6_value !== (t6_value = percent(/*category*/ ctx[15].score) + "")) set_data_dev(t6, t6_value);
-    			if (dirty & /*data*/ 1 && t8_value !== (t8_value = /*category*/ ctx[15].score.val + "")) set_data_dev(t8, t8_value);
-    			if (dirty & /*data*/ 1 && t10_value !== (t10_value = /*category*/ ctx[15].score.outOf + "")) set_data_dev(t10, t10_value);
+    			if (dirty & /*moddedData*/ 4 && t1_value !== (t1_value = /*category*/ ctx[16].name + "")) set_data_dev(t1, t1_value);
+    			if (dirty & /*moddedData*/ 4 && t3_value !== (t3_value = /*category*/ ctx[16].weight + "")) set_data_dev(t3, t3_value);
+    			if (dirty & /*moddedData*/ 4 && t6_value !== (t6_value = percent(/*category*/ ctx[16].score) + "")) set_data_dev(t6, t6_value);
+    			if (dirty & /*moddedData*/ 4 && t8_value !== (t8_value = /*category*/ ctx[16].score.val + "")) set_data_dev(t8, t8_value);
+    			if (dirty & /*moddedData*/ 4 && t10_value !== (t10_value = /*category*/ ctx[16].score.outOf + "")) set_data_dev(t10, t10_value);
 
-    			if (/*modifications*/ ctx[1][/*category*/ ctx[15].name] != null) {
+    			if (/*modifications*/ ctx[1][/*category*/ ctx[16].name] != null) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     				} else {
@@ -713,12 +820,8 @@ var app = (function () {
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(hr);
     			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(strong0);
-    			if (detaching) detach_dev(t5);
-    			if (detaching) detach_dev(strong1);
+    			if (detaching) detach_dev(div);
     			if (detaching) detach_dev(t12);
-    			if (detaching) detach_dev(br);
-    			if (detaching) detach_dev(t13);
     			if (if_block) if_block.d(detaching);
     			if (detaching) detach_dev(if_block_anchor);
     		}
@@ -728,7 +831,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(110:3) {#each data.categories as category}",
+    		source: "(147:3) {#each moddedData.categories as category}",
     		ctx
     	});
 
@@ -745,9 +848,9 @@ var app = (function () {
     	let t0;
     	let t1;
     	let div0;
-    	let strong0;
+    	let p0;
     	let t3;
-    	let strong1;
+    	let p1;
     	let t4_value = /*data*/ ctx[0].grade + "";
     	let t4;
     	let t5;
@@ -756,36 +859,55 @@ var app = (function () {
     	let t7;
     	let t8;
     	let div1;
-    	let strong2;
+    	let p2;
     	let t10;
-    	let strong3;
+    	let p3;
+    	let t11_value = /*moddedData*/ ctx[2].score.toFixed(2) + "";
+    	let t11;
+    	let t12;
     	let t13;
-    	let input0;
-    	let t14;
-    	let div2;
-    	let input1;
-    	let t15;
-    	let input2;
-    	let t16;
-    	let div3;
-    	let select;
-    	let t17;
-    	let fieldset;
     	let label0;
-    	let input3;
-    	let t18;
-    	let t19;
+    	let t14;
+    	let input0;
+    	let t15;
+    	let div2;
     	let label1;
-    	let input4;
+    	let t16;
+    	let input1;
+    	let t17;
+    	let label2;
+
+    	let t18_value = (/*currentMod*/ ctx[3].type == "NEW"
+    	? "Out Of"
+    	: "Old Score") + "";
+
+    	let t18;
+    	let input2;
+    	let input2_placeholder_value;
+    	let t19;
+    	let div3;
+    	let label3;
     	let t20;
+    	let select;
     	let t21;
-    	let button;
+    	let fieldset;
+    	let br;
+    	let t22;
+    	let label4;
+    	let input3;
     	let t23;
     	let t24;
-    	let small;
+    	let label5;
+    	let input4;
     	let t25;
+    	let t26;
+    	let button;
+    	let t28;
+    	let t29;
+    	let small;
+    	let t30;
     	let a0;
-    	let t27;
+    	let t32;
     	let a1;
     	let mounted;
     	let dispose;
@@ -797,7 +919,7 @@ var app = (function () {
     		each_blocks_1[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
     	}
 
-    	let each_value = /*data*/ ctx[0].categories;
+    	let each_value = /*moddedData*/ ctx[2].categories;
     	validate_each_argument(each_value);
     	let each_blocks = [];
 
@@ -815,117 +937,143 @@ var app = (function () {
     			t0 = text(t0_value);
     			t1 = space();
     			div0 = element("div");
-    			strong0 = element("strong");
-    			strong0.textContent = "Origional Grade:";
+    			p0 = element("p");
+    			p0.textContent = "Origional Grade:";
     			t3 = space();
-    			strong1 = element("strong");
+    			p1 = element("p");
     			t4 = text(t4_value);
     			t5 = text(" (");
     			t6 = text(t6_value);
     			t7 = text("%)");
     			t8 = space();
     			div1 = element("div");
-    			strong2 = element("strong");
-    			strong2.textContent = "New Grade:";
+    			p2 = element("p");
+    			p2.textContent = "New Grade:";
     			t10 = space();
-    			strong3 = element("strong");
-    			strong3.textContent = `${/*newGrade*/ ctx[3]}%`;
+    			p3 = element("p");
+    			t11 = text(t11_value);
+    			t12 = text("%");
     			t13 = space();
+    			label0 = element("label");
+    			t14 = text("Assignment Name");
     			input0 = element("input");
-    			t14 = space();
-    			div2 = element("div");
-    			input1 = element("input");
     			t15 = space();
+    			div2 = element("div");
+    			label1 = element("label");
+    			t16 = text("Score");
+    			input1 = element("input");
+    			t17 = space();
+    			label2 = element("label");
+    			t18 = text(t18_value);
     			input2 = element("input");
-    			t16 = space();
+    			t19 = space();
     			div3 = element("div");
+    			label3 = element("label");
+    			t20 = text("Category");
     			select = element("select");
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].c();
     			}
 
-    			t17 = space();
-    			fieldset = element("fieldset");
-    			label0 = element("label");
-    			input3 = element("input");
-    			t18 = text("\n\t\t\t\t\t\tAdding New Grade");
-    			t19 = space();
-    			label1 = element("label");
-    			input4 = element("input");
-    			t20 = text("\n\t\t\t\t\t\tModifying Existing Grade");
     			t21 = space();
+    			fieldset = element("fieldset");
+    			br = element("br");
+    			t22 = space();
+    			label4 = element("label");
+    			input3 = element("input");
+    			t23 = text("\n\t\t\t\t\t\tAdding New Grade");
+    			t24 = space();
+    			label5 = element("label");
+    			input4 = element("input");
+    			t25 = text("\n\t\t\t\t\t\tModifying Existing Grade");
+    			t26 = space();
     			button = element("button");
     			button.textContent = "Submit";
-    			t23 = space();
+    			t28 = space();
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
-    			t24 = space();
+    			t29 = space();
     			small = element("small");
-    			t25 = text("Infinite Campus Grade Predictor | \n\t\t\t");
+    			t30 = text("Infinite Campus Grade Predictor | \n\t\t\t");
     			a0 = element("a");
     			a0.textContent = "Github";
-    			t27 = text(" |\n\t\t\t");
+    			t32 = text(" |\n\t\t\t");
     			a1 = element("a");
     			a1.textContent = "Toggle Dark Mode";
-    			add_location(h1, file, 71, 16, 1538);
-    			add_location(strong0, file, 73, 5, 1579);
-    			set_style(strong1, "float", "right");
-    			add_location(strong1, file, 74, 5, 1618);
-    			add_location(div0, file, 72, 4, 1568);
-    			add_location(strong2, file, 77, 5, 1712);
-    			set_style(strong3, "float", "right");
-    			add_location(strong3, file, 78, 5, 1746);
-    			add_location(div1, file, 76, 4, 1701);
-    			add_location(header, file, 70, 12, 1513);
+    			add_location(h1, file, 107, 16, 2409);
+    			add_location(p0, file, 109, 5, 2470);
+    			add_location(p1, file, 110, 5, 2499);
+    			attr_dev(div0, "class", "strong grid");
+    			add_location(div0, file, 108, 4, 2439);
+    			add_location(p2, file, 113, 5, 2581);
+    			add_location(p3, file, 114, 5, 2605);
+    			attr_dev(div1, "class", "strong grid");
+    			add_location(div1, file, 112, 4, 2550);
+    			add_location(header, file, 106, 12, 2384);
+    			attr_dev(input0, "name", "name");
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "placeholder", "Assignment Name");
-    			add_location(input0, file, 82, 3, 1834);
+    			attr_dev(input0, "autocomplete", "off");
+    			add_location(input0, file, 118, 36, 2713);
+    			attr_dev(label0, "for", "name");
+    			add_location(label0, file, 118, 3, 2680);
+    			attr_dev(input1, "name", "score");
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "placeholder", "Score");
-    			add_location(input1, file, 85, 4, 1940);
+    			add_location(input1, file, 121, 29, 2883);
+    			attr_dev(label1, "for", "score");
+    			add_location(label1, file, 121, 4, 2858);
+    			attr_dev(input2, "name", "outOf");
     			attr_dev(input2, "type", "number");
-    			attr_dev(input2, "placeholder", "Out Of");
-    			add_location(input2, file, 86, 4, 2020);
+
+    			attr_dev(input2, "placeholder", input2_placeholder_value = /*currentMod*/ ctx[3].type == "NEW"
+    			? "Out Of"
+    			: "Old Score");
+
+    			add_location(input2, file, 122, 77, 3058);
+    			attr_dev(label2, "for", "outOf");
+    			add_location(label2, file, 122, 4, 2985);
     			attr_dev(div2, "class", "grid");
-    			add_location(div2, file, 84, 3, 1917);
+    			add_location(div2, file, 120, 3, 2835);
     			attr_dev(select, "name", "category");
-    			if (/*currentMod*/ ctx[2].category === void 0) add_render_callback(() => /*select_change_handler*/ ctx[10].call(select));
-    			add_location(select, file, 90, 4, 2136);
+    			if (/*currentMod*/ ctx[3].category === void 0) add_render_callback(() => /*select_change_handler*/ ctx[10].call(select));
+    			add_location(select, file, 126, 34, 3271);
+    			attr_dev(label3, "for", "category");
+    			add_location(label3, file, 126, 4, 3241);
+    			add_location(br, file, 132, 5, 3486);
+    			attr_dev(input3, "name", "type");
     			attr_dev(input3, "type", "radio");
-    			attr_dev(input3, "id", "small");
-    			attr_dev(input3, "name", "size");
     			input3.value = "NEW";
     			input3.checked = true;
-    			add_location(input3, file, 97, 6, 2367);
-    			attr_dev(label0, "for", "add");
-    			add_location(label0, file, 96, 5, 2343);
+    			add_location(input3, file, 134, 6, 3520);
+    			attr_dev(label4, "for", "add");
+    			add_location(label4, file, 133, 5, 3496);
+    			attr_dev(input4, "name", "type");
     			attr_dev(input4, "type", "radio");
-    			attr_dev(input4, "id", "medium");
-    			attr_dev(input4, "name", "size");
     			input4.value = "EDITED";
-    			add_location(input4, file, 101, 6, 2552);
-    			attr_dev(label1, "for", "modify");
-    			add_location(label1, file, 100, 5, 2525);
-    			add_location(fieldset, file, 95, 4, 2327);
+    			add_location(input4, file, 138, 6, 3694);
+    			attr_dev(label5, "for", "modify");
+    			add_location(label5, file, 137, 5, 3667);
+    			add_location(fieldset, file, 131, 4, 3470);
     			attr_dev(div3, "class", "grid");
-    			add_location(div3, file, 89, 3, 2113);
-    			add_location(button, file, 107, 3, 2739);
+    			add_location(div3, file, 125, 3, 3218);
+    			add_location(button, file, 144, 3, 3869);
     			set_style(article, "margin-top", "0px");
     			set_style(article, "margin-bottom", "10px");
-    			add_location(article, file, 69, 8, 1445);
+    			add_location(article, file, 105, 8, 2316);
     			attr_dev(a0, "href", "https://github.com");
-    			add_location(a0, file, 132, 3, 3470);
+    			add_location(a0, file, 173, 3, 4736);
     			attr_dev(a1, "href", "#f");
-    			add_location(a1, file, 133, 3, 3515);
+    			add_location(a1, file, 174, 3, 4781);
     			attr_dev(small, "class", "f");
-    			add_location(small, file, 131, 2, 3415);
+    			add_location(small, file, 172, 2, 4681);
     			attr_dev(div4, "class", "container");
-    			add_location(div4, file, 68, 4, 1413);
-    			add_location(main, file, 67, 0, 1402);
+    			add_location(div4, file, 104, 4, 2284);
+    			add_location(main, file, 103, 0, 2273);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -939,59 +1087,71 @@ var app = (function () {
     			append_dev(h1, t0);
     			append_dev(header, t1);
     			append_dev(header, div0);
-    			append_dev(div0, strong0);
+    			append_dev(div0, p0);
     			append_dev(div0, t3);
-    			append_dev(div0, strong1);
-    			append_dev(strong1, t4);
-    			append_dev(strong1, t5);
-    			append_dev(strong1, t6);
-    			append_dev(strong1, t7);
+    			append_dev(div0, p1);
+    			append_dev(p1, t4);
+    			append_dev(p1, t5);
+    			append_dev(p1, t6);
+    			append_dev(p1, t7);
     			append_dev(header, t8);
     			append_dev(header, div1);
-    			append_dev(div1, strong2);
+    			append_dev(div1, p2);
     			append_dev(div1, t10);
-    			append_dev(div1, strong3);
+    			append_dev(div1, p3);
+    			append_dev(p3, t11);
+    			append_dev(p3, t12);
     			append_dev(article, t13);
-    			append_dev(article, input0);
-    			set_input_value(input0, /*currentMod*/ ctx[2].name);
-    			append_dev(article, t14);
+    			append_dev(article, label0);
+    			append_dev(label0, t14);
+    			append_dev(label0, input0);
+    			set_input_value(input0, /*currentMod*/ ctx[3].name);
+    			append_dev(article, t15);
     			append_dev(article, div2);
-    			append_dev(div2, input1);
-    			set_input_value(input1, /*currentMod*/ ctx[2].score.val);
-    			append_dev(div2, t15);
-    			append_dev(div2, input2);
-    			set_input_value(input2, /*currentMod*/ ctx[2].score.outOf);
-    			append_dev(article, t16);
+    			append_dev(div2, label1);
+    			append_dev(label1, t16);
+    			append_dev(label1, input1);
+    			set_input_value(input1, /*currentMod*/ ctx[3].score.val);
+    			append_dev(div2, t17);
+    			append_dev(div2, label2);
+    			append_dev(label2, t18);
+    			append_dev(label2, input2);
+    			set_input_value(input2, /*currentMod*/ ctx[3].score.outOf);
+    			append_dev(article, t19);
     			append_dev(article, div3);
-    			append_dev(div3, select);
+    			append_dev(div3, label3);
+    			append_dev(label3, t20);
+    			append_dev(label3, select);
 
     			for (let i = 0; i < each_blocks_1.length; i += 1) {
     				each_blocks_1[i].m(select, null);
     			}
 
-    			select_option(select, /*currentMod*/ ctx[2].category);
-    			append_dev(div3, t17);
+    			select_option(select, /*currentMod*/ ctx[3].category);
+    			append_dev(div3, t21);
     			append_dev(div3, fieldset);
-    			append_dev(fieldset, label0);
-    			append_dev(label0, input3);
-    			append_dev(label0, t18);
-    			append_dev(fieldset, t19);
-    			append_dev(fieldset, label1);
-    			append_dev(label1, input4);
-    			append_dev(label1, t20);
-    			append_dev(article, t21);
+    			append_dev(fieldset, br);
+    			append_dev(fieldset, t22);
+    			append_dev(fieldset, label4);
+    			append_dev(label4, input3);
+    			append_dev(label4, t23);
+    			append_dev(fieldset, t24);
+    			append_dev(fieldset, label5);
+    			append_dev(label5, input4);
+    			append_dev(label5, t25);
+    			append_dev(article, t26);
     			append_dev(article, button);
-    			append_dev(article, t23);
+    			append_dev(article, t28);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].m(article, null);
     			}
 
-    			append_dev(div4, t24);
+    			append_dev(div4, t29);
     			append_dev(div4, small);
-    			append_dev(small, t25);
+    			append_dev(small, t30);
     			append_dev(small, a0);
-    			append_dev(small, t27);
+    			append_dev(small, t32);
     			append_dev(small, a1);
 
     			if (!mounted) {
@@ -1013,17 +1173,28 @@ var app = (function () {
     			if (dirty & /*data*/ 1 && t0_value !== (t0_value = /*data*/ ctx[0].className + "")) set_data_dev(t0, t0_value);
     			if (dirty & /*data*/ 1 && t4_value !== (t4_value = /*data*/ ctx[0].grade + "")) set_data_dev(t4, t4_value);
     			if (dirty & /*data*/ 1 && t6_value !== (t6_value = /*data*/ ctx[0].score + "")) set_data_dev(t6, t6_value);
+    			if (dirty & /*moddedData*/ 4 && t11_value !== (t11_value = /*moddedData*/ ctx[2].score.toFixed(2) + "")) set_data_dev(t11, t11_value);
 
-    			if (dirty & /*currentMod, data*/ 5 && input0.value !== /*currentMod*/ ctx[2].name) {
-    				set_input_value(input0, /*currentMod*/ ctx[2].name);
+    			if (dirty & /*currentMod, data*/ 9 && input0.value !== /*currentMod*/ ctx[3].name) {
+    				set_input_value(input0, /*currentMod*/ ctx[3].name);
     			}
 
-    			if (dirty & /*currentMod, data*/ 5 && to_number(input1.value) !== /*currentMod*/ ctx[2].score.val) {
-    				set_input_value(input1, /*currentMod*/ ctx[2].score.val);
+    			if (dirty & /*currentMod, data*/ 9 && to_number(input1.value) !== /*currentMod*/ ctx[3].score.val) {
+    				set_input_value(input1, /*currentMod*/ ctx[3].score.val);
     			}
 
-    			if (dirty & /*currentMod, data*/ 5 && to_number(input2.value) !== /*currentMod*/ ctx[2].score.outOf) {
-    				set_input_value(input2, /*currentMod*/ ctx[2].score.outOf);
+    			if (dirty & /*currentMod*/ 8 && t18_value !== (t18_value = (/*currentMod*/ ctx[3].type == "NEW"
+    			? "Out Of"
+    			: "Old Score") + "")) set_data_dev(t18, t18_value);
+
+    			if (dirty & /*currentMod, data*/ 9 && input2_placeholder_value !== (input2_placeholder_value = /*currentMod*/ ctx[3].type == "NEW"
+    			? "Out Of"
+    			: "Old Score")) {
+    				attr_dev(input2, "placeholder", input2_placeholder_value);
+    			}
+
+    			if (dirty & /*currentMod, data*/ 9 && to_number(input2.value) !== /*currentMod*/ ctx[3].score.outOf) {
+    				set_input_value(input2, /*currentMod*/ ctx[3].score.outOf);
     			}
 
     			if (dirty & /*data*/ 1) {
@@ -1050,12 +1221,12 @@ var app = (function () {
     				each_blocks_1.length = each_value_2.length;
     			}
 
-    			if (dirty & /*currentMod, data*/ 5) {
-    				select_option(select, /*currentMod*/ ctx[2].category);
+    			if (dirty & /*currentMod, data*/ 9) {
+    				select_option(select, /*currentMod*/ ctx[3].category);
     			}
 
-    			if (dirty & /*modifications, data, percent*/ 3) {
-    				each_value = /*data*/ ctx[0].categories;
+    			if (dirty & /*modifications, moddedData, percent*/ 6) {
+    				each_value = /*moddedData*/ ctx[2].categories;
     				validate_each_argument(each_value);
     				let i;
 
@@ -1104,6 +1275,10 @@ var app = (function () {
     	return (grade.val / grade.outOf * 100).toFixed(2);
     }
 
+    function clone(e) {
+    	return Object.assign({}, e);
+    }
+
     function instance($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('App', slots, []);
@@ -1116,16 +1291,18 @@ var app = (function () {
     	};
 
     	let modifications = {};
-    	let newGrade = 100;
+    	let moddedData = clone(data);
 
     	chrome.storage.local.get(["data"], res => {
     		$$invalidate(0, data = res.data);
+    		$$invalidate(2, moddedData = clone(data));
 
     		for (let i of data.categories) {
     			$$invalidate(1, modifications[i.name] = [], modifications);
     		}
 
-    		console.log(data.categories);
+    		normalizeWeights();
+    		console.log(data);
     	});
 
     	let theme = document.getElementsByTagName("html")[0].getAttribute("data-theme");
@@ -1153,22 +1330,54 @@ var app = (function () {
     		"score": { "val": null, "outOf": null }
     	};
 
-    	let defaultMod = Object.assign({}, currentMod);
+    	let defaultMod = clone(currentMod);
 
     	function handleSubmit() {
-    		modifications[currentMod.category].push(Object.assign({}, currentMod));
+    		modifications[currentMod.category].push(clone(currentMod));
     		$$invalidate(1, modifications);
-    		$$invalidate(2, currentMod = Object.assign({}, defaultMod));
+    		$$invalidate(3, currentMod = clone(defaultMod));
     		calculateGrades();
     	}
 
     	function calculateGrades() {
-    		for (let category of data.categories) {
-    			if (modifications[category] != null) {
-    				for (let mod of modifications[category]) {
+    		for (let category of moddedData.categories) {
+    			if (modifications[category.name] != null) {
+    				for (let mod of modifications[category.name]) {
     					console.log(mod);
+    					let index = 0;
+
+    					for (let c of data.categories) {
+    						if (c.name == mod.name) {
+    							index = data.categories.indexOf(c);
+    						}
+    					}
+
+    					if (mod.type == "NEW") {
+    						$$invalidate(2, moddedData.categories[index].score.val += mod.score.val, moddedData);
+    						$$invalidate(2, moddedData.categories[index].score.outOf += mod.score.outOf, moddedData);
+    					} else {
+    						$$invalidate(2, moddedData.categories[index].score.val -= mod.score.outof + mod.score.val, moddedData);
+    					}
     				}
     			}
+    		}
+
+    		$$invalidate(2, moddedData.score = 0, moddedData);
+
+    		for (let i of moddedData.categories) {
+    			$$invalidate(2, moddedData.score += percent(i.score) * i.normalizedWeight, moddedData);
+    		}
+    	}
+
+    	function normalizeWeights() {
+    		let sum = 0;
+
+    		for (let category of data.categories) {
+    			sum += category.weight;
+    		}
+
+    		for (let i = 0; i < data.categories.length; i++) {
+    			$$invalidate(2, moddedData.categories[i]["normalizedWeight"] = moddedData.categories[i].weight / sum, moddedData);
     		}
     	}
 
@@ -1180,55 +1389,57 @@ var app = (function () {
 
     	function input0_input_handler() {
     		currentMod.name = this.value;
-    		$$invalidate(2, currentMod);
+    		$$invalidate(3, currentMod);
     		$$invalidate(0, data);
     	}
 
     	function input1_input_handler() {
     		currentMod.score.val = to_number(this.value);
-    		$$invalidate(2, currentMod);
+    		$$invalidate(3, currentMod);
     		$$invalidate(0, data);
     	}
 
     	function input2_input_handler() {
     		currentMod.score.outOf = to_number(this.value);
-    		$$invalidate(2, currentMod);
+    		$$invalidate(3, currentMod);
     		$$invalidate(0, data);
     	}
 
     	function select_change_handler() {
     		currentMod.category = select_value(this);
-    		$$invalidate(2, currentMod);
+    		$$invalidate(3, currentMod);
     		$$invalidate(0, data);
     	}
 
     	const change_handler = e => {
-    		$$invalidate(2, currentMod.type = e.target.value, currentMod);
+    		$$invalidate(3, currentMod.type = e.target.value, currentMod);
     	};
 
     	const change_handler_1 = e => {
-    		$$invalidate(2, currentMod.type = e.target.value, currentMod);
+    		$$invalidate(3, currentMod.type = e.target.value, currentMod);
     	};
 
     	$$self.$capture_state = () => ({
     		data,
     		modifications,
-    		newGrade,
+    		moddedData,
     		percent,
+    		clone,
     		theme,
     		toggleTheme,
     		currentMod,
     		defaultMod,
     		handleSubmit,
-    		calculateGrades
+    		calculateGrades,
+    		normalizeWeights
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('data' in $$props) $$invalidate(0, data = $$props.data);
     		if ('modifications' in $$props) $$invalidate(1, modifications = $$props.modifications);
-    		if ('newGrade' in $$props) $$invalidate(3, newGrade = $$props.newGrade);
+    		if ('moddedData' in $$props) $$invalidate(2, moddedData = $$props.moddedData);
     		if ('theme' in $$props) $$invalidate(6, theme = $$props.theme);
-    		if ('currentMod' in $$props) $$invalidate(2, currentMod = $$props.currentMod);
+    		if ('currentMod' in $$props) $$invalidate(3, currentMod = $$props.currentMod);
     		if ('defaultMod' in $$props) defaultMod = $$props.defaultMod;
     	};
 
@@ -1251,8 +1462,8 @@ var app = (function () {
     	return [
     		data,
     		modifications,
+    		moddedData,
     		currentMod,
-    		newGrade,
     		toggleTheme,
     		handleSubmit,
     		theme,
