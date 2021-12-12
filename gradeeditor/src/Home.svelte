@@ -14,8 +14,6 @@
 	}
 
 	function openEditor(index){
-		let g = classes[index]
-		console.log(g)
         dispatch('message', {m: "openEditor", data: classes[index]})
 	}
 </script>

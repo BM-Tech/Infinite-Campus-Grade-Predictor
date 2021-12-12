@@ -17,3 +17,13 @@ article{
 small{
     font-size: small;
 }
+
+summary{
+    font-size: medium;
+    font-weight: bold;
+    color:--color !important;
+}
+
+details[open] summary{
+    color:--color !important;
+}
