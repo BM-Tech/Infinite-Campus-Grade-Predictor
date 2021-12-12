@@ -1,5 +1,6 @@
 <script>
 	import Home from './Home.svelte'
+	import Editor from './Editor.svelte'
 
 	chrome.tabs.create({url: "https://fremontunifiedca.infinitecampus.org/campus/resources/portal/grades"})
 
@@ -7,18 +8,29 @@
 	chrome.runtime.onMessage.addListener(
 		(req, who, res) => {
 			if(req.m == "getGradeDetails"){
-				console.log(req)
 				classes.push(req.data)
 				classes = classes
+				//currentCourse = classes[0]
 			}
 		}
 	)
+
+	let currentPage = "Home"
+	let currentCourse
+	function openEditor(event){
+		currentCourse = event.detail.data
+		currentPage = "Editor"
+	}
 </script>
 
 <div class="container">
 	<br>
 	<article>
-		<Home classes={classes}></Home>
+		{#if currentPage == "Home"}
+			<Home classes={classes} on:message={openEditor}></Home>
+		{:else}
+			<Editor course={currentCourse} on:message={() => {currentPage="Home"}}></Editor>
+		{/if}
 	</article>
 
 	<nav>
