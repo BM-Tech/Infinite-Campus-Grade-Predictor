@@ -4,11 +4,13 @@
     const dispatch = createEventDispatcher()
 
 	function getGradeFromClass(details){
+        let text = ""
 		for(let term of details){
-			if(term.task.score != undefined){
-				return term.task.score + " (" + term.task.percent + "%)"
+			if(term.task.progressScore != undefined){
+				text = term.task.progressScore + " (" + term.task.progressPercent + "%)"
 			}
 		}
+        return text
 	}
 
 	function openEditor(index){

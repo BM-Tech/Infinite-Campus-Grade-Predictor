@@ -2,6 +2,7 @@
     export let course
     import { createEventDispatcher } from 'svelte'
     const dispatch = createEventDispatcher()
+    console.log(course)
 </script>
 
 <nav>
