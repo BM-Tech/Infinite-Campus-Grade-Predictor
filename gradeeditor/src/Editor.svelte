@@ -49,19 +49,23 @@
 </div>
 
 <hr>
-<details open>
-    <summary>Category 1</summary>
-    <ul>
-        <li>
-            <nav>
-                <ul><li>Assignment Name</li></ul>
-                <ul><li>
-                    <div class="grid">
-                        <input type="number" placeholder="Score">
-                        <input type="number" placeholder="Out of">
-                    </div>
-                </li></ul>
-            </nav>
-        </li>
-    </ul>
-</details>
+{#each Object.entries(categories) as [categoryName, assignments]}
+    <details>
+        <summary>{categoryName}</summary>
+        <ul class="longlist">
+            {#each assignments as assignment}
+                <li>
+                    <nav>
+                        <ul><li>{assignment.name}</li></ul>
+                        <ul><li>
+                            <div class="grid">
+                                <input type="number" placeholder="Score" value={assignment.grade.score}>
+                                <input type="number" placeholder="Out of" value={assignment.grade.outof}>
+                            </div>
+                        </li></ul>
+                    </nav>
+                </li>
+            {/each}
+        </ul>
+    </details>
+{/each}

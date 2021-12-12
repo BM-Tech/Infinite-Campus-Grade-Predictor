@@ -27,3 +27,11 @@ summary{
 details[open] summary{
     color:--color !important;
 }
+
+.longlist li{
+    list-style-type: none;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
