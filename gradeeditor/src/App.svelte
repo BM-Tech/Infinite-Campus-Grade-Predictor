@@ -1,6 +1,7 @@
 <script>
 	import Home from './Home.svelte'
 	import Editor from './Editor.svelte'
+	import { slide } from 'svelte/transition'
 
 	chrome.tabs.create({url: "https://fremontunifiedca.infinitecampus.org/campus/resources/portal/grades"})
 
@@ -25,12 +26,13 @@
 
 <div class="container">
 	<br>
+
 	<article>
-		{#if currentPage == "Home"}
-			<Home classes={classes} on:message={openEditor}></Home>
-		{:else}
-			<Editor course={currentCourse} on:message={() => {currentPage="Home"}}></Editor>
-		{/if}
+	{#if currentPage == "Home"}
+		<div transition:slide><Home classes={classes} on:message={openEditor}></Home></div>
+	{:else}
+		<div transition:slide><Editor course={currentCourse} on:message={() => {currentPage="Home"}}></Editor></div>
+	{/if}
 	</article>
 
 	<nav>

@@ -4,6 +4,7 @@ var app = (function () {
     'use strict';
 
     function noop() { }
+    const identity = x => x;
     function add_location(element, file, line, column, char) {
         element.__svelte_meta = {
             loc: { file, line, column, char }
@@ -27,8 +28,60 @@ var app = (function () {
     function is_empty(obj) {
         return Object.keys(obj).length === 0;
     }
+
+    const is_client = typeof window !== 'undefined';
+    let now = is_client
+        ? () => window.performance.now()
+        : () => Date.now();
+    let raf = is_client ? cb => requestAnimationFrame(cb) : noop;
+
+    const tasks = new Set();
+    function run_tasks(now) {
+        tasks.forEach(task => {
+            if (!task.c(now)) {
+                tasks.delete(task);
+                task.f();
+            }
+        });
+        if (tasks.size !== 0)
+            raf(run_tasks);
+    }
+    /**
+     * Creates a new task that runs on each raf frame
+     * until it returns a falsy value or is aborted
+     */
+    function loop(callback) {
+        let task;
+        if (tasks.size === 0)
+            raf(run_tasks);
+        return {
+            promise: new Promise(fulfill => {
+                tasks.add(task = { c: callback, f: fulfill });
+            }),
+            abort() {
+                tasks.delete(task);
+            }
+        };
+    }
     function append(target, node) {
         target.appendChild(node);
+    }
+    function get_root_for_style(node) {
+        if (!node)
+            return document;
+        const root = node.getRootNode ? node.getRootNode() : node.ownerDocument;
+        if (root && root.host) {
+            return root;
+        }
+        return node.ownerDocument;
+    }
+    function append_empty_stylesheet(node) {
+        const style_element = element('style');
+        append_stylesheet(get_root_for_style(node), style_element);
+        return style_element;
+    }
+    function append_stylesheet(node, style) {
+        append(node.head || node, style);
     }
     function insert(target, node, anchor) {
         target.insertBefore(node, anchor || null);
@@ -64,13 +117,83 @@ var app = (function () {
         else if (node.getAttribute(attribute) !== value)
             node.setAttribute(attribute, value);
     }
+    function to_number(value) {
+        return value === '' ? null : +value;
+    }
     function children(element) {
         return Array.from(element.childNodes);
+    }
+    function set_input_value(input, value) {
+        input.value = value == null ? '' : value;
+    }
+    function set_style(node, key, value, important) {
+        node.style.setProperty(key, value, important ? 'important' : '');
     }
     function custom_event(type, detail, bubbles = false) {
         const e = document.createEvent('CustomEvent');
         e.initCustomEvent(type, bubbles, false, detail);
         return e;
+    }
+
+    const active_docs = new Set();
+    let active = 0;
+    // https://github.com/darkskyapp/string-hash/blob/master/index.js
+    function hash(str) {
+        let hash = 5381;
+        let i = str.length;
+        while (i--)
+            hash = ((hash << 5) - hash) ^ str.charCodeAt(i);
+        return hash >>> 0;
+    }
+    function create_rule(node, a, b, duration, delay, ease, fn, uid = 0) {
+        const step = 16.666 / duration;
+        let keyframes = '{\n';
+        for (let p = 0; p <= 1; p += step) {
+            const t = a + (b - a) * ease(p);
+            keyframes += p * 100 + `%{${fn(t, 1 - t)}}\n`;
+        }
+        const rule = keyframes + `100% {${fn(b, 1 - b)}}\n}`;
+        const name = `__svelte_${hash(rule)}_${uid}`;
+        const doc = get_root_for_style(node);
+        active_docs.add(doc);
+        const stylesheet = doc.__svelte_stylesheet || (doc.__svelte_stylesheet = append_empty_stylesheet(node).sheet);
+        const current_rules = doc.__svelte_rules || (doc.__svelte_rules = {});
+        if (!current_rules[name]) {
+            current_rules[name] = true;
+            stylesheet.insertRule(`@keyframes ${name} ${rule}`, stylesheet.cssRules.length);
+        }
+        const animation = node.style.animation || '';
+        node.style.animation = `${animation ? `${animation}, ` : ''}${name} ${duration}ms linear ${delay}ms 1 both`;
+        active += 1;
+        return name;
+    }
+    function delete_rule(node, name) {
+        const previous = (node.style.animation || '').split(', ');
+        const next = previous.filter(name
+            ? anim => anim.indexOf(name) < 0 // remove specific animation
+            : anim => anim.indexOf('__svelte') === -1 // remove all Svelte animations
+        );
+        const deleted = previous.length - next.length;
+        if (deleted) {
+            node.style.animation = next.join(', ');
+            active -= deleted;
+            if (!active)
+                clear_rules();
+        }
+    }
+    function clear_rules() {
+        raf(() => {
+            if (active)
+                return;
+            active_docs.forEach(doc => {
+                const stylesheet = doc.__svelte_stylesheet;
+                let i = stylesheet.cssRules.length;
+                while (i--)
+                    stylesheet.deleteRule(i);
+                doc.__svelte_rules = {};
+            });
+            active_docs.clear();
+        });
     }
 
     let current_component;
@@ -160,6 +283,20 @@ var app = (function () {
             $$.after_update.forEach(add_render_callback);
         }
     }
+
+    let promise;
+    function wait() {
+        if (!promise) {
+            promise = Promise.resolve();
+            promise.then(() => {
+                promise = null;
+            });
+        }
+        return promise;
+    }
+    function dispatch(node, direction, kind) {
+        node.dispatchEvent(custom_event(`${direction ? 'intro' : 'outro'}${kind}`));
+    }
     const outroing = new Set();
     let outros;
     function group_outros() {
@@ -196,6 +333,112 @@ var app = (function () {
             });
             block.o(local);
         }
+    }
+    const null_transition = { duration: 0 };
+    function create_bidirectional_transition(node, fn, params, intro) {
+        let config = fn(node, params);
+        let t = intro ? 0 : 1;
+        let running_program = null;
+        let pending_program = null;
+        let animation_name = null;
+        function clear_animation() {
+            if (animation_name)
+                delete_rule(node, animation_name);
+        }
+        function init(program, duration) {
+            const d = (program.b - t);
+            duration *= Math.abs(d);
+            return {
+                a: t,
+                b: program.b,
+                d,
+                duration,
+                start: program.start,
+                end: program.start + duration,
+                group: program.group
+            };
+        }
+        function go(b) {
+            const { delay = 0, duration = 300, easing = identity, tick = noop, css } = config || null_transition;
+            const program = {
+                start: now() + delay,
+                b
+            };
+            if (!b) {
+                // @ts-ignore todo: improve typings
+                program.group = outros;
+                outros.r += 1;
+            }
+            if (running_program || pending_program) {
+                pending_program = program;
+            }
+            else {
+                // if this is an intro, and there's a delay, we need to do
+                // an initial tick and/or apply CSS animation immediately
+                if (css) {
+                    clear_animation();
+                    animation_name = create_rule(node, t, b, duration, delay, easing, css);
+                }
+                if (b)
+                    tick(0, 1);
+                running_program = init(program, duration);
+                add_render_callback(() => dispatch(node, b, 'start'));
+                loop(now => {
+                    if (pending_program && now > pending_program.start) {
+                        running_program = init(pending_program, duration);
+                        pending_program = null;
+                        dispatch(node, running_program.b, 'start');
+                        if (css) {
+                            clear_animation();
+                            animation_name = create_rule(node, t, running_program.b, running_program.duration, 0, easing, config.css);
+                        }
+                    }
+                    if (running_program) {
+                        if (now >= running_program.end) {
+                            tick(t = running_program.b, 1 - t);
+                            dispatch(node, running_program.b, 'end');
+                            if (!pending_program) {
+                                // we're done
+                                if (running_program.b) {
+                                    // intro — we can tidy up immediately
+                                    clear_animation();
+                                }
+                                else {
+                                    // outro — needs to be coordinated
+                                    if (!--running_program.group.r)
+                                        run_all(running_program.group.c);
+                                }
+                            }
+                            running_program = null;
+                        }
+                        else if (now >= running_program.start) {
+                            const p = now - running_program.start;
+                            t = running_program.a + running_program.d * easing(p / running_program.duration);
+                            tick(t, 1 - t);
+                        }
+                    }
+                    return !!(running_program || pending_program);
+                });
+            }
+        }
+        return {
+            run(b) {
+                if (is_function(config)) {
+                    wait().then(() => {
+                        // @ts-ignore
+                        config = config();
+                        go(b);
+                    });
+                }
+                else {
+                    go(b);
+                }
+            },
+            end() {
+                clear_animation();
+                running_program = pending_program = null;
+            }
+        };
     }
 
     const globals = (typeof window !== 'undefined'
@@ -367,10 +610,6 @@ var app = (function () {
         else
             dispatch_dev('SvelteDOMSetAttribute', { node, attribute, value });
     }
-    function prop_dev(node, property, value) {
-        node[property] = value;
-        dispatch_dev('SvelteDOMSetProperty', { node, property, value });
-    }
     function set_data_dev(text, data) {
         data = '' + data;
         if (text.wholeText === data)
@@ -426,10 +665,7 @@ var app = (function () {
 
     // (21:0) {#each classes as cl, i}
     function create_each_block$1(ctx) {
-    	let nav;
-    	let ul0;
-    	let li0;
-    	let p;
+    	let button;
     	let strong;
     	let t0_value = /*cl*/ ctx[4].details[0].task.courseName + "";
     	let t0;
@@ -437,10 +673,6 @@ var app = (function () {
     	let t2_value = getGradeFromClass(/*cl*/ ctx[4].details) + "";
     	let t2;
     	let t3;
-    	let ul1;
-    	let li1;
-    	let button;
-    	let t5;
     	let mounted;
     	let dispose;
 
@@ -450,43 +682,23 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
-    			nav = element("nav");
-    			ul0 = element("ul");
-    			li0 = element("li");
-    			p = element("p");
+    			button = element("button");
     			strong = element("strong");
     			t0 = text(t0_value);
     			t1 = space();
     			t2 = text(t2_value);
     			t3 = space();
-    			ul1 = element("ul");
-    			li1 = element("li");
-    			button = element("button");
-    			button.textContent = "Edit Grades";
-    			t5 = space();
-    			add_location(strong, file$2, 23, 15, 574);
-    			add_location(p, file$2, 23, 12, 571);
-    			add_location(li0, file$2, 22, 12, 553);
-    			add_location(ul0, file$2, 22, 8, 549);
-    			add_location(button, file$2, 27, 12, 723);
-    			add_location(li1, file$2, 26, 12, 705);
-    			add_location(ul1, file$2, 26, 8, 701);
-    			add_location(nav, file$2, 21, 4, 534);
+    			add_location(strong, file$2, 32, 8, 910);
+    			set_style(button, "padding", "5", 1);
+    			add_location(button, file$2, 31, 4, 831);
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, nav, anchor);
-    			append_dev(nav, ul0);
-    			append_dev(ul0, li0);
-    			append_dev(li0, p);
-    			append_dev(p, strong);
+    			insert_dev(target, button, anchor);
+    			append_dev(button, strong);
     			append_dev(strong, t0);
-    			append_dev(p, t1);
-    			append_dev(p, t2);
-    			append_dev(nav, t3);
-    			append_dev(nav, ul1);
-    			append_dev(ul1, li1);
-    			append_dev(li1, button);
-    			append_dev(nav, t5);
+    			append_dev(button, t1);
+    			append_dev(button, t2);
+    			append_dev(button, t3);
 
     			if (!mounted) {
     				dispose = listen_dev(button, "click", click_handler, false, false, false);
@@ -499,7 +711,7 @@ var app = (function () {
     			if (dirty & /*classes*/ 1 && t2_value !== (t2_value = getGradeFromClass(/*cl*/ ctx[4].details) + "")) set_data_dev(t2, t2_value);
     		},
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(nav);
+    			if (detaching) detach_dev(button);
     			mounted = false;
     			dispose();
     		}
@@ -670,6 +882,37 @@ var app = (function () {
     	}
     }
 
+    function cubicOut(t) {
+        const f = t - 1.0;
+        return f * f * f + 1.0;
+    }
+
+    function slide(node, { delay = 0, duration = 400, easing = cubicOut } = {}) {
+        const style = getComputedStyle(node);
+        const opacity = +style.opacity;
+        const height = parseFloat(style.height);
+        const padding_top = parseFloat(style.paddingTop);
+        const padding_bottom = parseFloat(style.paddingBottom);
+        const margin_top = parseFloat(style.marginTop);
+        const margin_bottom = parseFloat(style.marginBottom);
+        const border_top_width = parseFloat(style.borderTopWidth);
+        const border_bottom_width = parseFloat(style.borderBottomWidth);
+        return {
+            delay,
+            duration,
+            easing,
+            css: t => 'overflow: hidden;' +
+                `opacity: ${Math.min(t * 20, 1) * opacity};` +
+                `height: ${t * height}px;` +
+                `padding-top: ${t * padding_top}px;` +
+                `padding-bottom: ${t * padding_bottom}px;` +
+                `margin-top: ${t * margin_top}px;` +
+                `margin-bottom: ${t * margin_bottom}px;` +
+                `border-top-width: ${t * border_top_width}px;` +
+                `border-bottom-width: ${t * border_bottom_width}px;`
+        };
+    }
+
     /* src\Editor.svelte generated by Svelte v3.44.2 */
 
     const { Object: Object_1, console: console_1 } = globals;
@@ -677,35 +920,144 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[6] = list[i][0];
-    	child_ctx[7] = list[i][1];
+    	child_ctx[15] = list[i][0];
+    	child_ctx[16] = list[i][1];
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[10] = list[i];
+    	child_ctx[19] = list[i];
+    	child_ctx[20] = list;
+    	child_ctx[21] = i;
     	return child_ctx;
     }
 
-    // (56:12) {#each assignments as assignment}
+    // (99:0) {#if showAreas.newAssig}
+    function create_if_block_2(ctx) {
+    	let article;
+    	let p;
+
+    	const block = {
+    		c: function create() {
+    			article = element("article");
+    			p = element("p");
+    			p.textContent = "New Assignment";
+    			add_location(p, file$1, 100, 8, 3076);
+    			add_location(article, file$1, 99, 4, 3057);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, article, anchor);
+    			append_dev(article, p);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(article);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_2.name,
+    		type: "if",
+    		source: "(99:0) {#if showAreas.newAssig}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (105:0) {#if showAreas.addFinal}
+    function create_if_block_1(ctx) {
+    	let article;
+    	let p;
+
+    	const block = {
+    		c: function create() {
+    			article = element("article");
+    			p = element("p");
+    			p.textContent = "Add Final";
+    			add_location(p, file$1, 106, 8, 3173);
+    			add_location(article, file$1, 105, 4, 3154);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, article, anchor);
+    			append_dev(article, p);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(article);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1.name,
+    		type: "if",
+    		source: "(105:0) {#if showAreas.addFinal}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (111:0) {#if showAreas.showGraph}
+    function create_if_block$1(ctx) {
+    	let article;
+    	let p;
+
+    	const block = {
+    		c: function create() {
+    			article = element("article");
+    			p = element("p");
+    			p.textContent = "Show Graph";
+    			add_location(p, file$1, 112, 8, 3266);
+    			add_location(article, file$1, 111, 4, 3247);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, article, anchor);
+    			append_dev(article, p);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(article);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$1.name,
+    		type: "if",
+    		source: "(111:0) {#if showAreas.showGraph}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (122:12) {#each assignments as assignment}
     function create_each_block_1(ctx) {
     	let li2;
     	let nav;
     	let ul0;
     	let li0;
-    	let t0_value = /*assignment*/ ctx[10].name + "";
+    	let t0_value = /*assignment*/ ctx[19].name + "";
     	let t0;
     	let t1;
     	let ul1;
     	let li1;
     	let div;
     	let input0;
-    	let input0_value_value;
     	let t2;
     	let input1;
-    	let input1_value_value;
     	let t3;
+    	let mounted;
+    	let dispose;
+
+    	function input0_input_handler() {
+    		/*input0_input_handler*/ ctx[13].call(input0, /*each_value_1*/ ctx[20], /*assignment_index*/ ctx[21]);
+    	}
+
+    	function input1_input_handler() {
+    		/*input1_input_handler*/ ctx[14].call(input1, /*each_value_1*/ ctx[20], /*assignment_index*/ ctx[21]);
+    	}
 
     	const block = {
     		c: function create() {
@@ -722,22 +1074,20 @@ var app = (function () {
     			t2 = space();
     			input1 = element("input");
     			t3 = space();
-    			add_location(li0, file$1, 58, 28, 1686);
-    			add_location(ul0, file$1, 58, 24, 1682);
+    			add_location(li0, file$1, 124, 28, 3596);
+    			add_location(ul0, file$1, 124, 24, 3592);
     			attr_dev(input0, "type", "number");
     			attr_dev(input0, "placeholder", "Score");
-    			input0.value = input0_value_value = /*assignment*/ ctx[10].grade.score;
-    			add_location(input0, file$1, 61, 32, 1833);
+    			add_location(input0, file$1, 127, 32, 3743);
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "placeholder", "Out of");
-    			input1.value = input1_value_value = /*assignment*/ ctx[10].grade.outof;
-    			add_location(input1, file$1, 62, 32, 1939);
+    			add_location(input1, file$1, 128, 32, 3854);
     			attr_dev(div, "class", "grid");
-    			add_location(div, file$1, 60, 28, 1781);
-    			add_location(li1, file$1, 59, 28, 1747);
-    			add_location(ul1, file$1, 59, 24, 1743);
-    			add_location(nav, file$1, 57, 20, 1651);
-    			add_location(li2, file$1, 56, 16, 1625);
+    			add_location(div, file$1, 126, 28, 3691);
+    			add_location(li1, file$1, 125, 28, 3657);
+    			add_location(ul1, file$1, 125, 24, 3653);
+    			add_location(nav, file$1, 123, 20, 3561);
+    			add_location(li2, file$1, 122, 16, 3535);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li2, anchor);
@@ -750,23 +1100,37 @@ var app = (function () {
     			append_dev(ul1, li1);
     			append_dev(li1, div);
     			append_dev(div, input0);
+    			set_input_value(input0, /*assignment*/ ctx[19].grade.score);
     			append_dev(div, t2);
     			append_dev(div, input1);
+    			set_input_value(input1, /*assignment*/ ctx[19].grade.outof);
     			append_dev(li2, t3);
-    		},
-    		p: function update(ctx, dirty) {
-    			if (dirty & /*categories*/ 2 && t0_value !== (t0_value = /*assignment*/ ctx[10].name + "")) set_data_dev(t0, t0_value);
 
-    			if (dirty & /*categories*/ 2 && input0_value_value !== (input0_value_value = /*assignment*/ ctx[10].grade.score)) {
-    				prop_dev(input0, "value", input0_value_value);
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(input0, "input", input0_input_handler),
+    					listen_dev(input1, "input", input1_input_handler)
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(new_ctx, dirty) {
+    			ctx = new_ctx;
+    			if (dirty & /*Object, categories*/ 2 && t0_value !== (t0_value = /*assignment*/ ctx[19].name + "")) set_data_dev(t0, t0_value);
+
+    			if (dirty & /*Object, categories*/ 2 && to_number(input0.value) !== /*assignment*/ ctx[19].grade.score) {
+    				set_input_value(input0, /*assignment*/ ctx[19].grade.score);
     			}
 
-    			if (dirty & /*categories*/ 2 && input1_value_value !== (input1_value_value = /*assignment*/ ctx[10].grade.outof)) {
-    				prop_dev(input1, "value", input1_value_value);
+    			if (dirty & /*Object, categories*/ 2 && to_number(input1.value) !== /*assignment*/ ctx[19].grade.outof) {
+    				set_input_value(input1, /*assignment*/ ctx[19].grade.outof);
     			}
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(li2);
+    			mounted = false;
+    			run_all(dispose);
     		}
     	};
 
@@ -774,23 +1138,23 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(56:12) {#each assignments as assignment}",
+    		source: "(122:12) {#each assignments as assignment}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (52:0) {#each Object.entries(categories) as [categoryName, assignments]}
+    // (118:0) {#each Object.entries(categories) as [categoryName, assignments]}
     function create_each_block(ctx) {
     	let details;
     	let summary;
-    	let t0_value = /*categoryName*/ ctx[6] + "";
+    	let t0_value = /*categoryName*/ ctx[15] + "";
     	let t0;
     	let t1;
     	let ul;
     	let t2;
-    	let each_value_1 = /*assignments*/ ctx[7];
+    	let each_value_1 = /*assignments*/ ctx[16];
     	validate_each_argument(each_value_1);
     	let each_blocks = [];
 
@@ -811,10 +1175,10 @@ var app = (function () {
     			}
 
     			t2 = space();
-    			add_location(summary, file$1, 53, 8, 1496);
+    			add_location(summary, file$1, 119, 8, 3406);
     			attr_dev(ul, "class", "longlist");
-    			add_location(ul, file$1, 54, 8, 1539);
-    			add_location(details, file$1, 52, 4, 1477);
+    			add_location(ul, file$1, 120, 8, 3449);
+    			add_location(details, file$1, 118, 4, 3387);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, details, anchor);
@@ -830,10 +1194,10 @@ var app = (function () {
     			append_dev(details, t2);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*categories*/ 2 && t0_value !== (t0_value = /*categoryName*/ ctx[6] + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*Object, categories*/ 2 && t0_value !== (t0_value = /*categoryName*/ ctx[15] + "")) set_data_dev(t0, t0_value);
 
     			if (dirty & /*Object, categories*/ 2) {
-    				each_value_1 = /*assignments*/ ctx[7];
+    				each_value_1 = /*assignments*/ ctx[16];
     				validate_each_argument(each_value_1);
     				let i;
 
@@ -866,7 +1230,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(52:0) {#each Object.entries(categories) as [categoryName, assignments]}",
+    		source: "(118:0) {#each Object.entries(categories) as [categoryName, assignments]}",
     		ctx
     	});
 
@@ -883,28 +1247,40 @@ var app = (function () {
     	let t1;
     	let ul1;
     	let li1;
-    	let button0;
+    	let a;
     	let t3;
-    	let div;
+    	let div0;
     	let p0;
     	let strong0;
     	let t5;
-    	let t6_value = /*getCurrentGrade*/ ctx[3]() + "";
+    	let t6_value = /*getCurrentGrade*/ ctx[5]() + "";
     	let t6;
     	let t7;
     	let p1;
     	let strong1;
     	let t9;
+    	let t10_value = (/*newGrade*/ ctx[2] * 100).toFixed(2) + "";
     	let t10;
     	let t11;
     	let t12;
-    	let button1;
+    	let div1;
+    	let button0;
     	let t14;
+    	let button1;
+    	let t16;
+    	let button2;
+    	let t18;
+    	let t19;
+    	let t20;
+    	let t21;
     	let hr;
-    	let t15;
+    	let t22;
     	let each_1_anchor;
     	let mounted;
     	let dispose;
+    	let if_block0 = /*showAreas*/ ctx[3].newAssig && create_if_block_2(ctx);
+    	let if_block1 = /*showAreas*/ ctx[3].addFinal && create_if_block_1(ctx);
+    	let if_block2 = /*showAreas*/ ctx[3].showGraph && create_if_block$1(ctx);
     	let each_value = Object.entries(/*categories*/ ctx[1]);
     	validate_each_argument(each_value);
     	let each_blocks = [];
@@ -923,10 +1299,10 @@ var app = (function () {
     			t1 = space();
     			ul1 = element("ul");
     			li1 = element("li");
-    			button0 = element("button");
-    			button0.textContent = "Back";
+    			a = element("a");
+    			a.textContent = "Back";
     			t3 = space();
-    			div = element("div");
+    			div0 = element("div");
     			p0 = element("p");
     			strong0 = element("strong");
     			strong0.textContent = "Origional:";
@@ -937,35 +1313,53 @@ var app = (function () {
     			strong1 = element("strong");
     			strong1.textContent = "New:";
     			t9 = space();
-    			t10 = text(/*newGrade*/ ctx[4]);
+    			t10 = text(t10_value);
     			t11 = text("%");
     			t12 = space();
+    			div1 = element("div");
+    			button0 = element("button");
+    			button0.textContent = "New Assignment";
+    			t14 = space();
     			button1 = element("button");
     			button1.textContent = "Add Final";
-    			t14 = space();
+    			t16 = space();
+    			button2 = element("button");
+    			button2.textContent = "Show graph";
+    			t18 = space();
+    			if (if_block0) if_block0.c();
+    			t19 = space();
+    			if (if_block1) if_block1.c();
+    			t20 = space();
+    			if (if_block2) if_block2.c();
+    			t21 = space();
     			hr = element("hr");
-    			t15 = space();
+    			t22 = space();
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
     			each_1_anchor = empty();
-    			add_location(h3, file$1, 37, 12, 1043);
-    			add_location(li0, file$1, 37, 8, 1039);
-    			add_location(ul0, file$1, 36, 4, 1025);
-    			add_location(button0, file$1, 40, 12, 1127);
-    			add_location(li1, file$1, 40, 8, 1123);
-    			add_location(ul1, file$1, 39, 4, 1109);
-    			add_location(nav, file$1, 35, 0, 1014);
-    			add_location(strong0, file$1, 45, 7, 1257);
-    			add_location(p0, file$1, 45, 4, 1254);
-    			add_location(strong1, file$1, 46, 7, 1318);
-    			add_location(p1, file$1, 46, 4, 1315);
-    			add_location(button1, file$1, 47, 4, 1362);
-    			attr_dev(div, "class", "grid");
-    			add_location(div, file$1, 44, 0, 1230);
-    			add_location(hr, file$1, 50, 0, 1400);
+    			add_location(h3, file$1, 81, 12, 2428);
+    			add_location(li0, file$1, 81, 8, 2424);
+    			add_location(ul0, file$1, 80, 4, 2410);
+    			attr_dev(a, "href", "#/");
+    			add_location(a, file$1, 84, 12, 2512);
+    			add_location(li1, file$1, 84, 8, 2508);
+    			add_location(ul1, file$1, 83, 4, 2494);
+    			add_location(nav, file$1, 79, 0, 2399);
+    			add_location(strong0, file$1, 89, 7, 2642);
+    			add_location(p0, file$1, 89, 4, 2639);
+    			add_location(strong1, file$1, 90, 7, 2703);
+    			add_location(p1, file$1, 90, 4, 2700);
+    			attr_dev(div0, "class", "grid");
+    			add_location(div0, file$1, 88, 0, 2615);
+    			add_location(button0, file$1, 93, 4, 2792);
+    			add_location(button1, file$1, 94, 4, 2871);
+    			add_location(button2, file$1, 95, 4, 2945);
+    			attr_dev(div1, "class", "grid");
+    			add_location(div1, file$1, 92, 0, 2768);
+    			add_location(hr, file$1, 116, 0, 3310);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -979,24 +1373,35 @@ var app = (function () {
     			append_dev(nav, t1);
     			append_dev(nav, ul1);
     			append_dev(ul1, li1);
-    			append_dev(li1, button0);
+    			append_dev(li1, a);
     			insert_dev(target, t3, anchor);
-    			insert_dev(target, div, anchor);
-    			append_dev(div, p0);
+    			insert_dev(target, div0, anchor);
+    			append_dev(div0, p0);
     			append_dev(p0, strong0);
     			append_dev(p0, t5);
     			append_dev(p0, t6);
-    			append_dev(div, t7);
-    			append_dev(div, p1);
+    			append_dev(div0, t7);
+    			append_dev(div0, p1);
     			append_dev(p1, strong1);
     			append_dev(p1, t9);
     			append_dev(p1, t10);
     			append_dev(p1, t11);
-    			append_dev(div, t12);
-    			append_dev(div, button1);
-    			insert_dev(target, t14, anchor);
+    			insert_dev(target, t12, anchor);
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, button0);
+    			append_dev(div1, t14);
+    			append_dev(div1, button1);
+    			append_dev(div1, t16);
+    			append_dev(div1, button2);
+    			insert_dev(target, t18, anchor);
+    			if (if_block0) if_block0.m(target, anchor);
+    			insert_dev(target, t19, anchor);
+    			if (if_block1) if_block1.m(target, anchor);
+    			insert_dev(target, t20, anchor);
+    			if (if_block2) if_block2.m(target, anchor);
+    			insert_dev(target, t21, anchor);
     			insert_dev(target, hr, anchor);
-    			insert_dev(target, t15, anchor);
+    			insert_dev(target, t22, anchor);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].m(target, anchor);
@@ -1005,12 +1410,52 @@ var app = (function () {
     			insert_dev(target, each_1_anchor, anchor);
 
     			if (!mounted) {
-    				dispose = listen_dev(button0, "click", /*click_handler*/ ctx[5], false, false, false);
+    				dispose = [
+    					listen_dev(a, "click", /*click_handler*/ ctx[9], false, false, false),
+    					listen_dev(button0, "click", /*click_handler_1*/ ctx[10], false, false, false),
+    					listen_dev(button1, "click", /*click_handler_2*/ ctx[11], false, false, false),
+    					listen_dev(button2, "click", /*click_handler_3*/ ctx[12], false, false, false)
+    				];
+
     				mounted = true;
     			}
     		},
     		p: function update(ctx, [dirty]) {
     			if (dirty & /*course*/ 1 && t0_value !== (t0_value = /*course*/ ctx[0].details[0].task.courseName + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*newGrade*/ 4 && t10_value !== (t10_value = (/*newGrade*/ ctx[2] * 100).toFixed(2) + "")) set_data_dev(t10, t10_value);
+
+    			if (/*showAreas*/ ctx[3].newAssig) {
+    				if (if_block0) ; else {
+    					if_block0 = create_if_block_2(ctx);
+    					if_block0.c();
+    					if_block0.m(t19.parentNode, t19);
+    				}
+    			} else if (if_block0) {
+    				if_block0.d(1);
+    				if_block0 = null;
+    			}
+
+    			if (/*showAreas*/ ctx[3].addFinal) {
+    				if (if_block1) ; else {
+    					if_block1 = create_if_block_1(ctx);
+    					if_block1.c();
+    					if_block1.m(t20.parentNode, t20);
+    				}
+    			} else if (if_block1) {
+    				if_block1.d(1);
+    				if_block1 = null;
+    			}
+
+    			if (/*showAreas*/ ctx[3].showGraph) {
+    				if (if_block2) ; else {
+    					if_block2 = create_if_block$1(ctx);
+    					if_block2.c();
+    					if_block2.m(t21.parentNode, t21);
+    				}
+    			} else if (if_block2) {
+    				if_block2.d(1);
+    				if_block2 = null;
+    			}
 
     			if (dirty & /*Object, categories*/ 2) {
     				each_value = Object.entries(/*categories*/ ctx[1]);
@@ -1041,14 +1486,22 @@ var app = (function () {
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(nav);
     			if (detaching) detach_dev(t3);
-    			if (detaching) detach_dev(div);
-    			if (detaching) detach_dev(t14);
+    			if (detaching) detach_dev(div0);
+    			if (detaching) detach_dev(t12);
+    			if (detaching) detach_dev(div1);
+    			if (detaching) detach_dev(t18);
+    			if (if_block0) if_block0.d(detaching);
+    			if (detaching) detach_dev(t19);
+    			if (if_block1) if_block1.d(detaching);
+    			if (detaching) detach_dev(t20);
+    			if (if_block2) if_block2.d(detaching);
+    			if (detaching) detach_dev(t21);
     			if (detaching) detach_dev(hr);
-    			if (detaching) detach_dev(t15);
+    			if (detaching) detach_dev(t22);
     			destroy_each(each_blocks, detaching);
     			if (detaching) detach_dev(each_1_anchor);
     			mounted = false;
-    			dispose();
+    			run_all(dispose);
     		}
     	};
 
@@ -1084,20 +1537,42 @@ var app = (function () {
 
     	let newGrade = 100;
     	let categories = {};
+    	let categoryWeights = {};
 
     	for (let term of course.details) {
     		for (let categroy of term.categories) {
     			categories[categroy.name] = [];
+    			categoryWeights[categroy.name] = categroy.weight;
 
     			for (let assignment of categroy.assignments) {
     				categories[categroy.name].push({
     					name: assignment.assignmentName,
     					grade: {
-    						score: assignment.scorePoints,
-    						outof: assignment.totalPoints
+    						score: parseFloat(assignment.scorePoints) * assignment.multiplier,
+    						outof: assignment.totalPoints * assignment.multiplier
     					}
     				});
     			}
+    		}
+    	}
+
+    	let categoryScores = {};
+
+    	let showAreas = {
+    		newAssig: false,
+    		addFinal: false,
+    		showGraph: false
+    	};
+
+    	function toggleArea(area) {
+    		for (let a of Object.keys(showAreas)) {
+    			$$invalidate(3, showAreas[a] = false, showAreas);
+    		}
+
+    		if (showAreas[area]) {
+    			$$invalidate(3, showAreas[area] = false, showAreas);
+    		} else {
+    			$$invalidate(3, showAreas[area] = true, showAreas);
     		}
     	}
 
@@ -1111,6 +1586,28 @@ var app = (function () {
     		dispatch('message', { m: "goHome" });
     	};
 
+    	const click_handler_1 = () => {
+    		toggleArea("newAssig");
+    	};
+
+    	const click_handler_2 = () => {
+    		toggleArea("addFinal");
+    	};
+
+    	const click_handler_3 = () => {
+    		toggleArea("showGraph");
+    	};
+
+    	function input0_input_handler(each_value_1, assignment_index) {
+    		each_value_1[assignment_index].grade.score = to_number(this.value);
+    		$$invalidate(1, categories);
+    	}
+
+    	function input1_input_handler(each_value_1, assignment_index) {
+    		each_value_1[assignment_index].grade.outof = to_number(this.value);
+    		$$invalidate(1, categories);
+    	}
+
     	$$self.$$set = $$props => {
     		if ('course' in $$props) $$invalidate(0, course = $$props.course);
     	};
@@ -1118,16 +1615,24 @@ var app = (function () {
     	$$self.$capture_state = () => ({
     		course,
     		createEventDispatcher,
+    		slide,
     		dispatch,
     		getCurrentGrade,
     		newGrade,
-    		categories
+    		categories,
+    		categoryWeights,
+    		categoryScores,
+    		showAreas,
+    		toggleArea
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('course' in $$props) $$invalidate(0, course = $$props.course);
-    		if ('newGrade' in $$props) $$invalidate(4, newGrade = $$props.newGrade);
+    		if ('newGrade' in $$props) $$invalidate(2, newGrade = $$props.newGrade);
     		if ('categories' in $$props) $$invalidate(1, categories = $$props.categories);
+    		if ('categoryWeights' in $$props) $$invalidate(7, categoryWeights = $$props.categoryWeights);
+    		if ('categoryScores' in $$props) $$invalidate(8, categoryScores = $$props.categoryScores);
+    		if ('showAreas' in $$props) $$invalidate(3, showAreas = $$props.showAreas);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -1135,12 +1640,54 @@ var app = (function () {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*categories*/ 2) {
-    			console.log(categories);
+    		if ($$self.$$.dirty & /*Object, categories, categoryScores, categoryWeights*/ 386) {
+    			{
+    				for (const [category, assignments] of Object.entries(categories)) {
+    					let sum = { score: 0, outof: 0 };
+
+    					for (let assignment of assignments) {
+    						console.log(assignment);
+
+    						if (assignment.grade.score != undefined) {
+    							sum.score += assignment.grade.score;
+    							sum.outof += assignment.grade.outof;
+    						}
+    					}
+
+    					$$invalidate(8, categoryScores[category] = sum, categoryScores);
+    					console.log(categoryScores);
+    				}
+
+    				let grade = 0;
+
+    				for (const [category, score] of Object.entries(categoryScores)) {
+    					if (score.score != undefined) {
+    						grade += score.score / score.outof * (categoryWeights[category] / 100);
+    					}
+    				}
+
+    				$$invalidate(2, newGrade = grade);
+    			}
     		}
     	};
 
-    	return [course, categories, dispatch, getCurrentGrade, newGrade, click_handler];
+    	return [
+    		course,
+    		categories,
+    		newGrade,
+    		showAreas,
+    		dispatch,
+    		getCurrentGrade,
+    		toggleArea,
+    		categoryWeights,
+    		categoryScores,
+    		click_handler,
+    		click_handler_1,
+    		click_handler_2,
+    		click_handler_3,
+    		input0_input_handler,
+    		input1_input_handler
+    	];
     }
 
     class Editor extends SvelteComponentDev {
@@ -1175,9 +1722,11 @@ var app = (function () {
     /* src\App.svelte generated by Svelte v3.44.2 */
     const file = "src\\App.svelte";
 
-    // (31:2) {:else}
+    // (33:1) {:else}
     function create_else_block(ctx) {
+    	let div;
     	let editor;
+    	let div_transition;
     	let current;
 
     	editor = new Editor({
@@ -1189,10 +1738,13 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
+    			div = element("div");
     			create_component(editor.$$.fragment);
+    			add_location(div, file, 33, 2, 791);
     		},
     		m: function mount(target, anchor) {
-    			mount_component(editor, target, anchor);
+    			insert_dev(target, div, anchor);
+    			mount_component(editor, div, null);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
@@ -1203,14 +1755,24 @@ var app = (function () {
     		i: function intro(local) {
     			if (current) return;
     			transition_in(editor.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, true);
+    				div_transition.run(1);
+    			});
+
     			current = true;
     		},
     		o: function outro(local) {
     			transition_out(editor.$$.fragment, local);
+    			if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, false);
+    			div_transition.run(0);
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			destroy_component(editor, detaching);
+    			if (detaching) detach_dev(div);
+    			destroy_component(editor);
+    			if (detaching && div_transition) div_transition.end();
     		}
     	};
 
@@ -1218,16 +1780,18 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(31:2) {:else}",
+    		source: "(33:1) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (29:2) {#if currentPage == "Home"}
+    // (31:1) {#if currentPage == "Home"}
     function create_if_block(ctx) {
+    	let div;
     	let home;
+    	let div_transition;
     	let current;
 
     	home = new Home({
@@ -1239,10 +1803,13 @@ var app = (function () {
 
     	const block = {
     		c: function create() {
+    			div = element("div");
     			create_component(home.$$.fragment);
+    			add_location(div, file, 31, 2, 694);
     		},
     		m: function mount(target, anchor) {
-    			mount_component(home, target, anchor);
+    			insert_dev(target, div, anchor);
+    			mount_component(home, div, null);
     			current = true;
     		},
     		p: function update(ctx, dirty) {
@@ -1253,14 +1820,24 @@ var app = (function () {
     		i: function intro(local) {
     			if (current) return;
     			transition_in(home.$$.fragment, local);
+
+    			add_render_callback(() => {
+    				if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, true);
+    				div_transition.run(1);
+    			});
+
     			current = true;
     		},
     		o: function outro(local) {
     			transition_out(home.$$.fragment, local);
+    			if (!div_transition) div_transition = create_bidirectional_transition(div, slide, {}, false);
+    			div_transition.run(0);
     			current = false;
     		},
     		d: function destroy(detaching) {
-    			destroy_component(home, detaching);
+    			if (detaching) detach_dev(div);
+    			destroy_component(home);
+    			if (detaching && div_transition) div_transition.end();
     		}
     	};
 
@@ -1268,7 +1845,7 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(29:2) {#if currentPage == \\\"Home\\\"}",
+    		source: "(31:1) {#if currentPage == \\\"Home\\\"}",
     		ctx
     	});
 
@@ -1341,27 +1918,27 @@ var app = (function () {
     			a2 = element("a");
     			small3 = element("small");
     			small3.textContent = "Contribute";
-    			add_location(br, file, 26, 1, 598);
-    			add_location(article, file, 27, 1, 605);
-    			add_location(small0, file, 37, 7, 850);
-    			add_location(li0, file, 37, 3, 846);
-    			add_location(ul0, file, 36, 2, 837);
-    			add_location(small1, file, 40, 20, 940);
+    			add_location(br, file, 27, 1, 642);
+    			add_location(article, file, 29, 1, 651);
+    			add_location(small0, file, 39, 7, 947);
+    			add_location(li0, file, 39, 3, 943);
+    			add_location(ul0, file, 38, 2, 934);
+    			add_location(small1, file, 42, 20, 1037);
     			attr_dev(a0, "href", "#/");
-    			add_location(a0, file, 40, 7, 927);
-    			add_location(li1, file, 40, 3, 923);
-    			add_location(small2, file, 41, 20, 991);
+    			add_location(a0, file, 42, 7, 1024);
+    			add_location(li1, file, 42, 3, 1020);
+    			add_location(small2, file, 43, 20, 1088);
     			attr_dev(a1, "href", "#/");
-    			add_location(a1, file, 41, 7, 978);
-    			add_location(li2, file, 41, 3, 974);
-    			add_location(small3, file, 42, 20, 1041);
+    			add_location(a1, file, 43, 7, 1075);
+    			add_location(li2, file, 43, 3, 1071);
+    			add_location(small3, file, 44, 20, 1138);
     			attr_dev(a2, "href", "#/");
-    			add_location(a2, file, 42, 7, 1028);
-    			add_location(li3, file, 42, 3, 1024);
-    			add_location(ul1, file, 39, 2, 914);
-    			add_location(nav, file, 35, 1, 828);
+    			add_location(a2, file, 44, 7, 1125);
+    			add_location(li3, file, 44, 3, 1121);
+    			add_location(ul1, file, 41, 2, 1011);
+    			add_location(nav, file, 37, 1, 925);
     			attr_dev(div, "class", "container");
-    			add_location(div, file, 25, 0, 572);
+    			add_location(div, file, 26, 0, 616);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1483,6 +2060,7 @@ var app = (function () {
     	$$self.$capture_state = () => ({
     		Home,
     		Editor,
+    		slide,
     		classes,
     		currentPage,
     		currentCourse,

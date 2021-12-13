@@ -19,7 +19,7 @@
 </script>
 
 {#each classes as cl, i}
-    <nav>
+    <!-- <nav>
         <ul><li>
             <p><strong>{cl.details[0].task.courseName}</strong>
             {getGradeFromClass(cl.details)}</p>
@@ -27,5 +27,9 @@
         <ul><li>
             <button on:click={() => openEditor(i)}>Edit Grades</button>
         </li></ul>
-    </nav>
+    </nav> -->
+
+    <button on:click={() => openEditor(i)} style="padding: 5 !important">
+        <strong>{cl.details[0].task.courseName}</strong> {getGradeFromClass(cl.details)}
+    </button>
 {/each}

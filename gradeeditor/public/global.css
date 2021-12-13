@@ -8,11 +8,11 @@
     }
 }
 
-article{
+/* article{
     padding-top:5px !important;
     padding-bottom: 5px !important;
     margin-bottom: 0px;
-}
+} */
 
 small{
     font-size: small;
@@ -35,3 +35,15 @@ details[open] summary{
     padding-top: 0 !important;
     padding-bottom: 0 !important;
 }
+
+
+@keyframes details-show {
+    from {
+      opacity:0;
+      transform: var(--details-translate, translateY(-0.5em));
+    }
+  }
+  
+  details[open] > *:not(summary) {
+    animation: details-show 150ms ease-in-out;
+  }
