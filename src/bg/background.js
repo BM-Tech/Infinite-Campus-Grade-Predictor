@@ -12,7 +12,7 @@ chrome.runtime.onMessage.addListener(
       //console.log(req.data)
       for(let i of req.data[0].courses){
         chrome.tabs.create({
-          url: "https://fremontunifiedca.infinitecampus.org/campus/resources/portal/grades/detail/"+ i.sectionID 
+          url: "https://fremontunifiedca.infinitecampus.org/campus/resources/portal/grades/detail/"+ i.sectionID + "?q=" + Date.now()
         })
 
         // if(i == req.data[0].courses.at(-1)){

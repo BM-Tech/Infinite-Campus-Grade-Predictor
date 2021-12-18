@@ -3,7 +3,7 @@
 	import Editor from './Editor.svelte'
 	import { slide } from 'svelte/transition'
 
-	chrome.tabs.create({url: "https://fremontunifiedca.infinitecampus.org/campus/resources/portal/grades"})
+	chrome.tabs.create({url: "https://fremontunifiedca.infinitecampus.org/campus/resources/portal/grades?q=" + Date.now()})
 
 	let classes = []
 	chrome.runtime.onMessage.addListener(

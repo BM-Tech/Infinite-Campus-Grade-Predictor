@@ -1740,7 +1740,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(editor.$$.fragment);
-    			add_location(div, file, 33, 2, 791);
+    			add_location(div, file, 33, 2, 807);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1805,7 +1805,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(home.$$.fragment);
-    			add_location(div, file, 31, 2, 694);
+    			add_location(div, file, 31, 2, 710);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1918,27 +1918,27 @@ var app = (function () {
     			a2 = element("a");
     			small3 = element("small");
     			small3.textContent = "Contribute";
-    			add_location(br, file, 27, 1, 642);
-    			add_location(article, file, 29, 1, 651);
-    			add_location(small0, file, 39, 7, 947);
-    			add_location(li0, file, 39, 3, 943);
-    			add_location(ul0, file, 38, 2, 934);
-    			add_location(small1, file, 42, 20, 1037);
+    			add_location(br, file, 27, 1, 658);
+    			add_location(article, file, 29, 1, 667);
+    			add_location(small0, file, 39, 7, 963);
+    			add_location(li0, file, 39, 3, 959);
+    			add_location(ul0, file, 38, 2, 950);
+    			add_location(small1, file, 42, 20, 1053);
     			attr_dev(a0, "href", "#/");
-    			add_location(a0, file, 42, 7, 1024);
-    			add_location(li1, file, 42, 3, 1020);
-    			add_location(small2, file, 43, 20, 1088);
+    			add_location(a0, file, 42, 7, 1040);
+    			add_location(li1, file, 42, 3, 1036);
+    			add_location(small2, file, 43, 20, 1104);
     			attr_dev(a1, "href", "#/");
-    			add_location(a1, file, 43, 7, 1075);
-    			add_location(li2, file, 43, 3, 1071);
-    			add_location(small3, file, 44, 20, 1138);
+    			add_location(a1, file, 43, 7, 1091);
+    			add_location(li2, file, 43, 3, 1087);
+    			add_location(small3, file, 44, 20, 1154);
     			attr_dev(a2, "href", "#/");
-    			add_location(a2, file, 44, 7, 1125);
-    			add_location(li3, file, 44, 3, 1121);
-    			add_location(ul1, file, 41, 2, 1011);
-    			add_location(nav, file, 37, 1, 925);
+    			add_location(a2, file, 44, 7, 1141);
+    			add_location(li3, file, 44, 3, 1137);
+    			add_location(ul1, file, 41, 2, 1027);
+    			add_location(nav, file, 37, 1, 941);
     			attr_dev(div, "class", "container");
-    			add_location(div, file, 26, 0, 616);
+    			add_location(div, file, 26, 0, 632);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2027,7 +2027,7 @@ var app = (function () {
     	validate_slots('App', slots, []);
 
     	chrome.tabs.create({
-    		url: "https://fremontunifiedca.infinitecampus.org/campus/resources/portal/grades"
+    		url: "https://fremontunifiedca.infinitecampus.org/campus/resources/portal/grades?q=" + Date.now()
     	});
 
     	let classes = [];
