@@ -65,14 +65,16 @@
         showGraph : false
     }
 
+    function clone(obj){
+        return Object.assign({}, obj)
+    }
+
     function toggleArea(area){
         for(let a of Object.keys(showAreas)){
-            showAreas[a] = false
-        }
-        if(showAreas[area]){
-            showAreas[area] = false
-        } else{
-            showAreas[area] = true
+            if(a != area || showAreas[area] == true)
+                showAreas[a] = false
+            else
+                showAreas[area] = true
         }
     }
 </script>
@@ -90,29 +92,32 @@
     <p><strong>Origional: </strong> {getCurrentGrade()}</p>
     <p><strong>New: </strong> {(newGrade*100).toFixed(2)}%</p>
 </div>
+
 <div class="grid">
     <button on:click={() => {toggleArea("newAssig")}}>New Assignment</button>
     <button on:click={() => {toggleArea("addFinal")}}>Add Final</button>
     <button on:click={() => {toggleArea("showGraph")}}>Show graph</button>
 </div>
 
-{#if showAreas.newAssig}
-    <article>
-        <p>New Assignment</p>
-    </article>
-{/if}
+<div>
+    {#if showAreas.newAssig}
+        <article transition:slide class="subcard">
+            <p>New Assignment</p>
+        </article>
+    {/if}
 
-{#if showAreas.addFinal}
-    <article>
-        <p>Add Final</p>
-    </article>
-{/if}
+    {#if showAreas.addFinal}
+        <article transition:slide class="subcard">
+            <p>Add Final</p>
+        </article>
+    {/if}
 
-{#if showAreas.showGraph}
-    <article>
-        <p>Show Graph</p>
-    </article>
-{/if}
+    {#if showAreas.showGraph}
+        <article transition:slide class="subcard">
+            <p>Show Graph</p>
+        </article>
+    {/if}
+</div>
 
 <hr>
 {#each Object.entries(categories) as [categoryName, assignments]}

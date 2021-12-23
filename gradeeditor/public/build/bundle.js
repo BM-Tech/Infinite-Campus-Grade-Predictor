@@ -933,25 +933,45 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (99:0) {#if showAreas.newAssig}
+    // (103:4) {#if showAreas.newAssig}
     function create_if_block_2(ctx) {
     	let article;
     	let p;
+    	let article_transition;
+    	let current;
 
     	const block = {
     		c: function create() {
     			article = element("article");
     			p = element("p");
     			p.textContent = "New Assignment";
-    			add_location(p, file$1, 100, 8, 3076);
-    			add_location(article, file$1, 99, 4, 3057);
+    			add_location(p, file$1, 104, 12, 3189);
+    			attr_dev(article, "class", "subcard");
+    			add_location(article, file$1, 103, 8, 3133);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
     			append_dev(article, p);
+    			current = true;
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+
+    			add_render_callback(() => {
+    				if (!article_transition) article_transition = create_bidirectional_transition(article, slide, {}, true);
+    				article_transition.run(1);
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			if (!article_transition) article_transition = create_bidirectional_transition(article, slide, {}, false);
+    			article_transition.run(0);
+    			current = false;
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(article);
+    			if (detaching && article_transition) article_transition.end();
     		}
     	};
 
@@ -959,32 +979,52 @@ var app = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(99:0) {#if showAreas.newAssig}",
+    		source: "(103:4) {#if showAreas.newAssig}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (105:0) {#if showAreas.addFinal}
+    // (109:4) {#if showAreas.addFinal}
     function create_if_block_1(ctx) {
     	let article;
     	let p;
+    	let article_transition;
+    	let current;
 
     	const block = {
     		c: function create() {
     			article = element("article");
     			p = element("p");
     			p.textContent = "Add Final";
-    			add_location(p, file$1, 106, 8, 3173);
-    			add_location(article, file$1, 105, 4, 3154);
+    			add_location(p, file$1, 110, 12, 3339);
+    			attr_dev(article, "class", "subcard");
+    			add_location(article, file$1, 109, 8, 3283);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
     			append_dev(article, p);
+    			current = true;
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+
+    			add_render_callback(() => {
+    				if (!article_transition) article_transition = create_bidirectional_transition(article, slide, {}, true);
+    				article_transition.run(1);
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			if (!article_transition) article_transition = create_bidirectional_transition(article, slide, {}, false);
+    			article_transition.run(0);
+    			current = false;
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(article);
+    			if (detaching && article_transition) article_transition.end();
     		}
     	};
 
@@ -992,32 +1032,52 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(105:0) {#if showAreas.addFinal}",
+    		source: "(109:4) {#if showAreas.addFinal}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (111:0) {#if showAreas.showGraph}
+    // (115:4) {#if showAreas.showGraph}
     function create_if_block$1(ctx) {
     	let article;
     	let p;
+    	let article_transition;
+    	let current;
 
     	const block = {
     		c: function create() {
     			article = element("article");
     			p = element("p");
     			p.textContent = "Show Graph";
-    			add_location(p, file$1, 112, 8, 3266);
-    			add_location(article, file$1, 111, 4, 3247);
+    			add_location(p, file$1, 116, 12, 3485);
+    			attr_dev(article, "class", "subcard");
+    			add_location(article, file$1, 115, 8, 3429);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
     			append_dev(article, p);
+    			current = true;
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+
+    			add_render_callback(() => {
+    				if (!article_transition) article_transition = create_bidirectional_transition(article, slide, {}, true);
+    				article_transition.run(1);
+    			});
+
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			if (!article_transition) article_transition = create_bidirectional_transition(article, slide, {}, false);
+    			article_transition.run(0);
+    			current = false;
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(article);
+    			if (detaching && article_transition) article_transition.end();
     		}
     	};
 
@@ -1025,14 +1085,14 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(111:0) {#if showAreas.showGraph}",
+    		source: "(115:4) {#if showAreas.showGraph}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (122:12) {#each assignments as assignment}
+    // (127:12) {#each assignments as assignment}
     function create_each_block_1(ctx) {
     	let li2;
     	let nav;
@@ -1074,20 +1134,20 @@ var app = (function () {
     			t2 = space();
     			input1 = element("input");
     			t3 = space();
-    			add_location(li0, file$1, 124, 28, 3596);
-    			add_location(ul0, file$1, 124, 24, 3592);
+    			add_location(li0, file$1, 129, 28, 3831);
+    			add_location(ul0, file$1, 129, 24, 3827);
     			attr_dev(input0, "type", "number");
     			attr_dev(input0, "placeholder", "Score");
-    			add_location(input0, file$1, 127, 32, 3743);
+    			add_location(input0, file$1, 132, 32, 3978);
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "placeholder", "Out of");
-    			add_location(input1, file$1, 128, 32, 3854);
+    			add_location(input1, file$1, 133, 32, 4089);
     			attr_dev(div, "class", "grid");
-    			add_location(div, file$1, 126, 28, 3691);
-    			add_location(li1, file$1, 125, 28, 3657);
-    			add_location(ul1, file$1, 125, 24, 3653);
-    			add_location(nav, file$1, 123, 20, 3561);
-    			add_location(li2, file$1, 122, 16, 3535);
+    			add_location(div, file$1, 131, 28, 3926);
+    			add_location(li1, file$1, 130, 28, 3892);
+    			add_location(ul1, file$1, 130, 24, 3888);
+    			add_location(nav, file$1, 128, 20, 3796);
+    			add_location(li2, file$1, 127, 16, 3770);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li2, anchor);
@@ -1138,14 +1198,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(122:12) {#each assignments as assignment}",
+    		source: "(127:12) {#each assignments as assignment}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (118:0) {#each Object.entries(categories) as [categoryName, assignments]}
+    // (123:0) {#each Object.entries(categories) as [categoryName, assignments]}
     function create_each_block(ctx) {
     	let details;
     	let summary;
@@ -1175,10 +1235,10 @@ var app = (function () {
     			}
 
     			t2 = space();
-    			add_location(summary, file$1, 119, 8, 3406);
+    			add_location(summary, file$1, 124, 8, 3641);
     			attr_dev(ul, "class", "longlist");
-    			add_location(ul, file$1, 120, 8, 3449);
-    			add_location(details, file$1, 118, 4, 3387);
+    			add_location(ul, file$1, 125, 8, 3684);
+    			add_location(details, file$1, 123, 4, 3622);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, details, anchor);
@@ -1230,7 +1290,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(118:0) {#each Object.entries(categories) as [categoryName, assignments]}",
+    		source: "(123:0) {#each Object.entries(categories) as [categoryName, assignments]}",
     		ctx
     	});
 
@@ -1270,12 +1330,14 @@ var app = (function () {
     	let t16;
     	let button2;
     	let t18;
+    	let div2;
     	let t19;
     	let t20;
     	let t21;
     	let hr;
     	let t22;
     	let each_1_anchor;
+    	let current;
     	let mounted;
     	let dispose;
     	let if_block0 = /*showAreas*/ ctx[3].newAssig && create_if_block_2(ctx);
@@ -1326,6 +1388,7 @@ var app = (function () {
     			button2 = element("button");
     			button2.textContent = "Show graph";
     			t18 = space();
+    			div2 = element("div");
     			if (if_block0) if_block0.c();
     			t19 = space();
     			if (if_block1) if_block1.c();
@@ -1340,26 +1403,27 @@ var app = (function () {
     			}
 
     			each_1_anchor = empty();
-    			add_location(h3, file$1, 81, 12, 2428);
-    			add_location(li0, file$1, 81, 8, 2424);
-    			add_location(ul0, file$1, 80, 4, 2410);
+    			add_location(h3, file$1, 83, 12, 2487);
+    			add_location(li0, file$1, 83, 8, 2483);
+    			add_location(ul0, file$1, 82, 4, 2469);
     			attr_dev(a, "href", "#/");
-    			add_location(a, file$1, 84, 12, 2512);
-    			add_location(li1, file$1, 84, 8, 2508);
-    			add_location(ul1, file$1, 83, 4, 2494);
-    			add_location(nav, file$1, 79, 0, 2399);
-    			add_location(strong0, file$1, 89, 7, 2642);
-    			add_location(p0, file$1, 89, 4, 2639);
-    			add_location(strong1, file$1, 90, 7, 2703);
-    			add_location(p1, file$1, 90, 4, 2700);
+    			add_location(a, file$1, 86, 12, 2571);
+    			add_location(li1, file$1, 86, 8, 2567);
+    			add_location(ul1, file$1, 85, 4, 2553);
+    			add_location(nav, file$1, 81, 0, 2458);
+    			add_location(strong0, file$1, 91, 7, 2701);
+    			add_location(p0, file$1, 91, 4, 2698);
+    			add_location(strong1, file$1, 92, 7, 2762);
+    			add_location(p1, file$1, 92, 4, 2759);
     			attr_dev(div0, "class", "grid");
-    			add_location(div0, file$1, 88, 0, 2615);
-    			add_location(button0, file$1, 93, 4, 2792);
-    			add_location(button1, file$1, 94, 4, 2871);
-    			add_location(button2, file$1, 95, 4, 2945);
+    			add_location(div0, file$1, 90, 0, 2674);
+    			add_location(button0, file$1, 96, 4, 2853);
+    			add_location(button1, file$1, 97, 4, 2932);
+    			add_location(button2, file$1, 98, 4, 3006);
     			attr_dev(div1, "class", "grid");
-    			add_location(div1, file$1, 92, 0, 2768);
-    			add_location(hr, file$1, 116, 0, 3310);
+    			add_location(div1, file$1, 95, 0, 2829);
+    			add_location(div2, file$1, 101, 0, 3088);
+    			add_location(hr, file$1, 121, 0, 3545);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1394,11 +1458,12 @@ var app = (function () {
     			append_dev(div1, t16);
     			append_dev(div1, button2);
     			insert_dev(target, t18, anchor);
-    			if (if_block0) if_block0.m(target, anchor);
-    			insert_dev(target, t19, anchor);
-    			if (if_block1) if_block1.m(target, anchor);
-    			insert_dev(target, t20, anchor);
-    			if (if_block2) if_block2.m(target, anchor);
+    			insert_dev(target, div2, anchor);
+    			if (if_block0) if_block0.m(div2, null);
+    			append_dev(div2, t19);
+    			if (if_block1) if_block1.m(div2, null);
+    			append_dev(div2, t20);
+    			if (if_block2) if_block2.m(div2, null);
     			insert_dev(target, t21, anchor);
     			insert_dev(target, hr, anchor);
     			insert_dev(target, t22, anchor);
@@ -1408,6 +1473,7 @@ var app = (function () {
     			}
 
     			insert_dev(target, each_1_anchor, anchor);
+    			current = true;
 
     			if (!mounted) {
     				dispose = [
@@ -1421,40 +1487,70 @@ var app = (function () {
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*course*/ 1 && t0_value !== (t0_value = /*course*/ ctx[0].details[0].task.courseName + "")) set_data_dev(t0, t0_value);
-    			if (dirty & /*newGrade*/ 4 && t10_value !== (t10_value = (/*newGrade*/ ctx[2] * 100).toFixed(2) + "")) set_data_dev(t10, t10_value);
+    			if ((!current || dirty & /*course*/ 1) && t0_value !== (t0_value = /*course*/ ctx[0].details[0].task.courseName + "")) set_data_dev(t0, t0_value);
+    			if ((!current || dirty & /*newGrade*/ 4) && t10_value !== (t10_value = (/*newGrade*/ ctx[2] * 100).toFixed(2) + "")) set_data_dev(t10, t10_value);
 
     			if (/*showAreas*/ ctx[3].newAssig) {
-    				if (if_block0) ; else {
+    				if (if_block0) {
+    					if (dirty & /*showAreas*/ 8) {
+    						transition_in(if_block0, 1);
+    					}
+    				} else {
     					if_block0 = create_if_block_2(ctx);
     					if_block0.c();
-    					if_block0.m(t19.parentNode, t19);
+    					transition_in(if_block0, 1);
+    					if_block0.m(div2, t19);
     				}
     			} else if (if_block0) {
-    				if_block0.d(1);
-    				if_block0 = null;
+    				group_outros();
+
+    				transition_out(if_block0, 1, 1, () => {
+    					if_block0 = null;
+    				});
+
+    				check_outros();
     			}
 
     			if (/*showAreas*/ ctx[3].addFinal) {
-    				if (if_block1) ; else {
+    				if (if_block1) {
+    					if (dirty & /*showAreas*/ 8) {
+    						transition_in(if_block1, 1);
+    					}
+    				} else {
     					if_block1 = create_if_block_1(ctx);
     					if_block1.c();
-    					if_block1.m(t20.parentNode, t20);
+    					transition_in(if_block1, 1);
+    					if_block1.m(div2, t20);
     				}
     			} else if (if_block1) {
-    				if_block1.d(1);
-    				if_block1 = null;
+    				group_outros();
+
+    				transition_out(if_block1, 1, 1, () => {
+    					if_block1 = null;
+    				});
+
+    				check_outros();
     			}
 
     			if (/*showAreas*/ ctx[3].showGraph) {
-    				if (if_block2) ; else {
+    				if (if_block2) {
+    					if (dirty & /*showAreas*/ 8) {
+    						transition_in(if_block2, 1);
+    					}
+    				} else {
     					if_block2 = create_if_block$1(ctx);
     					if_block2.c();
-    					if_block2.m(t21.parentNode, t21);
+    					transition_in(if_block2, 1);
+    					if_block2.m(div2, null);
     				}
     			} else if (if_block2) {
-    				if_block2.d(1);
-    				if_block2 = null;
+    				group_outros();
+
+    				transition_out(if_block2, 1, 1, () => {
+    					if_block2 = null;
+    				});
+
+    				check_outros();
     			}
 
     			if (dirty & /*Object, categories*/ 2) {
@@ -1481,8 +1577,19 @@ var app = (function () {
     				each_blocks.length = each_value.length;
     			}
     		},
-    		i: noop,
-    		o: noop,
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(if_block0);
+    			transition_in(if_block1);
+    			transition_in(if_block2);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(if_block0);
+    			transition_out(if_block1);
+    			transition_out(if_block2);
+    			current = false;
+    		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(nav);
     			if (detaching) detach_dev(t3);
@@ -1490,11 +1597,10 @@ var app = (function () {
     			if (detaching) detach_dev(t12);
     			if (detaching) detach_dev(div1);
     			if (detaching) detach_dev(t18);
-    			if (if_block0) if_block0.d(detaching);
-    			if (detaching) detach_dev(t19);
-    			if (if_block1) if_block1.d(detaching);
-    			if (detaching) detach_dev(t20);
-    			if (if_block2) if_block2.d(detaching);
+    			if (detaching) detach_dev(div2);
+    			if (if_block0) if_block0.d();
+    			if (if_block1) if_block1.d();
+    			if (if_block2) if_block2.d();
     			if (detaching) detach_dev(t21);
     			if (detaching) detach_dev(hr);
     			if (detaching) detach_dev(t22);
@@ -1514,6 +1620,10 @@ var app = (function () {
     	});
 
     	return block;
+    }
+
+    function clone(obj) {
+    	return Object.assign({}, obj);
     }
 
     function instance$1($$self, $$props, $$invalidate) {
@@ -1566,13 +1676,7 @@ var app = (function () {
 
     	function toggleArea(area) {
     		for (let a of Object.keys(showAreas)) {
-    			$$invalidate(3, showAreas[a] = false, showAreas);
-    		}
-
-    		if (showAreas[area]) {
-    			$$invalidate(3, showAreas[area] = false, showAreas);
-    		} else {
-    			$$invalidate(3, showAreas[area] = true, showAreas);
+    			if (a != area || showAreas[area] == true) $$invalidate(3, showAreas[a] = false, showAreas); else $$invalidate(3, showAreas[area] = true, showAreas);
     		}
     	}
 
@@ -1623,6 +1727,7 @@ var app = (function () {
     		categoryWeights,
     		categoryScores,
     		showAreas,
+    		clone,
     		toggleArea
     	});
 

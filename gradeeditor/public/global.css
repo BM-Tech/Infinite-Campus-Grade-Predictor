@@ -1,18 +1,14 @@
 @import url("https://unpkg.com/@picocss/pico@latest/css/pico.min.css");
 
-/* Green Dark scheme (Auto) */
-/* Automatically enabled if user has Dark mode enabled */
 @media only screen and (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --card-background-color: #223341;
     }
+    .subcard{
+      background-color: #19252e;
+      padding: 30px;
+    }
 }
-
-/* article{
-    padding-top:5px !important;
-    padding-bottom: 5px !important;
-    margin-bottom: 0px;
-} */
 
 small{
     font-size: small;
