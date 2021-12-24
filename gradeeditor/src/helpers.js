@@ -12,12 +12,9 @@ export class Category{
     calculateGrade(){
         let total = new Grade(0, 0)
         for(let a of this.assignments){
-            if(a.score != NaN && a.outof != NaN){
+            if(!isNaN(a.score) && !isNaN(a.outof)){
                 total.score += a.score
                 total.outof += a.outof
-            }
-            else{
-                console.log(a)
             }
         }
         return total

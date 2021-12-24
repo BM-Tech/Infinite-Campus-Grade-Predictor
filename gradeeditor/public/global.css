@@ -1,13 +1,19 @@
-@import url("https://unpkg.com/@picocss/pico@latest/css/pico.min.css");
 
 @media only screen and (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --card-background-color: #223341;
+      --card-background-color: #223341 !important;
     }
     .subcard{
-      background-color: #19252e;
+      background-color: #002723;
       padding: 30px;
     }
+}
+
+:root{
+  --primary: #00897b !important;
+  --primary-hover: #00796b !important;
+  --primary-focus: rgba(0, 137, 123, 0.125) !important;
+  --primary-inverse: #FFF !important;
 }
 
 small{
@@ -34,12 +40,12 @@ details[open] summary{
 
 
 @keyframes details-show {
-    from {
-      opacity:0;
-      transform: var(--details-translate, translateY(-0.5em));
-    }
+  from {
+    opacity:0;
+    transform: var(--details-translate, translateY(-0.5em));
   }
-  
-  details[open] > *:not(summary) {
-    animation: details-show 150ms ease-in-out;
-  }
+}
+
+details[open] > *:not(summary) {
+  animation: details-show 150ms ease-in-out;
+}

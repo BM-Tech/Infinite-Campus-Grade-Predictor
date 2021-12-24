@@ -6,6 +6,7 @@
 
     const dispatch = createEventDispatcher()
 
+    // Returns default grade without changes
     function getCurrentGrade(){
         let text = ""
 		for(let term of course.details){
@@ -16,16 +17,20 @@
         return text
 	}
 
+    // Reformat course object to list of categories 
     let newGrade = 100
     let categories = []
-    for(let term of course.details){
-        for(let category of term.categories){
+    for(let term of course.details){ 
+        for(let category of term.categories){ 
+            // If category is already in array, it was already created from a previous term
+            // In this case, add following assignments to the existing Category object
             let currentCategory = new Category(category.weight, category.name)
             let existance = currentCategory.alreadyExists(categories)
             if(existance.true){
                 currentCategory = categories[existance.in]
             }
 
+            // Add assignments to category
             for(let assignment of category.assignments){
                 currentCategory.addAssignment(
                     new Assignment(
@@ -41,6 +46,7 @@
         }
     }
 
+    // Normalize weights
     let weightSum = 0
     for(let cat of categories){
         weightSum += cat.weight
@@ -51,6 +57,7 @@
 
     console.log(categories)
 
+    // On change, update new grade with sum of weighted categories
     $: {
         newGrade = 0
         for(let cat of categories){
@@ -59,50 +66,7 @@
         newGrade = newGrade
     }
 
-    /*
-        let categories = {}
-        let categoryWeights = {}
-        for(let term of course.details){
-            for(let categroy of term.categories){
-                categories[categroy.name] = []
-                categoryWeights[categroy.name] = categroy.weight
-                for(let assignment of categroy.assignments){
-                    categories[categroy.name].push({
-                        name: assignment.assignmentName,
-                        grade: {
-                            score: parseFloat(assignment.scorePoints) * assignment.multiplier,
-                            outof: assignment.totalPoints * assignment.multiplier
-                        }
-                    })
-                }
-            }
-        }
-
-        let categoryScores = {}
-        $: {
-            for(const [category, assignments] of Object.entries(categories)){
-                let sum = {score: 0, outof: 0}
-                for(let assignment of assignments){
-                    console.log(assignment)
-                    if(assignment.grade.score != undefined){
-                        sum.score += assignment.grade.score
-                        sum.outof += assignment.grade.outof
-                    }
-                }
-                categoryScores[category] = sum
-                console.log(categoryScores)
-            }
-
-            let grade = 0
-            for(const [category, score] of Object.entries(categoryScores)){
-                if(score.score != undefined){
-                    grade += (score.score / score.outof) * (categoryWeights[category] / 100)
-                }
-            }
-            newGrade = grade
-        }
-    */
-
+    // Toggleable areas
     let showAreas = {
         newAssig : false,
         addFinal : false,
@@ -119,39 +83,71 @@
     }
 </script>
 
+<!-- Heading title and back button -->
 <nav>
     <ul>
         <li><h3>{course.details[0].task.courseName}</h3></li>
     </ul>
     <ul>
-        <li><a href="#/" on:click={() => {dispatch('message', {m: "goHome"})}}>Back</a></li>
+        <li><a href="#/" on:click={() => {dispatch('message', {m: "goHome"})}}><strong>Back</strong></a></li>
     </ul>
 </nav>
 
+<!-- New and old grades display -->
 <div class="grid">
     <p><strong>Origional: </strong> {getCurrentGrade()}</p>
     <p><strong>New: </strong> {(newGrade*100).toFixed(2)}%</p>
 </div>
 
+<!-- Area-toggle buttons -->
 <div class="grid">
     <button on:click={() => {toggleArea("newAssig")}}>New Assignment</button>
     <button on:click={() => {toggleArea("addFinal")}}>Add Final</button>
     <button on:click={() => {toggleArea("showGraph")}}>Show graph</button>
 </div>
 
+<!-- Toggleable areas -->
 <div>
+    <!-- New assignment form -->
     {#if showAreas.newAssig}
         <article transition:slide class="subcard">
-            <p>New Assignment</p>
+            <form action="#">
+                <div class="grid">
+                    <label for="aName">Assignment name
+                        <input type="text" name="aName">
+                    </label>
+
+                    <label for="aCat">Category
+                        <select name="aCat" required>
+                            {#each categories as cat}
+                                <option value={cat.name}>{cat.name}</option>
+                            {/each}
+                        </select>
+                    </label>
+                </div>
+
+                <div class="grid">
+                    <label for="aScore">Score
+                        <input type="number" name="aScore" required>
+                    </label>
+                    <label for="aOutOf">Out of
+                        <input type="number" name="aOutOf" required>
+                    </label>
+                </div>
+
+                <input type="submit" value="Add">
+            </form>
         </article>
     {/if}
 
+    <!-- Final grade caluclator-->
     {#if showAreas.addFinal}
         <article transition:slide class="subcard">
             <p>Add Final</p>
         </article>
     {/if}
 
+    <!-- Graph -->
     {#if showAreas.showGraph}
         <article transition:slide class="subcard">
             <p>Show Graph</p>
@@ -159,33 +155,14 @@
     {/if}
 </div>
 
+<!-- List of expandable categories -->
 <hr>
-<!-- {#each Object.entries(categories) as [categoryName, assignments]}
-    <details>
-        <summary>{categoryName}</summary>
-        <ul class="longlist">
-            {#each assignments as assignment}
-                <li>
-                    <nav>
-                        <ul><li>{assignment.name}</li></ul>
-                        <ul><li>
-                            <div class="grid">
-                                <input type="number" placeholder="Score" bind:value={assignment.grade.score}>
-                                <input type="number" placeholder="Out of" bind:value={assignment.grade.outof}>
-                            </div>
-                        </li></ul>
-                    </nav>
-                </li>
-            {/each}
-        </ul>
-    </details>
-{/each} -->
-
 {#each categories as cat}
     <details>
         <summary>{cat.toString()}</summary>
         <ul class="longlist">
             {#each cat.assignments as assig}
+                <!-- Assignment inside category -->
                 <li><nav>
                     <ul><li>{assig.name}</li></ul>
                     <ul><li>

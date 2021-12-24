@@ -610,6 +610,10 @@ var app = (function () {
         else
             dispatch_dev('SvelteDOMSetAttribute', { node, attribute, value });
     }
+    function prop_dev(node, property, value) {
+        node[property] = value;
+        dispatch_dev('SvelteDOMSetProperty', { node, property, value });
+    }
     function set_data_dev(text, data) {
         data = '' + data;
         if (text.wholeText === data)
@@ -927,12 +931,9 @@ var app = (function () {
         calculateGrade(){
             let total = new Grade(0, 0);
             for(let a of this.assignments){
-                if(a.score != NaN && a.outof != NaN){
+                if(!isNaN(a.score) && !isNaN(a.outof)){
                     total.score += a.score;
                     total.outof += a.outof;
-                }
-                else {
-                    console.log(a);
                 }
             }
             return total
@@ -1001,26 +1002,160 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (143:4) {#if showAreas.newAssig}
+    function get_each_context_2(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[14] = list[i];
+    	return child_ctx;
+    }
+
+    // (112:4) {#if showAreas.newAssig}
     function create_if_block_2(ctx) {
     	let article;
-    	let p;
+    	let form;
+    	let div0;
+    	let label0;
+    	let t0;
+    	let input0;
+    	let t1;
+    	let label1;
+    	let t2;
+    	let select;
+    	let t3;
+    	let div1;
+    	let label2;
+    	let t4;
+    	let input1;
+    	let t5;
+    	let label3;
+    	let t6;
+    	let input2;
+    	let t7;
+    	let input3;
     	let article_transition;
     	let current;
+    	let each_value_2 = /*categories*/ ctx[2];
+    	validate_each_argument(each_value_2);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value_2.length; i += 1) {
+    		each_blocks[i] = create_each_block_2(get_each_context_2(ctx, each_value_2, i));
+    	}
 
     	const block = {
     		c: function create() {
     			article = element("article");
-    			p = element("p");
-    			p.textContent = "New Assignment";
-    			add_location(p, file$1, 144, 12, 4587);
+    			form = element("form");
+    			div0 = element("div");
+    			label0 = element("label");
+    			t0 = text("Assignment name\r\n                        ");
+    			input0 = element("input");
+    			t1 = space();
+    			label1 = element("label");
+    			t2 = text("Category\r\n                        ");
+    			select = element("select");
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			t3 = space();
+    			div1 = element("div");
+    			label2 = element("label");
+    			t4 = text("Score\r\n                        ");
+    			input1 = element("input");
+    			t5 = space();
+    			label3 = element("label");
+    			t6 = text("Out of\r\n                        ");
+    			input2 = element("input");
+    			t7 = space();
+    			input3 = element("input");
+    			attr_dev(input0, "type", "text");
+    			attr_dev(input0, "name", "aName");
+    			add_location(input0, file$1, 116, 24, 3652);
+    			attr_dev(label0, "for", "aName");
+    			add_location(label0, file$1, 115, 20, 3592);
+    			attr_dev(select, "name", "aCat");
+    			select.required = true;
+    			add_location(select, file$1, 120, 24, 3790);
+    			attr_dev(label1, "for", "aCat");
+    			add_location(label1, file$1, 119, 20, 3738);
+    			attr_dev(div0, "class", "grid");
+    			add_location(div0, file$1, 114, 16, 3552);
+    			attr_dev(input1, "type", "number");
+    			attr_dev(input1, "name", "aScore");
+    			input1.required = true;
+    			add_location(input1, file$1, 130, 24, 4189);
+    			attr_dev(label2, "for", "aScore");
+    			add_location(label2, file$1, 129, 20, 4138);
+    			attr_dev(input2, "type", "number");
+    			attr_dev(input2, "name", "aOutOf");
+    			input2.required = true;
+    			add_location(input2, file$1, 133, 24, 4337);
+    			attr_dev(label3, "for", "aOutOf");
+    			add_location(label3, file$1, 132, 20, 4285);
+    			attr_dev(div1, "class", "grid");
+    			add_location(div1, file$1, 128, 16, 4098);
+    			attr_dev(input3, "type", "submit");
+    			input3.value = "Add";
+    			add_location(input3, file$1, 137, 16, 4455);
+    			attr_dev(form, "action", "#");
+    			add_location(form, file$1, 113, 12, 3517);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 143, 8, 4531);
+    			add_location(article, file$1, 112, 8, 3461);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
-    			append_dev(article, p);
+    			append_dev(article, form);
+    			append_dev(form, div0);
+    			append_dev(div0, label0);
+    			append_dev(label0, t0);
+    			append_dev(label0, input0);
+    			append_dev(div0, t1);
+    			append_dev(div0, label1);
+    			append_dev(label1, t2);
+    			append_dev(label1, select);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(select, null);
+    			}
+
+    			append_dev(form, t3);
+    			append_dev(form, div1);
+    			append_dev(div1, label2);
+    			append_dev(label2, t4);
+    			append_dev(label2, input1);
+    			append_dev(div1, t5);
+    			append_dev(div1, label3);
+    			append_dev(label3, t6);
+    			append_dev(label3, input2);
+    			append_dev(form, t7);
+    			append_dev(form, input3);
     			current = true;
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*categories*/ 4) {
+    				each_value_2 = /*categories*/ ctx[2];
+    				validate_each_argument(each_value_2);
+    				let i;
+
+    				for (i = 0; i < each_value_2.length; i += 1) {
+    					const child_ctx = get_each_context_2(ctx, each_value_2, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block_2(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(select, null);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value_2.length;
+    			}
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -1039,6 +1174,7 @@ var app = (function () {
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(article);
+    			destroy_each(each_blocks, detaching);
     			if (detaching && article_transition) article_transition.end();
     		}
     	};
@@ -1047,14 +1183,57 @@ var app = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(143:4) {#if showAreas.newAssig}",
+    		source: "(112:4) {#if showAreas.newAssig}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (149:4) {#if showAreas.addFinal}
+    // (122:28) {#each categories as cat}
+    function create_each_block_2(ctx) {
+    	let option;
+    	let t_value = /*cat*/ ctx[14].name + "";
+    	let t;
+    	let option_value_value;
+
+    	const block = {
+    		c: function create() {
+    			option = element("option");
+    			t = text(t_value);
+    			option.__value = option_value_value = /*cat*/ ctx[14].name;
+    			option.value = option.__value;
+    			add_location(option, file$1, 122, 32, 3908);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, option, anchor);
+    			append_dev(option, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*categories*/ 4 && t_value !== (t_value = /*cat*/ ctx[14].name + "")) set_data_dev(t, t_value);
+
+    			if (dirty & /*categories*/ 4 && option_value_value !== (option_value_value = /*cat*/ ctx[14].name)) {
+    				prop_dev(option, "__value", option_value_value);
+    				option.value = option.__value;
+    			}
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(option);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block_2.name,
+    		type: "each",
+    		source: "(122:28) {#each categories as cat}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (144:4) {#if showAreas.addFinal}
     function create_if_block_1(ctx) {
     	let article;
     	let p;
@@ -1066,9 +1245,9 @@ var app = (function () {
     			article = element("article");
     			p = element("p");
     			p.textContent = "Add Final";
-    			add_location(p, file$1, 150, 12, 4737);
+    			add_location(p, file$1, 145, 12, 4674);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 149, 8, 4681);
+    			add_location(article, file$1, 144, 8, 4618);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -1100,14 +1279,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(149:4) {#if showAreas.addFinal}",
+    		source: "(144:4) {#if showAreas.addFinal}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (155:4) {#if showAreas.showGraph}
+    // (151:4) {#if showAreas.showGraph}
     function create_if_block$1(ctx) {
     	let article;
     	let p;
@@ -1119,9 +1298,9 @@ var app = (function () {
     			article = element("article");
     			p = element("p");
     			p.textContent = "Show Graph";
-    			add_location(p, file$1, 156, 12, 4883);
+    			add_location(p, file$1, 152, 12, 4840);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 155, 8, 4827);
+    			add_location(article, file$1, 151, 8, 4784);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -1153,14 +1332,14 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(155:4) {#if showAreas.showGraph}",
+    		source: "(151:4) {#if showAreas.showGraph}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (188:12) {#each cat.assignments as assig}
+    // (164:12) {#each cat.assignments as assig}
     function create_each_block_1(ctx) {
     	let li2;
     	let nav;
@@ -1202,20 +1381,20 @@ var app = (function () {
     			t2 = space();
     			input1 = element("input");
     			t3 = space();
-    			add_location(li0, file$1, 189, 24, 5977);
-    			add_location(ul0, file$1, 189, 20, 5973);
+    			add_location(li0, file$1, 166, 24, 5214);
+    			add_location(ul0, file$1, 166, 20, 5210);
     			attr_dev(input0, "type", "number");
     			attr_dev(input0, "placeholder", "Score");
-    			add_location(input0, file$1, 192, 28, 6107);
+    			add_location(input0, file$1, 169, 28, 5344);
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "placeholder", "Out Of");
-    			add_location(input1, file$1, 193, 28, 6203);
+    			add_location(input1, file$1, 170, 28, 5440);
     			attr_dev(div, "class", "grid");
-    			add_location(div, file$1, 191, 24, 6059);
-    			add_location(li1, file$1, 190, 24, 6029);
-    			add_location(ul1, file$1, 190, 20, 6025);
-    			add_location(nav, file$1, 188, 20, 5946);
-    			add_location(li2, file$1, 188, 16, 5942);
+    			add_location(div, file$1, 168, 24, 5296);
+    			add_location(li1, file$1, 167, 24, 5266);
+    			add_location(ul1, file$1, 167, 20, 5262);
+    			add_location(nav, file$1, 165, 20, 5183);
+    			add_location(li2, file$1, 165, 16, 5179);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li2, anchor);
@@ -1266,14 +1445,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(188:12) {#each cat.assignments as assig}",
+    		source: "(164:12) {#each cat.assignments as assig}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (184:0) {#each categories as cat}
+    // (160:0) {#each categories as cat}
     function create_each_block(ctx) {
     	let details;
     	let summary;
@@ -1303,10 +1482,10 @@ var app = (function () {
     			}
 
     			t2 = space();
-    			add_location(summary, file$1, 185, 8, 5812);
+    			add_location(summary, file$1, 161, 8, 4996);
     			attr_dev(ul, "class", "longlist");
-    			add_location(ul, file$1, 186, 8, 5857);
-    			add_location(details, file$1, 184, 4, 5793);
+    			add_location(ul, file$1, 162, 8, 5041);
+    			add_location(details, file$1, 160, 4, 4977);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, details, anchor);
@@ -1358,7 +1537,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(184:0) {#each categories as cat}",
+    		source: "(160:0) {#each categories as cat}",
     		ctx
     	});
 
@@ -1376,16 +1555,17 @@ var app = (function () {
     	let ul1;
     	let li1;
     	let a;
+    	let strong0;
     	let t3;
     	let div0;
     	let p0;
-    	let strong0;
+    	let strong1;
     	let t5;
     	let t6_value = /*getCurrentGrade*/ ctx[5]() + "";
     	let t6;
     	let t7;
     	let p1;
-    	let strong1;
+    	let strong2;
     	let t9;
     	let t10_value = (/*newGrade*/ ctx[1] * 100).toFixed(2) + "";
     	let t10;
@@ -1430,18 +1610,19 @@ var app = (function () {
     			ul1 = element("ul");
     			li1 = element("li");
     			a = element("a");
-    			a.textContent = "Back";
+    			strong0 = element("strong");
+    			strong0.textContent = "Back";
     			t3 = space();
     			div0 = element("div");
     			p0 = element("p");
-    			strong0 = element("strong");
-    			strong0.textContent = "Origional:";
+    			strong1 = element("strong");
+    			strong1.textContent = "Origional:";
     			t5 = space();
     			t6 = text(t6_value);
     			t7 = space();
     			p1 = element("p");
-    			strong1 = element("strong");
-    			strong1.textContent = "New:";
+    			strong2 = element("strong");
+    			strong2.textContent = "New:";
     			t9 = space();
     			t10 = text(t10_value);
     			t11 = text("%");
@@ -1471,27 +1652,28 @@ var app = (function () {
     			}
 
     			each_1_anchor = empty();
-    			add_location(h3, file$1, 123, 12, 3885);
-    			add_location(li0, file$1, 123, 8, 3881);
-    			add_location(ul0, file$1, 122, 4, 3867);
+    			add_location(h3, file$1, 88, 12, 2670);
+    			add_location(li0, file$1, 88, 8, 2666);
+    			add_location(ul0, file$1, 87, 4, 2652);
+    			add_location(strong0, file$1, 91, 79, 2821);
     			attr_dev(a, "href", "#/");
-    			add_location(a, file$1, 126, 12, 3969);
-    			add_location(li1, file$1, 126, 8, 3965);
-    			add_location(ul1, file$1, 125, 4, 3951);
-    			add_location(nav, file$1, 121, 0, 3856);
-    			add_location(strong0, file$1, 131, 7, 4099);
-    			add_location(p0, file$1, 131, 4, 4096);
-    			add_location(strong1, file$1, 132, 7, 4160);
-    			add_location(p1, file$1, 132, 4, 4157);
+    			add_location(a, file$1, 91, 12, 2754);
+    			add_location(li1, file$1, 91, 8, 2750);
+    			add_location(ul1, file$1, 90, 4, 2736);
+    			add_location(nav, file$1, 86, 0, 2641);
+    			add_location(strong1, file$1, 97, 7, 2938);
+    			add_location(p0, file$1, 97, 4, 2935);
+    			add_location(strong2, file$1, 98, 7, 2999);
+    			add_location(p1, file$1, 98, 4, 2996);
     			attr_dev(div0, "class", "grid");
-    			add_location(div0, file$1, 130, 0, 4072);
-    			add_location(button0, file$1, 136, 4, 4251);
-    			add_location(button1, file$1, 137, 4, 4330);
-    			add_location(button2, file$1, 138, 4, 4404);
+    			add_location(div0, file$1, 96, 0, 2911);
+    			add_location(button0, file$1, 103, 4, 3120);
+    			add_location(button1, file$1, 104, 4, 3199);
+    			add_location(button2, file$1, 105, 4, 3273);
     			attr_dev(div1, "class", "grid");
-    			add_location(div1, file$1, 135, 0, 4227);
-    			add_location(div2, file$1, 141, 0, 4486);
-    			add_location(hr, file$1, 161, 0, 4943);
+    			add_location(div1, file$1, 102, 0, 3096);
+    			add_location(div2, file$1, 109, 0, 3382);
+    			add_location(hr, file$1, 158, 0, 4940);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1506,15 +1688,16 @@ var app = (function () {
     			append_dev(nav, ul1);
     			append_dev(ul1, li1);
     			append_dev(li1, a);
+    			append_dev(a, strong0);
     			insert_dev(target, t3, anchor);
     			insert_dev(target, div0, anchor);
     			append_dev(div0, p0);
-    			append_dev(p0, strong0);
+    			append_dev(p0, strong1);
     			append_dev(p0, t5);
     			append_dev(p0, t6);
     			append_dev(div0, t7);
     			append_dev(div0, p1);
-    			append_dev(p1, strong1);
+    			append_dev(p1, strong2);
     			append_dev(p1, t9);
     			append_dev(p1, t10);
     			append_dev(p1, t11);
@@ -1560,6 +1743,8 @@ var app = (function () {
 
     			if (/*showAreas*/ ctx[3].newAssig) {
     				if (if_block0) {
+    					if_block0.p(ctx, dirty);
+
     					if (dirty & /*showAreas*/ 8) {
     						transition_in(if_block0, 1);
     					}
@@ -1696,6 +1881,7 @@ var app = (function () {
     	let { course } = $$props;
     	const dispatch = createEventDispatcher();
 
+    	// Returns default grade without changes
     	function getCurrentGrade() {
     		let text = "";
 
@@ -1708,18 +1894,24 @@ var app = (function () {
     		return text;
     	}
 
+    	// Reformat course object to list of categories 
     	let newGrade = 100;
+
     	let categories = [];
 
     	for (let term of course.details) {
     		for (let category of term.categories) {
+    			// If category is already in array, it was already created from a previous term
+    			// In this case, add following assignments to the existing Category object
     			let currentCategory = new Category(category.weight, category.name);
+
     			let existance = currentCategory.alreadyExists(categories);
 
     			if (existance.true) {
     				currentCategory = categories[existance.in];
     			}
 
+    			// Add assignments to category
     			for (let assignment of category.assignments) {
     				currentCategory.addAssignment(new Assignment(parseFloat(assignment.scorePoints) * assignment.multiplier, assignment.totalPoints * assignment.multiplier, assignment.assignmentName));
     			}
@@ -1728,6 +1920,7 @@ var app = (function () {
     		}
     	}
 
+    	// Normalize weights
     	let weightSum = 0;
 
     	for (let cat of categories) {
@@ -1740,49 +1933,7 @@ var app = (function () {
 
     	console.log(categories);
 
-    	/*
-        let categories = {}
-        let categoryWeights = {}
-        for(let term of course.details){
-            for(let categroy of term.categories){
-                categories[categroy.name] = []
-                categoryWeights[categroy.name] = categroy.weight
-                for(let assignment of categroy.assignments){
-                    categories[categroy.name].push({
-                        name: assignment.assignmentName,
-                        grade: {
-                            score: parseFloat(assignment.scorePoints) * assignment.multiplier,
-                            outof: assignment.totalPoints * assignment.multiplier
-                        }
-                    })
-                }
-            }
-        }
-
-        let categoryScores = {}
-        $: {
-            for(const [category, assignments] of Object.entries(categories)){
-                let sum = {score: 0, outof: 0}
-                for(let assignment of assignments){
-                    console.log(assignment)
-                    if(assignment.grade.score != undefined){
-                        sum.score += assignment.grade.score
-                        sum.outof += assignment.grade.outof
-                    }
-                }
-                categoryScores[category] = sum
-                console.log(categoryScores)
-            }
-
-            let grade = 0
-            for(const [category, score] of Object.entries(categoryScores)){
-                if(score.score != undefined){
-                    grade += (score.score / score.outof) * (categoryWeights[category] / 100)
-                }
-            }
-            newGrade = grade
-        }
-    */
+    	// Toggleable areas
     	let showAreas = {
     		newAssig: false,
     		addFinal: false,
@@ -1860,6 +2011,7 @@ var app = (function () {
 
     	$$self.$$.update = () => {
     		if ($$self.$$.dirty & /*categories, newGrade*/ 6) {
+    			// On change, update new grade with sum of weighted categories
     			{
     				$$invalidate(1, newGrade = 0);
 
