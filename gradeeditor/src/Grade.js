@@ -1,4 +1,4 @@
-class Grade{
+export class Grade{
     constructor(score, outof){
         this.score = score
         this.outof = outof
@@ -16,7 +16,7 @@ class Grade{
 	}
 }
 
-class Assignment extends Grade{
+export class Assignment extends Grade{
     constructor(score, outof, name){
         super(score, outof)
         this.name = name

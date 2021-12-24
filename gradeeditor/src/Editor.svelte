@@ -2,9 +2,9 @@
     export let course
     import { createEventDispatcher } from 'svelte'
 	import { slide } from 'svelte/transition'
+    import { Category, Assignment } from './helpers'
 
     const dispatch = createEventDispatcher()
-    console.log(course)
 
     function getCurrentGrade(){
         let text = ""
@@ -17,56 +17,86 @@
 	}
 
     let newGrade = 100
-    let categories = {}
-    let categoryWeights = {}
+    let categories = []
     for(let term of course.details){
-        for(let categroy of term.categories){
-            categories[categroy.name] = []
-            categoryWeights[categroy.name] = categroy.weight
-            for(let assignment of categroy.assignments){
-                categories[categroy.name].push({
-                    name: assignment.assignmentName,
-                    grade: {
-                        score: parseFloat(assignment.scorePoints) * assignment.multiplier,
-                        outof: assignment.totalPoints * assignment.multiplier
-                    }
-                })
+        for(let category of term.categories){
+            let currentCategory = new Category(category.weight, category.name)
+            let existance = currentCategory.alreadyExists(categories)
+            if(existance.true){
+                currentCategory = categories[existance.in]
             }
+
+            for(let assignment of category.assignments){
+                currentCategory.addAssignment(
+                    new Assignment(
+                        parseFloat(assignment.scorePoints) * assignment.multiplier,
+                        assignment.totalPoints * assignment.multiplier,
+                        assignment.assignmentName
+                    )
+                )
+            }
+
+            if(!existance.true)
+                categories.push(currentCategory)
         }
     }
 
-    let categoryScores = {}
     $: {
-        for(const [category, assignments] of Object.entries(categories)){
-            let sum = {score: 0, outof: 0}
-            for(let assignment of assignments){
-                console.log(assignment)
-                if(assignment.grade.score != undefined){
-                    sum.score += assignment.grade.score
-                    sum.outof += assignment.grade.outof
+        newGrade = 0
+        for(let cat of categories){
+            newGrade += cat.getWeightedGrade()
+        }
+        newGrade = newGrade
+    }
+
+    /*
+        let categories = {}
+        let categoryWeights = {}
+        for(let term of course.details){
+            for(let categroy of term.categories){
+                categories[categroy.name] = []
+                categoryWeights[categroy.name] = categroy.weight
+                for(let assignment of categroy.assignments){
+                    categories[categroy.name].push({
+                        name: assignment.assignmentName,
+                        grade: {
+                            score: parseFloat(assignment.scorePoints) * assignment.multiplier,
+                            outof: assignment.totalPoints * assignment.multiplier
+                        }
+                    })
                 }
             }
-            categoryScores[category] = sum
-            console.log(categoryScores)
         }
 
-        let grade = 0
-        for(const [category, score] of Object.entries(categoryScores)){
-            if(score.score != undefined){
-                grade += (score.score / score.outof) * (categoryWeights[category] / 100)
+        let categoryScores = {}
+        $: {
+            for(const [category, assignments] of Object.entries(categories)){
+                let sum = {score: 0, outof: 0}
+                for(let assignment of assignments){
+                    console.log(assignment)
+                    if(assignment.grade.score != undefined){
+                        sum.score += assignment.grade.score
+                        sum.outof += assignment.grade.outof
+                    }
+                }
+                categoryScores[category] = sum
+                console.log(categoryScores)
             }
+
+            let grade = 0
+            for(const [category, score] of Object.entries(categoryScores)){
+                if(score.score != undefined){
+                    grade += (score.score / score.outof) * (categoryWeights[category] / 100)
+                }
+            }
+            newGrade = grade
         }
-        newGrade = grade
-    }
+    */
 
     let showAreas = {
         newAssig : false,
         addFinal : false,
         showGraph : false
-    }
-
-    function clone(obj){
-        return Object.assign({}, obj)
     }
 
     function toggleArea(area){
@@ -120,7 +150,7 @@
 </div>
 
 <hr>
-{#each Object.entries(categories) as [categoryName, assignments]}
+<!-- {#each Object.entries(categories) as [categoryName, assignments]}
     <details>
         <summary>{categoryName}</summary>
         <ul class="longlist">
@@ -136,6 +166,25 @@
                         </li></ul>
                     </nav>
                 </li>
+            {/each}
+        </ul>
+    </details>
+{/each} -->
+
+{#each categories as cat}
+    <details>
+        <summary>{cat.toString()}</summary>
+        <ul class="longlist">
+            {#each cat.assignments as assig}
+                <li><nav>
+                    <ul><li>{assig.name}</li></ul>
+                    <ul><li>
+                        <div class="grid">
+                            <input type="number" placeholder="Score" bind:value={assig.score}>
+                            <input type="number" placeholder="Out Of" bind:value={assig.outof}>
+                        </div>
+                    </li></ul>
+                </nav></li>
             {/each}
         </ul>
     </details>
