@@ -38,7 +38,7 @@ export class Category{
 
     toString(){
         let pct = this.calculateGrade().toString()
-        return this.name + " (Grade: " + pct + "%) (Weight: " + this.weight + "%)"
+        return this.name + " (Grade: " + pct + "%) (Weight: " + (this.weight).toFixed(2) + "%)"
     }
 }
 

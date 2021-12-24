@@ -41,6 +41,16 @@
         }
     }
 
+    let weightSum = 0
+    for(let cat of categories){
+        weightSum += cat.weight
+    }
+    for(let cat of categories){
+        cat.weight = cat.weight / weightSum * 100
+    }
+
+    console.log(categories)
+
     $: {
         newGrade = 0
         for(let cat of categories){
