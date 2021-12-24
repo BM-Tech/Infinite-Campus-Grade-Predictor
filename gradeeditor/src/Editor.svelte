@@ -47,21 +47,36 @@
     }
 
     // Normalize weights
-    let weightSum = 0
-    for(let cat of categories){
-        weightSum += cat.weight
+    function normalizeWeights(){
+        let weightSum = 0
+        for(let cat of categories){
+            weightSum += cat.weight
+        }
+        for(let cat of categories){
+            cat.weight = cat.weight / weightSum * 100
+        }
     }
-    for(let cat of categories){
-        cat.weight = cat.weight / weightSum * 100
-    }
-
+    normalizeWeights()
     console.log(categories)
 
     // On change, update new grade with sum of weighted categories
     $: {
         newGrade = 0
+        let renormalize = false
+        let subtractThisWeight = 0
         for(let cat of categories){
-            newGrade += cat.getWeightedGrade()
+            let wg = cat.getWeightedGrade()
+            if(!isNaN(wg)){
+                newGrade += wg
+            } else {
+                renormalize = true
+                subtractThisWeight += cat.weight
+            }
+        }
+
+        // If a whole grade category is null, ignore it and renormalize 
+        if(renormalize){
+            newGrade /= (1 - subtractThisWeight/100)
         }
         newGrade = newGrade
     }
@@ -79,6 +94,23 @@
                 showAreas[a] = false
             else
                 showAreas[area] = true
+        }
+    }
+
+    function deleteAssignment(cat, assig){
+        let i = categories.indexOf(cat)
+        let a = categories[i].assignments.indexOf(assig)
+        if(a > -1)
+            categories[i].assignments.splice(a, 1)
+        categories = categories
+    }
+
+    let newAssig = {
+        name: "",
+        catIndex: 0,
+        score: {
+            score: 0,
+            oufof: 0
         }
     }
 </script>
@@ -114,13 +146,13 @@
             <form action="#">
                 <div class="grid">
                     <label for="aName">Assignment name
-                        <input type="text" name="aName">
+                        <input type="text" name="aName" bind:value={newAssig.name}>
                     </label>
 
                     <label for="aCat">Category
-                        <select name="aCat" required>
+                        <select name="aCat" required bind:value={newAssig.catIndex}>
                             {#each categories as cat}
-                                <option value={cat.name}>{cat.name}</option>
+                                <option value={categories.indexOf(cat.name)}>{cat.name}</option>
                             {/each}
                         </select>
                     </label>
@@ -128,10 +160,10 @@
 
                 <div class="grid">
                     <label for="aScore">Score
-                        <input type="number" name="aScore" required>
+                        <input type="number" name="aScore" required bind:value={newAssig.score.score}>
                     </label>
                     <label for="aOutOf">Out of
-                        <input type="number" name="aOutOf" required>
+                        <input type="number" name="aOutOf" required bind:value={newAssig.score.outof}>
                     </label>
                 </div>
 
@@ -164,7 +196,11 @@
             {#each cat.assignments as assig}
                 <!-- Assignment inside category -->
                 <li><nav>
-                    <ul><li>{assig.name}</li></ul>
+                    <ul><li>
+                        {assig.name}
+                        ({assig.toString()}%) 
+                        <a on:click={deleteAssignment(cat, assig)} href="javascript:void(0)">delete</a>
+                    </li></ul>
                     <ul><li>
                         <div class="grid">
                             <input type="number" placeholder="Score" bind:value={assig.score}>

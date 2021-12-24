@@ -129,6 +129,20 @@ var app = (function () {
     function set_style(node, key, value, important) {
         node.style.setProperty(key, value, important ? 'important' : '');
     }
+    function select_option(select, value) {
+        for (let i = 0; i < select.options.length; i += 1) {
+            const option = select.options[i];
+            if (option.__value === value) {
+                option.selected = true;
+                return;
+            }
+        }
+        select.selectedIndex = -1; // no option should be selected
+    }
+    function select_value(select) {
+        const selected_option = select.querySelector(':checked') || select.options[0];
+        return selected_option && selected_option.__value;
+    }
     function custom_event(type, detail, bubbles = false) {
         const e = document.createEvent('CustomEvent');
         e.initCustomEvent(type, bubbles, false, detail);
@@ -990,25 +1004,25 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[14] = list[i];
+    	child_ctx[20] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[17] = list[i];
-    	child_ctx[18] = list;
-    	child_ctx[19] = i;
+    	child_ctx[23] = list[i];
+    	child_ctx[24] = list;
+    	child_ctx[25] = i;
     	return child_ctx;
     }
 
     function get_each_context_2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[14] = list[i];
+    	child_ctx[20] = list[i];
     	return child_ctx;
     }
 
-    // (112:4) {#if showAreas.newAssig}
+    // (144:4) {#if showAreas.newAssig}
     function create_if_block_2(ctx) {
     	let article;
     	let form;
@@ -1033,6 +1047,8 @@ var app = (function () {
     	let input3;
     	let article_transition;
     	let current;
+    	let mounted;
+    	let dispose;
     	let each_value_2 = /*categories*/ ctx[2];
     	validate_each_argument(each_value_2);
     	let each_blocks = [];
@@ -1071,37 +1087,38 @@ var app = (function () {
     			input3 = element("input");
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "name", "aName");
-    			add_location(input0, file$1, 116, 24, 3652);
+    			add_location(input0, file$1, 148, 24, 4563);
     			attr_dev(label0, "for", "aName");
-    			add_location(label0, file$1, 115, 20, 3592);
+    			add_location(label0, file$1, 147, 20, 4503);
     			attr_dev(select, "name", "aCat");
     			select.required = true;
-    			add_location(select, file$1, 120, 24, 3790);
+    			if (/*newAssig*/ ctx[4].catIndex === void 0) add_render_callback(() => /*select_change_handler*/ ctx[14].call(select));
+    			add_location(select, file$1, 152, 24, 4728);
     			attr_dev(label1, "for", "aCat");
-    			add_location(label1, file$1, 119, 20, 3738);
+    			add_location(label1, file$1, 151, 20, 4676);
     			attr_dev(div0, "class", "grid");
-    			add_location(div0, file$1, 114, 16, 3552);
+    			add_location(div0, file$1, 146, 16, 4463);
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "name", "aScore");
     			input1.required = true;
-    			add_location(input1, file$1, 130, 24, 4189);
+    			add_location(input1, file$1, 162, 24, 5178);
     			attr_dev(label2, "for", "aScore");
-    			add_location(label2, file$1, 129, 20, 4138);
+    			add_location(label2, file$1, 161, 20, 5127);
     			attr_dev(input2, "type", "number");
     			attr_dev(input2, "name", "aOutOf");
     			input2.required = true;
-    			add_location(input2, file$1, 133, 24, 4337);
+    			add_location(input2, file$1, 165, 24, 5360);
     			attr_dev(label3, "for", "aOutOf");
-    			add_location(label3, file$1, 132, 20, 4285);
+    			add_location(label3, file$1, 164, 20, 5308);
     			attr_dev(div1, "class", "grid");
-    			add_location(div1, file$1, 128, 16, 4098);
+    			add_location(div1, file$1, 160, 16, 5087);
     			attr_dev(input3, "type", "submit");
     			input3.value = "Add";
-    			add_location(input3, file$1, 137, 16, 4455);
+    			add_location(input3, file$1, 169, 16, 5512);
     			attr_dev(form, "action", "#");
-    			add_location(form, file$1, 113, 12, 3517);
+    			add_location(form, file$1, 145, 12, 4428);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 112, 8, 3461);
+    			add_location(article, file$1, 144, 8, 4372);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -1110,6 +1127,7 @@ var app = (function () {
     			append_dev(div0, label0);
     			append_dev(label0, t0);
     			append_dev(label0, input0);
+    			set_input_value(input0, /*newAssig*/ ctx[4].name);
     			append_dev(div0, t1);
     			append_dev(div0, label1);
     			append_dev(label1, t2);
@@ -1119,20 +1137,38 @@ var app = (function () {
     				each_blocks[i].m(select, null);
     			}
 
+    			select_option(select, /*newAssig*/ ctx[4].catIndex);
     			append_dev(form, t3);
     			append_dev(form, div1);
     			append_dev(div1, label2);
     			append_dev(label2, t4);
     			append_dev(label2, input1);
+    			set_input_value(input1, /*newAssig*/ ctx[4].score.score);
     			append_dev(div1, t5);
     			append_dev(div1, label3);
     			append_dev(label3, t6);
     			append_dev(label3, input2);
+    			set_input_value(input2, /*newAssig*/ ctx[4].score.outof);
     			append_dev(form, t7);
     			append_dev(form, input3);
     			current = true;
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[13]),
+    					listen_dev(select, "change", /*select_change_handler*/ ctx[14]),
+    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[15]),
+    					listen_dev(input2, "input", /*input2_input_handler*/ ctx[16])
+    				];
+
+    				mounted = true;
+    			}
     		},
     		p: function update(ctx, dirty) {
+    			if (dirty & /*newAssig, categories*/ 20 && input0.value !== /*newAssig*/ ctx[4].name) {
+    				set_input_value(input0, /*newAssig*/ ctx[4].name);
+    			}
+
     			if (dirty & /*categories*/ 4) {
     				each_value_2 = /*categories*/ ctx[2];
     				validate_each_argument(each_value_2);
@@ -1156,6 +1192,18 @@ var app = (function () {
 
     				each_blocks.length = each_value_2.length;
     			}
+
+    			if (dirty & /*newAssig, categories*/ 20) {
+    				select_option(select, /*newAssig*/ ctx[4].catIndex);
+    			}
+
+    			if (dirty & /*newAssig, categories*/ 20 && to_number(input1.value) !== /*newAssig*/ ctx[4].score.score) {
+    				set_input_value(input1, /*newAssig*/ ctx[4].score.score);
+    			}
+
+    			if (dirty & /*newAssig, categories*/ 20 && to_number(input2.value) !== /*newAssig*/ ctx[4].score.outof) {
+    				set_input_value(input2, /*newAssig*/ ctx[4].score.outof);
+    			}
     		},
     		i: function intro(local) {
     			if (current) return;
@@ -1176,6 +1224,8 @@ var app = (function () {
     			if (detaching) detach_dev(article);
     			destroy_each(each_blocks, detaching);
     			if (detaching && article_transition) article_transition.end();
+    			mounted = false;
+    			run_all(dispose);
     		}
     	};
 
@@ -1183,17 +1233,17 @@ var app = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(112:4) {#if showAreas.newAssig}",
+    		source: "(144:4) {#if showAreas.newAssig}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (122:28) {#each categories as cat}
+    // (154:28) {#each categories as cat}
     function create_each_block_2(ctx) {
     	let option;
-    	let t_value = /*cat*/ ctx[14].name + "";
+    	let t_value = /*cat*/ ctx[20].name + "";
     	let t;
     	let option_value_value;
 
@@ -1201,18 +1251,18 @@ var app = (function () {
     		c: function create() {
     			option = element("option");
     			t = text(t_value);
-    			option.__value = option_value_value = /*cat*/ ctx[14].name;
+    			option.__value = option_value_value = /*categories*/ ctx[2].indexOf(/*cat*/ ctx[20].name);
     			option.value = option.__value;
-    			add_location(option, file$1, 122, 32, 3908);
+    			add_location(option, file$1, 154, 32, 4877);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
     			append_dev(option, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*categories*/ 4 && t_value !== (t_value = /*cat*/ ctx[14].name + "")) set_data_dev(t, t_value);
+    			if (dirty & /*categories*/ 4 && t_value !== (t_value = /*cat*/ ctx[20].name + "")) set_data_dev(t, t_value);
 
-    			if (dirty & /*categories*/ 4 && option_value_value !== (option_value_value = /*cat*/ ctx[14].name)) {
+    			if (dirty & /*categories*/ 4 && option_value_value !== (option_value_value = /*categories*/ ctx[2].indexOf(/*cat*/ ctx[20].name))) {
     				prop_dev(option, "__value", option_value_value);
     				option.value = option.__value;
     			}
@@ -1226,14 +1276,14 @@ var app = (function () {
     		block,
     		id: create_each_block_2.name,
     		type: "each",
-    		source: "(122:28) {#each categories as cat}",
+    		source: "(154:28) {#each categories as cat}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (144:4) {#if showAreas.addFinal}
+    // (176:4) {#if showAreas.addFinal}
     function create_if_block_1(ctx) {
     	let article;
     	let p;
@@ -1245,9 +1295,9 @@ var app = (function () {
     			article = element("article");
     			p = element("p");
     			p.textContent = "Add Final";
-    			add_location(p, file$1, 145, 12, 4674);
+    			add_location(p, file$1, 177, 12, 5731);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 144, 8, 4618);
+    			add_location(article, file$1, 176, 8, 5675);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -1279,14 +1329,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(144:4) {#if showAreas.addFinal}",
+    		source: "(176:4) {#if showAreas.addFinal}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (151:4) {#if showAreas.showGraph}
+    // (183:4) {#if showAreas.showGraph}
     function create_if_block$1(ctx) {
     	let article;
     	let p;
@@ -1298,9 +1348,9 @@ var app = (function () {
     			article = element("article");
     			p = element("p");
     			p.textContent = "Show Graph";
-    			add_location(p, file$1, 152, 12, 4840);
+    			add_location(p, file$1, 184, 12, 5897);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 151, 8, 4784);
+    			add_location(article, file$1, 183, 8, 5841);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -1332,38 +1382,43 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(151:4) {#if showAreas.showGraph}",
+    		source: "(183:4) {#if showAreas.showGraph}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (164:12) {#each cat.assignments as assig}
+    // (196:12) {#each cat.assignments as assig}
     function create_each_block_1(ctx) {
     	let li2;
     	let nav;
     	let ul0;
     	let li0;
-    	let t0_value = /*assig*/ ctx[17].name + "";
+    	let t0_value = /*assig*/ ctx[23].name + "";
     	let t0;
     	let t1;
+    	let t2_value = /*assig*/ ctx[23].toString() + "";
+    	let t2;
+    	let t3;
+    	let a;
+    	let t5;
     	let ul1;
     	let li1;
     	let div;
     	let input0;
-    	let t2;
+    	let t6;
     	let input1;
-    	let t3;
+    	let t7;
     	let mounted;
     	let dispose;
 
-    	function input0_input_handler() {
-    		/*input0_input_handler*/ ctx[11].call(input0, /*each_value_1*/ ctx[18], /*assig_index*/ ctx[19]);
+    	function input0_input_handler_1() {
+    		/*input0_input_handler_1*/ ctx[17].call(input0, /*each_value_1*/ ctx[24], /*assig_index*/ ctx[25]);
     	}
 
-    	function input1_input_handler() {
-    		/*input1_input_handler*/ ctx[12].call(input1, /*each_value_1*/ ctx[18], /*assig_index*/ ctx[19]);
+    	function input1_input_handler_1() {
+    		/*input1_input_handler_1*/ ctx[18].call(input1, /*each_value_1*/ ctx[24], /*assig_index*/ ctx[25]);
     	}
 
     	const block = {
@@ -1373,28 +1428,35 @@ var app = (function () {
     			ul0 = element("ul");
     			li0 = element("li");
     			t0 = text(t0_value);
-    			t1 = space();
+    			t1 = text("\r\n                        (");
+    			t2 = text(t2_value);
+    			t3 = text("%) \r\n                        ");
+    			a = element("a");
+    			a.textContent = "delete";
+    			t5 = space();
     			ul1 = element("ul");
     			li1 = element("li");
     			div = element("div");
     			input0 = element("input");
-    			t2 = space();
+    			t6 = space();
     			input1 = element("input");
-    			t3 = space();
-    			add_location(li0, file$1, 166, 24, 5214);
-    			add_location(ul0, file$1, 166, 20, 5210);
+    			t7 = space();
+    			attr_dev(a, "href", "javascript:void(0)");
+    			add_location(a, file$1, 201, 24, 6387);
+    			add_location(li0, file$1, 198, 24, 6271);
+    			add_location(ul0, file$1, 198, 20, 6267);
     			attr_dev(input0, "type", "number");
     			attr_dev(input0, "placeholder", "Score");
-    			add_location(input0, file$1, 169, 28, 5344);
+    			add_location(input0, file$1, 205, 28, 6602);
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "placeholder", "Out Of");
-    			add_location(input1, file$1, 170, 28, 5440);
+    			add_location(input1, file$1, 206, 28, 6698);
     			attr_dev(div, "class", "grid");
-    			add_location(div, file$1, 168, 24, 5296);
-    			add_location(li1, file$1, 167, 24, 5266);
-    			add_location(ul1, file$1, 167, 20, 5262);
-    			add_location(nav, file$1, 165, 20, 5183);
-    			add_location(li2, file$1, 165, 16, 5179);
+    			add_location(div, file$1, 204, 24, 6554);
+    			add_location(li1, file$1, 203, 24, 6524);
+    			add_location(ul1, file$1, 203, 20, 6520);
+    			add_location(nav, file$1, 197, 20, 6240);
+    			add_location(li2, file$1, 197, 16, 6236);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li2, anchor);
@@ -1402,21 +1464,35 @@ var app = (function () {
     			append_dev(nav, ul0);
     			append_dev(ul0, li0);
     			append_dev(li0, t0);
-    			append_dev(nav, t1);
+    			append_dev(li0, t1);
+    			append_dev(li0, t2);
+    			append_dev(li0, t3);
+    			append_dev(li0, a);
+    			append_dev(nav, t5);
     			append_dev(nav, ul1);
     			append_dev(ul1, li1);
     			append_dev(li1, div);
     			append_dev(div, input0);
-    			set_input_value(input0, /*assig*/ ctx[17].score);
-    			append_dev(div, t2);
+    			set_input_value(input0, /*assig*/ ctx[23].score);
+    			append_dev(div, t6);
     			append_dev(div, input1);
-    			set_input_value(input1, /*assig*/ ctx[17].outof);
-    			append_dev(nav, t3);
+    			set_input_value(input1, /*assig*/ ctx[23].outof);
+    			append_dev(nav, t7);
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input0, "input", input0_input_handler),
-    					listen_dev(input1, "input", input1_input_handler)
+    					listen_dev(
+    						a,
+    						"click",
+    						function () {
+    							if (is_function(/*deleteAssignment*/ ctx[8](/*cat*/ ctx[20], /*assig*/ ctx[23]))) /*deleteAssignment*/ ctx[8](/*cat*/ ctx[20], /*assig*/ ctx[23]).apply(this, arguments);
+    						},
+    						false,
+    						false,
+    						false
+    					),
+    					listen_dev(input0, "input", input0_input_handler_1),
+    					listen_dev(input1, "input", input1_input_handler_1)
     				];
 
     				mounted = true;
@@ -1424,14 +1500,15 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty & /*categories*/ 4 && t0_value !== (t0_value = /*assig*/ ctx[17].name + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*categories*/ 4 && t0_value !== (t0_value = /*assig*/ ctx[23].name + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*categories*/ 4 && t2_value !== (t2_value = /*assig*/ ctx[23].toString() + "")) set_data_dev(t2, t2_value);
 
-    			if (dirty & /*categories*/ 4 && to_number(input0.value) !== /*assig*/ ctx[17].score) {
-    				set_input_value(input0, /*assig*/ ctx[17].score);
+    			if (dirty & /*categories*/ 4 && to_number(input0.value) !== /*assig*/ ctx[23].score) {
+    				set_input_value(input0, /*assig*/ ctx[23].score);
     			}
 
-    			if (dirty & /*categories*/ 4 && to_number(input1.value) !== /*assig*/ ctx[17].outof) {
-    				set_input_value(input1, /*assig*/ ctx[17].outof);
+    			if (dirty & /*categories*/ 4 && to_number(input1.value) !== /*assig*/ ctx[23].outof) {
+    				set_input_value(input1, /*assig*/ ctx[23].outof);
     			}
     		},
     		d: function destroy(detaching) {
@@ -1445,23 +1522,23 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(164:12) {#each cat.assignments as assig}",
+    		source: "(196:12) {#each cat.assignments as assig}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (160:0) {#each categories as cat}
+    // (192:0) {#each categories as cat}
     function create_each_block(ctx) {
     	let details;
     	let summary;
-    	let t0_value = /*cat*/ ctx[14].toString() + "";
+    	let t0_value = /*cat*/ ctx[20].toString() + "";
     	let t0;
     	let t1;
     	let ul;
     	let t2;
-    	let each_value_1 = /*cat*/ ctx[14].assignments;
+    	let each_value_1 = /*cat*/ ctx[20].assignments;
     	validate_each_argument(each_value_1);
     	let each_blocks = [];
 
@@ -1482,10 +1559,10 @@ var app = (function () {
     			}
 
     			t2 = space();
-    			add_location(summary, file$1, 161, 8, 4996);
+    			add_location(summary, file$1, 193, 8, 6053);
     			attr_dev(ul, "class", "longlist");
-    			add_location(ul, file$1, 162, 8, 5041);
-    			add_location(details, file$1, 160, 4, 4977);
+    			add_location(ul, file$1, 194, 8, 6098);
+    			add_location(details, file$1, 192, 4, 6034);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, details, anchor);
@@ -1501,10 +1578,10 @@ var app = (function () {
     			append_dev(details, t2);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*categories*/ 4 && t0_value !== (t0_value = /*cat*/ ctx[14].toString() + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*categories*/ 4 && t0_value !== (t0_value = /*cat*/ ctx[20].toString() + "")) set_data_dev(t0, t0_value);
 
-    			if (dirty & /*categories*/ 4) {
-    				each_value_1 = /*cat*/ ctx[14].assignments;
+    			if (dirty & /*categories, deleteAssignment*/ 260) {
+    				each_value_1 = /*cat*/ ctx[20].assignments;
     				validate_each_argument(each_value_1);
     				let i;
 
@@ -1537,7 +1614,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(160:0) {#each categories as cat}",
+    		source: "(192:0) {#each categories as cat}",
     		ctx
     	});
 
@@ -1561,7 +1638,7 @@ var app = (function () {
     	let p0;
     	let strong1;
     	let t5;
-    	let t6_value = /*getCurrentGrade*/ ctx[5]() + "";
+    	let t6_value = /*getCurrentGrade*/ ctx[6]() + "";
     	let t6;
     	let t7;
     	let p1;
@@ -1652,28 +1729,28 @@ var app = (function () {
     			}
 
     			each_1_anchor = empty();
-    			add_location(h3, file$1, 88, 12, 2670);
-    			add_location(li0, file$1, 88, 8, 2666);
-    			add_location(ul0, file$1, 87, 4, 2652);
-    			add_location(strong0, file$1, 91, 79, 2821);
+    			add_location(h3, file$1, 120, 12, 3581);
+    			add_location(li0, file$1, 120, 8, 3577);
+    			add_location(ul0, file$1, 119, 4, 3563);
+    			add_location(strong0, file$1, 123, 79, 3732);
     			attr_dev(a, "href", "#/");
-    			add_location(a, file$1, 91, 12, 2754);
-    			add_location(li1, file$1, 91, 8, 2750);
-    			add_location(ul1, file$1, 90, 4, 2736);
-    			add_location(nav, file$1, 86, 0, 2641);
-    			add_location(strong1, file$1, 97, 7, 2938);
-    			add_location(p0, file$1, 97, 4, 2935);
-    			add_location(strong2, file$1, 98, 7, 2999);
-    			add_location(p1, file$1, 98, 4, 2996);
+    			add_location(a, file$1, 123, 12, 3665);
+    			add_location(li1, file$1, 123, 8, 3661);
+    			add_location(ul1, file$1, 122, 4, 3647);
+    			add_location(nav, file$1, 118, 0, 3552);
+    			add_location(strong1, file$1, 129, 7, 3849);
+    			add_location(p0, file$1, 129, 4, 3846);
+    			add_location(strong2, file$1, 130, 7, 3910);
+    			add_location(p1, file$1, 130, 4, 3907);
     			attr_dev(div0, "class", "grid");
-    			add_location(div0, file$1, 96, 0, 2911);
-    			add_location(button0, file$1, 103, 4, 3120);
-    			add_location(button1, file$1, 104, 4, 3199);
-    			add_location(button2, file$1, 105, 4, 3273);
+    			add_location(div0, file$1, 128, 0, 3822);
+    			add_location(button0, file$1, 135, 4, 4031);
+    			add_location(button1, file$1, 136, 4, 4110);
+    			add_location(button2, file$1, 137, 4, 4184);
     			attr_dev(div1, "class", "grid");
-    			add_location(div1, file$1, 102, 0, 3096);
-    			add_location(div2, file$1, 109, 0, 3382);
-    			add_location(hr, file$1, 158, 0, 4940);
+    			add_location(div1, file$1, 134, 0, 4007);
+    			add_location(div2, file$1, 141, 0, 4293);
+    			add_location(hr, file$1, 190, 0, 5997);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -1728,10 +1805,10 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(a, "click", /*click_handler*/ ctx[7], false, false, false),
-    					listen_dev(button0, "click", /*click_handler_1*/ ctx[8], false, false, false),
-    					listen_dev(button1, "click", /*click_handler_2*/ ctx[9], false, false, false),
-    					listen_dev(button2, "click", /*click_handler_3*/ ctx[10], false, false, false)
+    					listen_dev(a, "click", /*click_handler*/ ctx[9], false, false, false),
+    					listen_dev(button0, "click", /*click_handler_1*/ ctx[10], false, false, false),
+    					listen_dev(button1, "click", /*click_handler_2*/ ctx[11], false, false, false),
+    					listen_dev(button2, "click", /*click_handler_3*/ ctx[12], false, false, false)
     				];
 
     				mounted = true;
@@ -1806,7 +1883,7 @@ var app = (function () {
     				check_outros();
     			}
 
-    			if (dirty & /*categories*/ 4) {
+    			if (dirty & /*categories, deleteAssignment*/ 260) {
     				each_value = /*categories*/ ctx[2];
     				validate_each_argument(each_value);
     				let i;
@@ -1921,16 +1998,19 @@ var app = (function () {
     	}
 
     	// Normalize weights
-    	let weightSum = 0;
+    	function normalizeWeights() {
+    		let weightSum = 0;
 
-    	for (let cat of categories) {
-    		weightSum += cat.weight;
+    		for (let cat of categories) {
+    			weightSum += cat.weight;
+    		}
+
+    		for (let cat of categories) {
+    			cat.weight = cat.weight / weightSum * 100;
+    		}
     	}
 
-    	for (let cat of categories) {
-    		cat.weight = cat.weight / weightSum * 100;
-    	}
-
+    	normalizeWeights();
     	console.log(categories);
 
     	// Toggleable areas
@@ -1945,6 +2025,19 @@ var app = (function () {
     			if (a != area || showAreas[area] == true) $$invalidate(3, showAreas[a] = false, showAreas); else $$invalidate(3, showAreas[area] = true, showAreas);
     		}
     	}
+
+    	function deleteAssignment(cat, assig) {
+    		let i = categories.indexOf(cat);
+    		let a = categories[i].assignments.indexOf(assig);
+    		if (a > -1) categories[i].assignments.splice(a, 1);
+    		$$invalidate(2, categories);
+    	}
+
+    	let newAssig = {
+    		name: "",
+    		catIndex: 0,
+    		score: { score: 0, oufof: 0 }
+    	};
 
     	const writable_props = ['course'];
 
@@ -1968,12 +2061,36 @@ var app = (function () {
     		toggleArea("showGraph");
     	};
 
-    	function input0_input_handler(each_value_1, assig_index) {
+    	function input0_input_handler() {
+    		newAssig.name = this.value;
+    		$$invalidate(4, newAssig);
+    		$$invalidate(2, categories);
+    	}
+
+    	function select_change_handler() {
+    		newAssig.catIndex = select_value(this);
+    		$$invalidate(4, newAssig);
+    		$$invalidate(2, categories);
+    	}
+
+    	function input1_input_handler() {
+    		newAssig.score.score = to_number(this.value);
+    		$$invalidate(4, newAssig);
+    		$$invalidate(2, categories);
+    	}
+
+    	function input2_input_handler() {
+    		newAssig.score.outof = to_number(this.value);
+    		$$invalidate(4, newAssig);
+    		$$invalidate(2, categories);
+    	}
+
+    	function input0_input_handler_1(each_value_1, assig_index) {
     		each_value_1[assig_index].score = to_number(this.value);
     		$$invalidate(2, categories);
     	}
 
-    	function input1_input_handler(each_value_1, assig_index) {
+    	function input1_input_handler_1(each_value_1, assig_index) {
     		each_value_1[assig_index].outof = to_number(this.value);
     		$$invalidate(2, categories);
     	}
@@ -1992,17 +2109,19 @@ var app = (function () {
     		getCurrentGrade,
     		newGrade,
     		categories,
-    		weightSum,
+    		normalizeWeights,
     		showAreas,
-    		toggleArea
+    		toggleArea,
+    		deleteAssignment,
+    		newAssig
     	});
 
     	$$self.$inject_state = $$props => {
     		if ('course' in $$props) $$invalidate(0, course = $$props.course);
     		if ('newGrade' in $$props) $$invalidate(1, newGrade = $$props.newGrade);
     		if ('categories' in $$props) $$invalidate(2, categories = $$props.categories);
-    		if ('weightSum' in $$props) weightSum = $$props.weightSum;
     		if ('showAreas' in $$props) $$invalidate(3, showAreas = $$props.showAreas);
+    		if ('newAssig' in $$props) $$invalidate(4, newAssig = $$props.newAssig);
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -2014,9 +2133,23 @@ var app = (function () {
     			// On change, update new grade with sum of weighted categories
     			{
     				$$invalidate(1, newGrade = 0);
+    				let renormalize = false;
+    				let subtractThisWeight = 0;
 
     				for (let cat of categories) {
-    					$$invalidate(1, newGrade += cat.getWeightedGrade());
+    					let wg = cat.getWeightedGrade();
+
+    					if (!isNaN(wg)) {
+    						$$invalidate(1, newGrade += wg);
+    					} else {
+    						renormalize = true;
+    						subtractThisWeight += cat.weight;
+    					}
+    				}
+
+    				// If a whole grade category is null, ignore it and renormalize 
+    				if (renormalize) {
+    					$$invalidate(1, newGrade /= 1 - subtractThisWeight / 100);
     				}
 
     				($$invalidate(1, newGrade), $$invalidate(2, categories));
@@ -2029,15 +2162,21 @@ var app = (function () {
     		newGrade,
     		categories,
     		showAreas,
+    		newAssig,
     		dispatch,
     		getCurrentGrade,
     		toggleArea,
+    		deleteAssignment,
     		click_handler,
     		click_handler_1,
     		click_handler_2,
     		click_handler_3,
     		input0_input_handler,
-    		input1_input_handler
+    		select_change_handler,
+    		input1_input_handler,
+    		input2_input_handler,
+    		input0_input_handler_1,
+    		input1_input_handler_1
     	];
     }
 
