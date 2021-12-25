@@ -49,3 +49,22 @@ details[open] summary{
 details[open] > *:not(summary) {
   animation: details-show 150ms ease-in-out;
 }
+
+.sticky {
+  position: fixed;
+  top: 0;
+  max-width: inherit;
+  z-index: 100;
+  background-color: var(--background-color);
+  /* -webkit-box-shadow: 0px 0px 14px -5px #000000; 
+  box-shadow: 0px 0px 14px -5px #000000; */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  transform: translateX(-5px);
+}
+
+.sticky p{
+  margin-bottom: 5px;
+}

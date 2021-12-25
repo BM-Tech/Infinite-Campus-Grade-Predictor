@@ -105,14 +105,33 @@
         categories = categories
     }
 
-    let newAssig = {
-        name: "",
-        catIndex: 0,
-        score: {
-            score: 0,
-            oufof: 0
+    let newAssig = new Assignment(10, 10, "")
+    function submitAssignment(){
+        console.log(newAssig)
+        for(let cat of categories){
+            if(cat.name == newAssig["catName"]){
+                categories[categories.indexOf(cat)].addAssignment(newAssig)
+                categories = categories
+                return
+            }
         }
+        //categories[newAssig["catIndex"]].push(newAssig)
     }
+
+    let issticky = false
+    let sticky;
+    document.addEventListener('scroll', () => {
+        try {
+            if (window.pageYOffset > sticky.offsetTop) {
+                issticky = true
+            } else {
+                issticky = false;
+            }
+        } catch(e){
+            console.log(e)
+        }
+    })
+
 </script>
 
 <!-- Heading title and back button -->
@@ -126,10 +145,15 @@
 </nav>
 
 <!-- New and old grades display -->
-<div class="grid">
-    <p><strong>Origional: </strong> {getCurrentGrade()}</p>
-    <p><strong>New: </strong> {(newGrade*100).toFixed(2)}%</p>
+<div bind:this={sticky}>
+    <p><strong>Origional: </strong> {getCurrentGrade()} | <strong>New: </strong> {(newGrade*100).toFixed(2)}%</p>
 </div>
+
+{#if issticky}
+    <div class="sticky">
+        <p><strong>Origional: </strong> {getCurrentGrade()} | <strong>New: </strong> {(newGrade*100).toFixed(2)}%</p>
+    </div>
+{/if}
 
 <!-- Area-toggle buttons -->
 <div class="grid">
@@ -143,16 +167,16 @@
     <!-- New assignment form -->
     {#if showAreas.newAssig}
         <article transition:slide class="subcard">
-            <form action="#">
+            <form action="#" on:submit|preventDefault={submitAssignment}>
                 <div class="grid">
                     <label for="aName">Assignment name
                         <input type="text" name="aName" bind:value={newAssig.name}>
                     </label>
 
                     <label for="aCat">Category
-                        <select name="aCat" required bind:value={newAssig.catIndex}>
+                        <select name="aCat" required bind:value={newAssig["catName"]}>
                             {#each categories as cat}
-                                <option value={categories.indexOf(cat.name)}>{cat.name}</option>
+                                <option value={cat.name}>{cat.name}</option>
                             {/each}
                         </select>
                     </label>
@@ -160,10 +184,10 @@
 
                 <div class="grid">
                     <label for="aScore">Score
-                        <input type="number" name="aScore" required bind:value={newAssig.score.score}>
+                        <input type="number" name="aScore" required bind:value={newAssig.score}>
                     </label>
                     <label for="aOutOf">Out of
-                        <input type="number" name="aOutOf" required bind:value={newAssig.score.outof}>
+                        <input type="number" name="aOutOf" required bind:value={newAssig.outof}>
                     </label>
                 </div>
 
