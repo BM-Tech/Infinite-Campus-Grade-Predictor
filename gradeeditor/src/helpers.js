@@ -52,8 +52,7 @@ export class Grade{
     }
 
     toString(){
-        this.getPercent()
-        return (this.percent * 100).toFixed(2)
+        return (this.getPercent() * 100).toFixed(2)
 	}
 }
 

@@ -992,8 +992,7 @@ var app = (function () {
         }
 
         toString(){
-            this.getPercent();
-            return (this.percent * 100).toFixed(2)
+            return (this.getPercent() * 100).toFixed(2)
     	}
     }
 
@@ -1029,7 +1028,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (152:0) {#if issticky}
+    // (156:0) {#if issticky}
     function create_if_block_3(ctx) {
     	let div;
     	let p;
@@ -1058,11 +1057,11 @@ var app = (function () {
     			t5 = space();
     			t6 = text(t6_value);
     			t7 = text("%");
-    			add_location(strong0, file$1, 153, 11, 4657);
-    			add_location(strong1, file$1, 153, 62, 4708);
-    			add_location(p, file$1, 153, 8, 4654);
+    			add_location(strong0, file$1, 157, 11, 4778);
+    			add_location(strong1, file$1, 157, 62, 4829);
+    			add_location(p, file$1, 157, 8, 4775);
     			attr_dev(div, "class", "sticky");
-    			add_location(div, file$1, 152, 4, 4624);
+    			add_location(div, file$1, 156, 4, 4745);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1088,14 +1087,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3.name,
     		type: "if",
-    		source: "(152:0) {#if issticky}",
+    		source: "(156:0) {#if issticky}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (168:4) {#if showAreas.newAssig}
+    // (172:4) {#if showAreas.newAssig}
     function create_if_block_2(ctx) {
     	let article;
     	let form;
@@ -1160,38 +1159,38 @@ var app = (function () {
     			input3 = element("input");
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "name", "aName");
-    			add_location(input0, file$1, 172, 24, 5416);
+    			add_location(input0, file$1, 176, 24, 5537);
     			attr_dev(label0, "for", "aName");
-    			add_location(label0, file$1, 171, 20, 5356);
+    			add_location(label0, file$1, 175, 20, 5477);
     			attr_dev(select, "name", "aCat");
     			select.required = true;
     			if (/*newAssig*/ ctx[4]["catName"] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[18].call(select));
-    			add_location(select, file$1, 176, 24, 5581);
+    			add_location(select, file$1, 180, 24, 5702);
     			attr_dev(label1, "for", "aCat");
-    			add_location(label1, file$1, 175, 20, 5529);
+    			add_location(label1, file$1, 179, 20, 5650);
     			attr_dev(div0, "class", "grid");
-    			add_location(div0, file$1, 170, 16, 5316);
+    			add_location(div0, file$1, 174, 16, 5437);
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "name", "aScore");
     			input1.required = true;
-    			add_location(input1, file$1, 186, 24, 6013);
+    			add_location(input1, file$1, 190, 24, 6134);
     			attr_dev(label2, "for", "aScore");
-    			add_location(label2, file$1, 185, 20, 5962);
+    			add_location(label2, file$1, 189, 20, 6083);
     			attr_dev(input2, "type", "number");
     			attr_dev(input2, "name", "aOutOf");
     			input2.required = true;
-    			add_location(input2, file$1, 189, 24, 6189);
+    			add_location(input2, file$1, 193, 24, 6310);
     			attr_dev(label3, "for", "aOutOf");
-    			add_location(label3, file$1, 188, 20, 6137);
+    			add_location(label3, file$1, 192, 20, 6258);
     			attr_dev(div1, "class", "grid");
-    			add_location(div1, file$1, 184, 16, 5922);
+    			add_location(div1, file$1, 188, 16, 6043);
     			attr_dev(input3, "type", "submit");
     			input3.value = "Add";
-    			add_location(input3, file$1, 193, 16, 6335);
+    			add_location(input3, file$1, 197, 16, 6456);
     			attr_dev(form, "action", "#");
-    			add_location(form, file$1, 169, 12, 5237);
+    			add_location(form, file$1, 173, 12, 5358);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 168, 8, 5181);
+    			add_location(article, file$1, 172, 8, 5302);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -1307,14 +1306,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(168:4) {#if showAreas.newAssig}",
+    		source: "(172:4) {#if showAreas.newAssig}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (178:28) {#each categories as cat}
+    // (182:28) {#each categories as cat}
     function create_each_block_2(ctx) {
     	let option;
     	let t_value = /*cat*/ ctx[24].name + "";
@@ -1327,7 +1326,7 @@ var app = (function () {
     			t = text(t_value);
     			option.__value = option_value_value = /*cat*/ ctx[24].name;
     			option.value = option.__value;
-    			add_location(option, file$1, 178, 32, 5732);
+    			add_location(option, file$1, 182, 32, 5853);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -1350,14 +1349,14 @@ var app = (function () {
     		block,
     		id: create_each_block_2.name,
     		type: "each",
-    		source: "(178:28) {#each categories as cat}",
+    		source: "(182:28) {#each categories as cat}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (200:4) {#if showAreas.addFinal}
+    // (204:4) {#if showAreas.addFinal}
     function create_if_block_1(ctx) {
     	let article;
     	let p;
@@ -1369,9 +1368,9 @@ var app = (function () {
     			article = element("article");
     			p = element("p");
     			p.textContent = "Add Final";
-    			add_location(p, file$1, 201, 12, 6554);
+    			add_location(p, file$1, 205, 12, 6675);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 200, 8, 6498);
+    			add_location(article, file$1, 204, 8, 6619);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -1403,14 +1402,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(200:4) {#if showAreas.addFinal}",
+    		source: "(204:4) {#if showAreas.addFinal}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (207:4) {#if showAreas.showGraph}
+    // (211:4) {#if showAreas.showGraph}
     function create_if_block$1(ctx) {
     	let article;
     	let p;
@@ -1422,9 +1421,9 @@ var app = (function () {
     			article = element("article");
     			p = element("p");
     			p.textContent = "Show Graph";
-    			add_location(p, file$1, 208, 12, 6720);
+    			add_location(p, file$1, 212, 12, 6841);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 207, 8, 6664);
+    			add_location(article, file$1, 211, 8, 6785);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -1456,14 +1455,14 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(207:4) {#if showAreas.showGraph}",
+    		source: "(211:4) {#if showAreas.showGraph}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (220:12) {#each cat.assignments as assig}
+    // (224:12) {#each cat.assignments as assig}
     function create_each_block_1(ctx) {
     	let li2;
     	let nav;
@@ -1515,22 +1514,22 @@ var app = (function () {
     			t6 = space();
     			input1 = element("input");
     			t7 = space();
-    			attr_dev(a, "href", "javascript:void(0)");
-    			add_location(a, file$1, 225, 24, 7210);
-    			add_location(li0, file$1, 222, 24, 7094);
-    			add_location(ul0, file$1, 222, 20, 7090);
+    			attr_dev(a, "href", "/");
+    			add_location(a, file$1, 229, 24, 7331);
+    			add_location(li0, file$1, 226, 24, 7215);
+    			add_location(ul0, file$1, 226, 20, 7211);
     			attr_dev(input0, "type", "number");
     			attr_dev(input0, "placeholder", "Score");
-    			add_location(input0, file$1, 229, 28, 7425);
+    			add_location(input0, file$1, 233, 28, 7544);
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "placeholder", "Out Of");
-    			add_location(input1, file$1, 230, 28, 7521);
+    			add_location(input1, file$1, 234, 28, 7640);
     			attr_dev(div, "class", "grid");
-    			add_location(div, file$1, 228, 24, 7377);
-    			add_location(li1, file$1, 227, 24, 7347);
-    			add_location(ul1, file$1, 227, 20, 7343);
-    			add_location(nav, file$1, 221, 20, 7063);
-    			add_location(li2, file$1, 221, 16, 7059);
+    			add_location(div, file$1, 232, 24, 7496);
+    			add_location(li1, file$1, 231, 24, 7466);
+    			add_location(ul1, file$1, 231, 20, 7462);
+    			add_location(nav, file$1, 225, 20, 7184);
+    			add_location(li2, file$1, 225, 16, 7180);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li2, anchor);
@@ -1558,11 +1557,11 @@ var app = (function () {
     					listen_dev(
     						a,
     						"click",
-    						function () {
+    						prevent_default(function () {
     							if (is_function(/*deleteAssignment*/ ctx[10](/*cat*/ ctx[24], /*assig*/ ctx[27]))) /*deleteAssignment*/ ctx[10](/*cat*/ ctx[24], /*assig*/ ctx[27]).apply(this, arguments);
-    						},
+    						}),
     						false,
-    						false,
+    						true,
     						false
     					),
     					listen_dev(input0, "input", input0_input_handler_1),
@@ -1596,14 +1595,14 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(220:12) {#each cat.assignments as assig}",
+    		source: "(224:12) {#each cat.assignments as assig}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (216:0) {#each categories as cat}
+    // (220:0) {#each categories as cat}
     function create_each_block(ctx) {
     	let details;
     	let summary;
@@ -1633,10 +1632,10 @@ var app = (function () {
     			}
 
     			t2 = space();
-    			add_location(summary, file$1, 217, 8, 6876);
+    			add_location(summary, file$1, 221, 8, 6997);
     			attr_dev(ul, "class", "longlist");
-    			add_location(ul, file$1, 218, 8, 6921);
-    			add_location(details, file$1, 216, 4, 6857);
+    			add_location(ul, file$1, 222, 8, 7042);
+    			add_location(details, file$1, 220, 4, 6978);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, details, anchor);
@@ -1688,7 +1687,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(216:0) {#each categories as cat}",
+    		source: "(220:0) {#each categories as cat}",
     		ctx
     	});
 
@@ -1805,26 +1804,26 @@ var app = (function () {
     			}
 
     			each_1_anchor = empty();
-    			add_location(h3, file$1, 139, 12, 4212);
-    			add_location(li0, file$1, 139, 8, 4208);
-    			add_location(ul0, file$1, 138, 4, 4194);
-    			add_location(strong0, file$1, 142, 79, 4363);
+    			add_location(h3, file$1, 143, 12, 4333);
+    			add_location(li0, file$1, 143, 8, 4329);
+    			add_location(ul0, file$1, 142, 4, 4315);
+    			add_location(strong0, file$1, 146, 79, 4484);
     			attr_dev(a, "href", "#/");
-    			add_location(a, file$1, 142, 12, 4296);
-    			add_location(li1, file$1, 142, 8, 4292);
-    			add_location(ul1, file$1, 141, 4, 4278);
-    			add_location(nav, file$1, 137, 0, 4183);
-    			add_location(strong1, file$1, 148, 7, 4486);
-    			add_location(strong2, file$1, 148, 58, 4537);
-    			add_location(p, file$1, 148, 4, 4483);
-    			add_location(div0, file$1, 147, 0, 4453);
-    			add_location(button0, file$1, 159, 4, 4840);
-    			add_location(button1, file$1, 160, 4, 4919);
-    			add_location(button2, file$1, 161, 4, 4993);
+    			add_location(a, file$1, 146, 12, 4417);
+    			add_location(li1, file$1, 146, 8, 4413);
+    			add_location(ul1, file$1, 145, 4, 4399);
+    			add_location(nav, file$1, 141, 0, 4304);
+    			add_location(strong1, file$1, 152, 7, 4607);
+    			add_location(strong2, file$1, 152, 58, 4658);
+    			add_location(p, file$1, 152, 4, 4604);
+    			add_location(div0, file$1, 151, 0, 4574);
+    			add_location(button0, file$1, 163, 4, 4961);
+    			add_location(button1, file$1, 164, 4, 5040);
+    			add_location(button2, file$1, 165, 4, 5114);
     			attr_dev(div1, "class", "grid");
-    			add_location(div1, file$1, 158, 0, 4816);
-    			add_location(div2, file$1, 165, 0, 5102);
-    			add_location(hr, file$1, 214, 0, 6820);
+    			add_location(div1, file$1, 162, 0, 4937);
+    			add_location(div2, file$1, 169, 0, 5223);
+    			add_location(hr, file$1, 218, 0, 6941);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2044,6 +2043,10 @@ var app = (function () {
     	return block;
     }
 
+    function copy(ob) {
+    	return Object.assign({}, ob);
+    }
+
     function instance$1($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Editor', slots, []);
@@ -2103,7 +2106,6 @@ var app = (function () {
     	}
 
     	normalizeWeights();
-    	console.log(categories);
 
     	// Toggleable areas
     	let showAreas = {
@@ -2128,16 +2130,18 @@ var app = (function () {
     	let newAssig = new Assignment(10, 10, "");
 
     	function submitAssignment() {
-    		console.log(newAssig);
-
     		for (let cat of categories) {
     			if (cat.name == newAssig["catName"]) {
-    				categories[categories.indexOf(cat)].addAssignment(newAssig);
+    				let c = copy(newAssig);
+    				let t = new Assignment(c.score, c.outof, c.name);
+    				categories[categories.indexOf(cat)].addAssignment(t);
+    				console.log(t.toString());
+    				$$invalidate(4, newAssig = new Assignment(10, 10, ""));
     				$$invalidate(2, categories);
     				return;
     			}
     		}
-    	} //categories[newAssig["catIndex"]].push(newAssig)
+    	}
 
     	let issticky = false;
     	let sticky;
@@ -2150,7 +2154,7 @@ var app = (function () {
     				$$invalidate(5, issticky = false);
     			}
     		} catch(e) {
-    			console.log(e);
+    			
     		}
     	});
 
@@ -2235,6 +2239,7 @@ var app = (function () {
     		showAreas,
     		toggleArea,
     		deleteAssignment,
+    		copy,
     		newAssig,
     		submitAssignment,
     		issticky,

@@ -57,7 +57,6 @@
         }
     }
     normalizeWeights()
-    console.log(categories)
 
     // On change, update new grade with sum of weighted categories
     $: {
@@ -105,17 +104,23 @@
         categories = categories
     }
 
+    function copy(ob){
+        return Object.assign({}, ob)
+    }
+
     let newAssig = new Assignment(10, 10, "")
     function submitAssignment(){
-        console.log(newAssig)
         for(let cat of categories){
             if(cat.name == newAssig["catName"]){
-                categories[categories.indexOf(cat)].addAssignment(newAssig)
+                let c = copy(newAssig)
+                let t = new Assignment(c.score, c.outof, c.name)
+                categories[categories.indexOf(cat)].addAssignment(t)
+                console.log(t.toString())
+                newAssig = new Assignment(10, 10, "")
                 categories = categories
                 return
             }
         }
-        //categories[newAssig["catIndex"]].push(newAssig)
     }
 
     let issticky = false
@@ -128,7 +133,6 @@
                 issticky = false;
             }
         } catch(e){
-            console.log(e)
         }
     })
 
@@ -223,7 +227,7 @@
                     <ul><li>
                         {assig.name}
                         ({assig.toString()}%) 
-                        <a on:click={deleteAssignment(cat, assig)} href="javascript:void(0)">delete</a>
+                        <a on:click|preventDefault={deleteAssignment(cat, assig)} href="/">delete</a>
                     </li></ul>
                     <ul><li>
                         <div class="grid">
