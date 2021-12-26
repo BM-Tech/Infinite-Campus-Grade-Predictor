@@ -36,7 +36,8 @@
                     new Assignment(
                         parseFloat(assignment.scorePoints) * assignment.multiplier,
                         assignment.totalPoints * assignment.multiplier,
-                        assignment.assignmentName
+                        assignment.assignmentName,
+                        ((assignment.scorePoints * assignment.multiplier)/(assignment.totalPoints * assignment.multiplier)*100).toFixed(2)
                     )
                 )
             }
@@ -83,7 +84,7 @@
     // Toggleable areas
     let showAreas = {
         newAssig : false,
-        addFinal : false,
+        newCategory : false,
         showGraph : false
     }
 
@@ -108,6 +109,7 @@
         return Object.assign({}, ob)
     }
 
+    // New assignment on submit
     let newAssig = new Assignment(10, 10, "")
     function submitAssignment(){
         for(let cat of categories){
@@ -123,6 +125,17 @@
         }
     }
 
+    // New category on submit
+    let newCategory = new Category(0, "")
+    function submitCategory(){
+        let c = copy(newCategory)
+        let t = new Category(newCategory.weight, newCategory.name)
+        categories.push(t)
+        normalizeWeights()
+        categories = categories
+    }
+
+    // Activate sticky grade div when scrolled past
     let issticky = false
     let sticky;
     document.addEventListener('scroll', () => {
@@ -135,7 +148,6 @@
         } catch(e){
         }
     })
-
 </script>
 
 <!-- Heading title and back button -->
@@ -162,58 +174,65 @@
 <!-- Area-toggle buttons -->
 <div class="grid">
     <button on:click={() => {toggleArea("newAssig")}}>New Assignment</button>
-    <button on:click={() => {toggleArea("addFinal")}}>Add Final</button>
+    <button on:click={() => {toggleArea("newCategory")}}>New Category</button>
     <button on:click={() => {toggleArea("showGraph")}}>Show graph</button>
 </div>
 
-<!-- Toggleable areas -->
-<div>
-    <!-- New assignment form -->
-    {#if showAreas.newAssig}
-        <article transition:slide class="subcard">
-            <form action="#" on:submit|preventDefault={submitAssignment}>
-                <div class="grid">
-                    <label for="aName">Assignment name
-                        <input type="text" name="aName" bind:value={newAssig.name}>
-                    </label>
+<!-- New assignment form -->
+{#if showAreas.newAssig}
+    <article transition:slide class="subcard">
+        <form action="#" on:submit|preventDefault={submitAssignment}>
+            <div class="grid">
+                <label for="aName">Assignment name
+                    <input type="text" name="aName" bind:value={newAssig.name}>
+                </label>
 
-                    <label for="aCat">Category
-                        <select name="aCat" required bind:value={newAssig["catName"]}>
-                            {#each categories as cat}
-                                <option value={cat.name}>{cat.name}</option>
-                            {/each}
-                        </select>
-                    </label>
-                </div>
+                <label for="aCat">Category
+                    <select name="aCat" required bind:value={newAssig["catName"]}>
+                        {#each categories as cat}
+                            <option value={cat.name}>{cat.name}</option>
+                        {/each}
+                    </select>
+                </label>
+            </div>
 
-                <div class="grid">
-                    <label for="aScore">Score
-                        <input type="number" name="aScore" required bind:value={newAssig.score}>
-                    </label>
-                    <label for="aOutOf">Out of
-                        <input type="number" name="aOutOf" required bind:value={newAssig.outof}>
-                    </label>
-                </div>
+            <div class="grid">
+                <label for="aScore">Score
+                    <input type="number" name="aScore" required bind:value={newAssig.score}>
+                </label>
+                <label for="aOutOf">Out of
+                    <input type="number" name="aOutOf" required bind:value={newAssig.outof}>
+                </label>
+            </div>
 
-                <input type="submit" value="Add">
-            </form>
-        </article>
-    {/if}
+            <input type="submit" value="Add">
+        </form>
+    </article>
+{/if}
 
-    <!-- Final grade caluclator-->
-    {#if showAreas.addFinal}
-        <article transition:slide class="subcard">
-            <p>Add Final</p>
-        </article>
-    {/if}
+<!-- New category form -->
+{#if showAreas.newCategory}
+    <article transition:slide class="subcard">
+        <form action="#" on:submit|preventDefault={submitCategory}>
+            <div class="grid">
+                <label for="cName">Category Name
+                    <input type="text" name="cName" required bind:value={newCategory.name}>
+                </label>
+                <label for="cWeight">Weight (%)
+                    <input type="number" min="0" max="100" name="cWeight" required bind:value={newCategory.weight}>
+                </label>
+            </div>
+            <input type="submit" value="Add">
+        </form>
+    </article>
+{/if}
 
-    <!-- Graph -->
-    {#if showAreas.showGraph}
-        <article transition:slide class="subcard">
-            <p>Show Graph</p>
-        </article>
-    {/if}
-</div>
+<!-- Graph -->
+{#if showAreas.showGraph}
+    <article transition:slide class="subcard">
+        <p>Show Graph</p>
+    </article>
+{/if}
 
 <!-- List of expandable categories -->
 <hr>
@@ -225,8 +244,8 @@
                 <!-- Assignment inside category -->
                 <li><nav>
                     <ul><li>
-                        {assig.name}
-                        ({assig.toString()}%) 
+                        {assig.name} 
+                        {assig.toString()}% {assig.getOgGrade()}
                         <a on:click|preventDefault={deleteAssignment(cat, assig)} href="/">delete</a>
                     </li></ul>
                     <ul><li>

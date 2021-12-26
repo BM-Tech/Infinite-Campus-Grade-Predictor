@@ -57,8 +57,19 @@ export class Grade{
 }
 
 export class Assignment extends Grade{
-    constructor(score, outof, name){
+    constructor(score, outof, name, origional){
         super(score, outof)
         this.name = name
+        this.origional = origional
+    }
+
+    getOgGrade(){
+        if(this.origional != undefined){
+            if(this.origional == this.toString()){
+                return ""
+            }
+            return "(Origional: " + this.origional + "%)"
+        }
+        return "(New assignment)"
     }
 }
