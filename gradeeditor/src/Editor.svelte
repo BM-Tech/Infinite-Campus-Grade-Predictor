@@ -51,10 +51,10 @@
     function normalizeWeights(){
         let weightSum = 0
         for(let cat of categories){
-            weightSum += cat.weight
+            weightSum += cat.initialWeight
         }
         for(let cat of categories){
-            cat.weight = cat.weight / weightSum * 100
+            cat.weight = cat.initialWeight / weightSum * 100
         }
     }
     normalizeWeights()
@@ -175,7 +175,7 @@
 <div class="grid">
     <button on:click={() => {toggleArea("newAssig")}}>New Assignment</button>
     <button on:click={() => {toggleArea("newCategory")}}>New Category</button>
-    <button on:click={() => {toggleArea("showGraph")}}>Show graph</button>
+    <!-- <button on:click={() => {toggleArea("showGraph")}}>Show graph</button> -->
 </div>
 
 <!-- New assignment form -->

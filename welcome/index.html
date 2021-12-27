@@ -1,0 +1,55 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Campus Grade Predictor</title>
+</head>
+<body>
+    <style>
+        @import url("https://unpkg.com/@picocss/pico@latest/css/pico.min.css");
+        .mtop{margin-top: 100px;}
+        .ct{text-align: center;}
+        .gr {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: 1fr;
+            grid-column-gap: 20px;
+            grid-row-gap: 0px;
+        }
+        .d1 { grid-area: 1 / 1 / 2 / 2; }
+        .d2 { grid-area: 1 / 2 / 2 / 3; }
+        #after{ display: none; }
+    </style>
+
+    <div class="container mtop ct">
+        <div id="before">
+            <h1>Welcome!</h1>
+            <p> Thanks for installing Infinite Campus Grade Predictor!<br>
+                Before we get started, enter the name of your school district <strong>as it appears in the URL</strong> below. <br>
+                For example, for <strong>https://fremontunifiedca.infinitecampus.org/</strong>, enter <strong>fremontunifiedca</strong>.
+            </p>
+            <form action="#" id="form">
+                <div class="gr">
+                    <div class="d1">
+                        <input type="text" name="dist" value="fremontunifiedca" required>
+                    </div>
+                    <div class="d2">
+                        <input type="submit" value="Submit">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="after">
+            <p><strong>You're all set!</strong> <br>
+                If you haven't already, <a id="iclogin" href="#">log in to Infinite Campus</a>. <br>
+                To start predicting grades, click the <img src="/icons/favicon-32x32.png" alt="icon"> icon, then click "Start Predicting". <br>
+                You can also change your school district in the same popup.
+            </p>
+        </div>
+    </div>
+
+    <script src="welcome.js"></script>
+</body>
+</html>

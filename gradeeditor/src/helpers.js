@@ -1,6 +1,7 @@
 export class Category{
     constructor(weight, name){
         this.weight = weight
+        this.initialWeight = weight
         this.name = name
         this.assignments = []
     }
