@@ -19,17 +19,11 @@
 </script>
 
 {#each classes as cl, i}
-    <!-- <nav>
-        <ul><li>
-            <p><strong>{cl.details[0].task.courseName}</strong>
-            {getGradeFromClass(cl.details)}</p>
-        </li></ul>
-        <ul><li>
-            <button on:click={() => openEditor(i)}>Edit Grades</button>
-        </li></ul>
-    </nav> -->
-
     <button on:click={() => openEditor(i)} style="padding: 5 !important">
         <strong>{cl.details[0].task.courseName}</strong> {getGradeFromClass(cl.details)}
     </button>
 {/each}
+
+{#if classes.length == 0}
+    <p>Something went wrong. :(</p>
+{/if}
