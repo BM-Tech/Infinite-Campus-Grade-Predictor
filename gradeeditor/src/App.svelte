@@ -50,8 +50,7 @@
 		</ul>
 		<ul>
 			<li><a href="#/"><small>About</small></a></li>
-			<li><a href="#/"><small>Help</small></a></li>
-			<li><a href="#/"><small>Contribute</small></a></li>
+			<li><a href="https://github.com/benman604/Infinite-Campus-Grade-Predictor"><small>Github</small></a></li>
 		</ul>
 	</nav>
 </div>
