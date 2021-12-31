@@ -23,7 +23,3 @@
         <strong>{cl.details[0].task.courseName}</strong> {getGradeFromClass(cl.details)}
     </button>
 {/each}
-
-{#if classes.length == 0}
-    <p>Something went wrong. :(</p>
-{/if}

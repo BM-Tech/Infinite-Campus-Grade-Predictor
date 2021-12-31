@@ -22,7 +22,7 @@
     let categories = []
     for(let term of course.details){ 
         for(let category of term.categories){ 
-            // If category is already in array, it was already created from a previous term
+            // If category is already in the array, it was already created from a previous term
             // In this case, add following assignments to the existing Category object
             let currentCategory = new Category(category.weight, category.name)
             let existance = currentCategory.alreadyExists(categories)

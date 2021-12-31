@@ -3,18 +3,30 @@
 	import Editor from './Editor.svelte'
 	import { slide } from 'svelte/transition'
 
-	chrome.storage.local.get(['IC_subdomain'], (res) => {
-		chrome.tabs.create({url: `https://${res.IC_subdomain}.infinitecampus.org/campus/resources/portal/grades?q=${Date.now()}`})
-	})
-	//chrome.tabs.create({url: "https://fremontunifiedca.infinitecampus.org/campus/resources/portal/grades?q=" + Date.now()})
+	// chrome.storage.local.get(['IC_subdomain'], (res) => {
+	// 	chrome.tabs.create({url: `https://${res.IC_subdomain}.infinitecampus.org/campus/resources/portal/grades?q=${Date.now()}`})
+	// })
 
+	let loadingState = "loading"
+	let icURL
+
+	chrome.storage.local.get(['IC_subdomain'], (x) => {
+		icURL = `https://${x.IC_subdomain}.infinitecampus.org`
+	})
+
+	chrome.runtime.sendMessage({m: "getGrades"})
 	let classes = []
 	chrome.runtime.onMessage.addListener(
 		(req, who, res) => {
-			if(req.m == "getGradeDetails"){
+			if(req.m == "recieveGrades"){
+				if(req.data.fetchError != undefined || req.data.errors != undefined){
+					console.error(req.data)
+					loadingState = "error"
+					return
+				}
 				classes.push(req.data)
 				classes = classes
-				//currentCourse = classes[0]
+				loadingState = "done"
 			}
 		}
 	)
@@ -37,6 +49,13 @@
 	<br>
 
 	<article>
+		{#if loadingState == "loading"}
+			<a href="/#" aria-busy="true">Loading, please wait...</a> <br>
+		{:else if loadingState == "error"}
+			<p><strong>Something went wrong.</strong></p>
+			<p>Did you <a href={icURL}>log in</a> to Infinite Campus?</p>
+		{/if}
+
 		{#if currentPage == "Home"}
 			<div transition:slide><Home classes={classes} on:message={openEditor}></Home></div>
 		{:else}
