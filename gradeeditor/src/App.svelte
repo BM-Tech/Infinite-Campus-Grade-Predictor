@@ -68,7 +68,7 @@
 			<li><small>Infinite Campus Grade Predictor</small></li>
 		</ul>
 		<ul>
-			<li><a href="#/"><small>About</small></a></li>
+			<li><a href="https://benman604.github.io/Infinite-Campus-Grade-Predictor/"><small>About</small></a></li>
 			<li><a href="https://github.com/benman604/Infinite-Campus-Grade-Predictor"><small>Github</small></a></li>
 		</ul>
 	</nav>
