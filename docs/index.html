@@ -19,7 +19,8 @@
             background-color: #92c83e;
         }
         img{border-radius: 10px;}
-        .imgbtn{background-color: #d1d1d1;}
+        .imgbtn{background-color: #d1d1d1; margin-bottom: 10px;}
+        .notblue li a{color: rgba(200, 200, 255, 1);}
     </style>
 
     <meta name="google-site-verification" content="PMOJ2P7CE9rFu-s1K9WHsSaHmrr4V2__B3m23ffPN58" />
@@ -33,15 +34,17 @@
         <ul>
           <li><a href="./" class="contrast" onclick="event.preventDefault()"><strong>Infinite Campus Grade Predictor</strong></a></li>
         </ul>
-        <ul>
-          <li><a href="https://chrome.google.com/webstore/detail/infinite-campus-grade-pre/ggakloicnidnfjbdfeapcjdhoeikpmbc?hl=en&authuser=0">Download</a></li>
+        <ul class="notblue">
+          <li><a href="https://chrome.google.com/webstore/detail/infinite-campus-grade-pre/ggakloicnidnfjbdfeapcjdhoeikpmbc?hl=en&authuser=0">Chrome</a></li>
+          <li><a href="firefox-signed.xpi">Firefox</a></li>
           <li><a href="https://github.com/benman604/Infinite-Campus-Grade-Predictor">Code</a></li>
         </ul>
       </nav>
       <header class="container">
         <br><br>
         <h1>Take control of your grades</h1>
-        <p> <a role="button" href="https://chrome.google.com/webstore/detail/infinite-campus-grade-pre/ggakloicnidnfjbdfeapcjdhoeikpmbc?hl=en&authuser=0">Download</a>
+        <p> <a role="button" href="https://chrome.google.com/webstore/detail/infinite-campus-grade-pre/ggakloicnidnfjbdfeapcjdhoeikpmbc?hl=en&authuser=0">Chrome</a>
+            <a role="button" href="firefox-signed.xpi">Firefox</a>
             <a href="https://github.com/benman604/Infinite-Campus-Grade-Predictor" role="button" class="secondary">Code</a>
         </p>
       </header>
@@ -82,9 +85,12 @@
         <article>
           <hgroup>
             <h2>Download Now</h2>
-            <h3>Available on Google Chrome and other Chrome-forked browsers (Edge, Opera, etc.)</h3>
+            <h3>Available on Google Chrome (including Chromium forks) and Firefox</h3>
           </hgroup>
-          <a href="https://chrome.google.com/webstore/detail/infinite-campus-grade-pre/ggakloicnidnfjbdfeapcjdhoeikpmbc?hl=en&authuser=0"><img src="chromewebstore.png" alt="Download" class="imgbtn"></a>
+          <div class="grid">
+            <a href="https://chrome.google.com/webstore/detail/infinite-campus-grade-pre/ggakloicnidnfjbdfeapcjdhoeikpmbc?hl=en&authuser=0"><img src="chromewebstore.png" alt="Install for Google Chrome" class="imgbtn"></a>
+            <a href="firefox-signed.xpi"><img src="firefoxaddon.png" alt="Install for Firefox" class="imgbtn"></a>
+          </div>
         </article>
       </div>
     </section><!-- ./ Subscribe -->

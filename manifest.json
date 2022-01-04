@@ -1,6 +1,6 @@
 {
   "name": "Infinite Campus Grade Predictor",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "manifest_version": 2,
   "description": "Predict your future grades on Infinite Campus",
   "homepage_url": "https://github.com/benman604/Infinite-Campus-Grade-Predictor",
@@ -24,15 +24,5 @@
     "tabs",
     "https://*.infinitecampus.org/campus/resources/*",
     "storage"
-  ],
-  "content_scripts": [
-    {
-      "matches": [
-        "https://*.infinitecampus.org/campus/resources/*"
-      ],
-      "js": [
-        "src/inject/inject.js"
-      ]
-    }
   ]
 }
