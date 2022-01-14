@@ -4,25 +4,31 @@ export class Category{
         this.initialWeight = weight
         this.name = name
         this.assignments = []
+        this.equalWeighting = false
     }
 
     addAssignment(assignment){
         this.assignments.push(assignment)
     }
 
-    calculateGrade(){
+    calculateGrade(equalWeighting){
         let total = new Grade(0, 0)
         for(let a of this.assignments){
             if(!isNaN(a.score) && !isNaN(a.outof)){
-                total.score += a.score
-                total.outof += a.outof
+                if(!equalWeighting){
+                    total.score += a.score
+                    total.outof += a.outof
+                } else{
+                    total.score += a.score/a.outof
+                    total.outof++
+                }
             }
         }
         return total
     }
 
-    getWeightedGrade(){
-        let total = this.calculateGrade()
+    getWeightedGrade(equalWeighting){
+        let total = this.calculateGrade(equalWeighting)
         return total.getPercent() * this.weight / 100
     }
 
