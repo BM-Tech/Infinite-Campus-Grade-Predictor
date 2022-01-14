@@ -148,6 +148,8 @@
         } catch(e){
         }
     })
+
+    let dialogOpen = false
 </script>
 
 <!-- Heading title and back button -->
@@ -177,6 +179,35 @@
     <button on:click={() => {toggleArea("newCategory")}}>New Category</button>
     <!-- <button on:click={() => {toggleArea("showGraph")}}>Show graph</button> -->
 </div>
+<small><a href="#" on:click={()=>{dialogOpen=true}}>Settings</a></small>
+
+<!-- Settings modal -->
+<dialog open={dialogOpen}>
+    <article>
+        <a href="#"
+            aria-label="Close"
+            on:click={()=>{dialogOpen=false}}>
+        </a>
+        <h3>Settings</h3>
+        <div>
+            <p>Hello.</p>
+        </div>
+        <footer>
+            <a href="#"
+                role="button"
+                class="secondary"
+                on:click={()=>{dialogOpen=false}}>
+                Cancel
+            </a>
+            <a href="#"
+                role="button"
+                data-target="modal-example"
+                onClick="toggleModal(event)">
+                Confirm
+            </a>
+        </footer>
+    </article>
+</dialog>
 
 <!-- New assignment form -->
 {#if showAreas.newAssig}
