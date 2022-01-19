@@ -32,10 +32,14 @@
 	)
 
 	// Debugging 
-	// window["getAllClasses"] = () => {console.log(classes)}
-	// window["setClasses"] = (cl) => {classes = cl}
 	// import {x} from './testing'
 	// classes = x
+
+	window["debugger"] = {
+		getCurrentClass: () => {return currentCourse},
+		getAllClasses: () => {return classes},
+		setClasses: (cl) => {classes = cl}
+	}
 
 	let currentPage = "Home"
 	let currentCourse

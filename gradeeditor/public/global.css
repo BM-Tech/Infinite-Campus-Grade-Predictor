@@ -67,3 +67,8 @@ details[open] > *:not(summary) {
 .sticky p{
   margin-bottom: 5px;
 }
+
+dialog{
+  max-height: calc(100vh - 210px);
+  overflow-y: auto;
+}

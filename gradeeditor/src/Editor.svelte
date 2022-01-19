@@ -65,7 +65,9 @@
         let renormalize = false
         let subtractThisWeight = 0
         for(let cat of categories){
-            let wg = cat.getWeightedGrade()
+            let wieghtEqually = courseSettings.equalWeighting[cat.name]
+            if(wieghtEqually == null) wieghtEqually = false
+            let wg = cat.getWeightedGrade(wieghtEqually)
             if(!isNaN(wg)){
                 newGrade += wg
             } else {
@@ -148,6 +150,19 @@
         } catch(e){
         }
     })
+
+    let dialogOpen = false
+    $: {
+        if(dialogOpen){
+            document.querySelector("body").style.overflow = "hidden"
+        } else{
+            document.querySelector("body").style.overflow = "auto"
+        }
+    }
+
+    let courseSettings = {
+        equalWeighting: {}
+    }
 </script>
 
 <!-- Heading title and back button -->
@@ -177,6 +192,43 @@
     <button on:click={() => {toggleArea("newCategory")}}>New Category</button>
     <!-- <button on:click={() => {toggleArea("showGraph")}}>Show graph</button> -->
 </div>
+<small><a href="#" on:click={()=>{dialogOpen=true}}>Settings</a></small>
+
+<!-- Settings modal -->
+<dialog open={dialogOpen}>
+    <article style="margin-top: 200px;">
+        <a href="#"
+            aria-label="Close"
+            on:click={()=>{dialogOpen=false}}>
+        </a>
+        <h3>Settings</h3>
+        <div>
+            <h4>Equal Weighting</h4>
+            <p>Categories with this enabled will have all assignments weighted the same.</p>
+            {#each categories as cat}
+                <nav style="width:100%">
+                    <ul>
+                        <li>{cat.name}</li>
+                    </ul>
+                    <ul>
+                        <li><label for="switch">
+                            <input type="checkbox" name="switch" id="switch" role="switch"
+                                bind:checked={courseSettings.equalWeighting[cat.name]}>
+                        </label></li>
+                    </ul>
+                </nav>
+            {/each}
+        </div>
+        <footer>
+            <a href="#"
+                role="button"
+                class="secondary"
+                on:click={()=>{dialogOpen=false}}>
+                Close
+            </a>
+        </footer>
+    </article>
+</dialog>
 
 <!-- New assignment form -->
 {#if showAreas.newAssig}
