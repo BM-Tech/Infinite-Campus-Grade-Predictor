@@ -3038,7 +3038,6 @@ var app = (function () {
     			a1 = element("a");
     			small2 = element("small");
     			small2.textContent = "Github";
-<<<<<<< HEAD
     			add_location(br, file, 48, 1, 1267);
     			add_location(article, file, 50, 1, 1276);
     			add_location(small0, file, 67, 7, 1844);
@@ -3054,23 +3053,6 @@ var app = (function () {
     			add_location(li2, file, 71, 3, 2026);
     			add_location(ul1, file, 69, 2, 1908);
     			add_location(nav, file, 65, 1, 1822);
-=======
-    			add_location(br, file, 52, 1, 1317);
-    			add_location(article, file, 54, 1, 1326);
-    			add_location(small0, file, 71, 7, 1894);
-    			add_location(li0, file, 71, 3, 1890);
-    			add_location(ul0, file, 70, 2, 1881);
-    			add_location(small1, file, 74, 20, 1984);
-    			attr_dev(a0, "href", "#/");
-    			add_location(a0, file, 74, 7, 1971);
-    			add_location(li1, file, 74, 3, 1967);
-    			add_location(small2, file, 75, 78, 2093);
-    			attr_dev(a1, "href", "https://github.com/benman604/Infinite-Campus-Grade-Predictor");
-    			add_location(a1, file, 75, 7, 2022);
-    			add_location(li2, file, 75, 3, 2018);
-    			add_location(ul1, file, 73, 2, 1958);
-    			add_location(nav, file, 69, 1, 1872);
->>>>>>> 6ccb97608299bcb4e6905062862bd4515c69368f
     			attr_dev(div, "class", "container");
     			add_location(div, file, 51, 0, 1291);
     		},
