@@ -20,7 +20,7 @@
 		(req, who, res) => {
 			if(req.m == "recieveGrades"){
 				if(req.data.fetchError != undefined || req.data.errors != undefined){
-					console.error(req.data)
+					console.log(req.data)
 					loadingState = "error"
 					return
 				}

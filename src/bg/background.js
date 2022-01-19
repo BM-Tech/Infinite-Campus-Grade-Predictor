@@ -10,6 +10,7 @@ chrome.runtime.onMessage.addListener(
 
 		if(req.m == "getGrades"){
 			chrome.storage.local.get(['IC_subdomain'], (x) => {
+				if(x.IC_subdomain == undefined){x.IC_subdomain = "fremontunifiedca"}
 				fetch(`https://${x.IC_subdomain}.infinitecampus.org/campus/resources/portal/grades?q=${Date.now()}`)
 				.then(data => data.json())
 				.then(data => {
@@ -18,6 +19,7 @@ chrome.runtime.onMessage.addListener(
 							fetch(`https://${x.IC_subdomain}.infinitecampus.org/campus/resources/portal/grades/detail/${i.sectionID}?q=${Date.now()}`)
 							.then(data => data.json())
 							.then(data => {
+								console.log(data)
 								chrome.runtime.sendMessage({m: "recieveGrades", data: data})
 							})
 							.catch(e => {

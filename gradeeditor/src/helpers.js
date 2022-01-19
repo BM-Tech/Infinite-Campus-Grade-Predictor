@@ -11,10 +11,11 @@ export class Category{
         this.assignments.push(assignment)
     }
 
-    calculateGrade(equalWeighting){
+    calculateGrade(equalWeighting, termSettings){
         let total = new Grade(0, 0)
         for(let a of this.assignments){
-            if(!isNaN(a.score) && !isNaN(a.outof)){
+            let enabled = a.isEnabled(termSettings)
+            if(!isNaN(a.score) && !isNaN(a.outof) && enabled){
                 if(!equalWeighting){
                     total.score += a.score
                     total.outof += a.outof
@@ -27,8 +28,8 @@ export class Category{
         return total
     }
 
-    getWeightedGrade(equalWeighting){
-        let total = this.calculateGrade(equalWeighting)
+    getWeightedGrade(equalWeighting, termSettings){
+        let total = this.calculateGrade(equalWeighting, termSettings)
         return total.getPercent() * this.weight / 100
     }
 
@@ -40,8 +41,8 @@ export class Category{
         return {true: false, in: -1}
     }
 
-    toString(){
-        let pct = this.calculateGrade().toString()
+    toString(equalWeighting, termSettings){
+        let pct = this.calculateGrade(equalWeighting, termSettings).toString()
         return this.name + " (Grade: " + pct + "%) (Weight: " + (this.weight).toFixed(2) + "%)"
     }
 }
@@ -64,10 +65,11 @@ export class Grade{
 }
 
 export class Assignment extends Grade{
-    constructor(score, outof, name, origional){
+    constructor(score, outof, name, origional, term){
         super(score, outof)
         this.name = name
         this.origional = origional
+        this.term = term
     }
 
     getOgGrade(){
@@ -78,5 +80,24 @@ export class Assignment extends Grade{
             return "(Origional: " + this.origional + "%)"
         }
         return "(New assignment)"
+    }
+
+    getTerm(terms){
+        return terms[this.term]
+    }
+
+    isEnabled(termSettings){
+        if(termSettings == undefined || this.term == undefined){
+            return true
+        }
+        return termSettings[this.term]
+    }
+}
+
+export class Term{
+    constructor(id, name, seq){
+        this.id = id
+        this.name = name
+        this.seq = seq
     }
 }

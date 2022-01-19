@@ -2,9 +2,14 @@
     export let course
     import { createEventDispatcher } from 'svelte'
 	import { slide } from 'svelte/transition'
-    import { Category, Assignment } from './helpers'
+    import { Category, Assignment, Term } from './helpers'
 
     const dispatch = createEventDispatcher()
+
+    let courseSettings = {
+        equalWeighting: {},
+        termEnabled: {}
+    }
 
     // Returns default grade without changes
     function getCurrentGrade(){
@@ -37,7 +42,8 @@
                         parseFloat(assignment.scorePoints) * assignment.multiplier,
                         assignment.totalPoints * assignment.multiplier,
                         assignment.assignmentName,
-                        ((assignment.scorePoints * assignment.multiplier)/(assignment.totalPoints * assignment.multiplier)*100).toFixed(2)
+                        ((assignment.scorePoints * assignment.multiplier)/(assignment.totalPoints * assignment.multiplier)*100).toFixed(2),
+                        assignment.termID
                     )
                 )
             }
@@ -45,6 +51,14 @@
             if(!existance.true)
                 categories.push(currentCategory)
         }
+    }
+
+    // Generate list of grading periods
+    let terms = {}
+    for(let term of course.terms){
+        let newTerm = new Term(term.termID, term.termName, term.termSeq)
+        terms[term.termID] = newTerm
+        courseSettings.termEnabled[term.termID] = true
     }
 
     // Normalize weights
@@ -67,7 +81,7 @@
         for(let cat of categories){
             let wieghtEqually = courseSettings.equalWeighting[cat.name]
             if(wieghtEqually == null) wieghtEqually = false
-            let wg = cat.getWeightedGrade(wieghtEqually)
+            let wg = cat.getWeightedGrade(wieghtEqually, courseSettings.termEnabled)
             if(!isNaN(wg)){
                 newGrade += wg
             } else {
@@ -87,7 +101,9 @@
     let showAreas = {
         newAssig : false,
         newCategory : false,
-        showGraph : false
+        showGraph : false,
+        equalWeighting: false,
+        gradingPeriods: false
     }
 
     function toggleArea(area){
@@ -151,18 +167,7 @@
         }
     })
 
-    let dialogOpen = false
-    $: {
-        if(dialogOpen){
-            document.querySelector("body").style.overflow = "hidden"
-        } else{
-            document.querySelector("body").style.overflow = "auto"
-        }
-    }
-
-    let courseSettings = {
-        equalWeighting: {}
-    }
+    let moreToolsOpen = true
 </script>
 
 <!-- Heading title and back button -->
@@ -192,16 +197,17 @@
     <button on:click={() => {toggleArea("newCategory")}}>New Category</button>
     <!-- <button on:click={() => {toggleArea("showGraph")}}>Show graph</button> -->
 </div>
-<small><a href="#" on:click={()=>{dialogOpen=true}}>Settings</a></small>
+<small class="sidewayslist">
+    <a href="#a" on:click={()=>{moreToolsOpen = !moreToolsOpen}}>More Tools</a>
+    {#if moreToolsOpen}
+        <a href="#a" on:click={()=>{toggleArea("equalWeighting")}}>Equal Weighting</a>
+        <a href="#a" on:click={()=>{toggleArea("gradingPeriods")}}>Grading Periods</a>
+    {/if}
+</small>
 
-<!-- Settings modal -->
-<dialog open={dialogOpen}>
-    <article style="margin-top: 200px;">
-        <a href="#"
-            aria-label="Close"
-            on:click={()=>{dialogOpen=false}}>
-        </a>
-        <h3>Settings</h3>
+<!-- Equal weighting setting -->
+{#if showAreas.equalWeighting}
+    <article class="subcard" transition:slide>
         <div>
             <h4>Equal Weighting</h4>
             <p>Categories with this enabled will have all assignments weighted the same.</p>
@@ -219,16 +225,31 @@
                 </nav>
             {/each}
         </div>
-        <footer>
-            <a href="#"
-                role="button"
-                class="secondary"
-                on:click={()=>{dialogOpen=false}}>
-                Close
-            </a>
-        </footer>
     </article>
-</dialog>
+{/if}
+
+<!-- Grading periods -->
+{#if showAreas.gradingPeriods}
+    <article class="subcard" transition:slide>
+        <div>
+            <h4>Grading Periods</h4>
+            <p>Enable/disable assignments in certain grading periods to be considered in calculation.</p>
+            {#each Object.keys(terms) as term}
+                <nav style="width:100%">
+                    <ul>
+                        <li>{terms[term].name}</li>
+                    </ul>
+                    <ul>
+                        <li><label for="switch">
+                            <input type="checkbox" name="switch" id="switch" role="switch"
+                                bind:checked={courseSettings.termEnabled[term.toString()]}>
+                        </label></li>
+                    </ul>
+                </nav>
+            {/each}
+        </div>
+    </article>
+{/if}
 
 <!-- New assignment form -->
 {#if showAreas.newAssig}
@@ -290,23 +311,25 @@
 <hr>
 {#each categories as cat}
     <details>
-        <summary>{cat.toString()}</summary>
+        <summary>{cat.toString(courseSettings.equalWeighting[cat.name], courseSettings.termEnabled)}</summary>
         <ul class="longlist">
             {#each cat.assignments as assig}
                 <!-- Assignment inside category -->
-                <li><nav>
-                    <ul><li>
-                        {assig.name} 
-                        {assig.toString()}% {assig.getOgGrade()}
-                        <a on:click|preventDefault={deleteAssignment(cat, assig)} href="/">delete</a>
-                    </li></ul>
-                    <ul><li>
-                        <div class="grid">
-                            <input type="number" placeholder="Score" bind:value={assig.score}>
-                            <input type="number" placeholder="Out Of" bind:value={assig.outof}>
-                        </div>
-                    </li></ul>
-                </nav></li>
+                {#if assig.isEnabled(courseSettings.termEnabled)}
+                    <li><nav>
+                        <ul><li>
+                            {assig.name} 
+                            {assig.toString()}% {assig.getOgGrade()}
+                            <a on:click|preventDefault={deleteAssignment(cat, assig)} href="/">delete</a>
+                        </li></ul>
+                        <ul><li>
+                            <div class="grid">
+                                <input type="number" placeholder="Score" bind:value={assig.score}>
+                                <input type="number" placeholder="Out Of" bind:value={assig.outof}>
+                            </div>
+                        </li></ul>
+                    </nav></li>
+                {/if}
             {/each}
         </ul>
     </details>

@@ -68,7 +68,10 @@ details[open] > *:not(summary) {
   margin-bottom: 5px;
 }
 
-dialog{
-  max-height: calc(100vh - 210px);
-  overflow-y: auto;
+.sidewayslist a{
+  margin-right: 10px;
+}
+
+.sidewayslist a:not(:first-child){
+  color: lightgreen;
 }
