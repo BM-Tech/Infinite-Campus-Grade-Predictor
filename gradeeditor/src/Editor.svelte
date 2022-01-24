@@ -55,10 +55,22 @@
 
     // Generate list of grading periods
     let terms = {}
+    let d2 = false
+    let d4 = false
     for(let term of course.terms){
-        let newTerm = new Term(term.termID, term.termName, term.termSeq)
+        let newTerm = new Term(term.termID, term.termName, term.termSeq, term.startDate, term.endDate)
         terms[term.termID] = newTerm
-        courseSettings.termEnabled[term.termID] = true
+        courseSettings.termEnabled[term.termID] = newTerm.inRange()
+
+        if(course.terms.length == 4){
+            console.log(newTerm.seq)
+            if (newTerm.seq == 1 && newTerm.inRange()) d2 = true
+            if (newTerm.seq == 3 && newTerm.inRange()) d4 = true
+
+            console.log(d2, d4)
+            if((d2 && newTerm.seq == 2) || (d4 && newTerm.seq == 4)) 
+                courseSettings.termEnabled[term.termID] = true
+        }
     }
 
     // Normalize weights
