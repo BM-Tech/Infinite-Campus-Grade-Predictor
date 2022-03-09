@@ -52,7 +52,8 @@
 <div class="container">
 	<br>
 
-	<article>
+	<!-- <article> -->
+	<div class="container">
 		{#if loadingState == "loading"}
 			<a href="/#" aria-busy="true">Loading, please wait...</a> <br>
 		{:else if loadingState == "error"}
@@ -65,7 +66,8 @@
 		{:else}
 			<div transition:slide><Editor course={currentCourse} on:message={() => {currentPage="Home"}}></Editor></div>
 		{/if}
-	</article>
+	</div>
+	<!-- </article> -->
 
 	<nav>
 		<ul>

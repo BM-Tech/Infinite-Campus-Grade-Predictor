@@ -42,8 +42,12 @@ export class Category{
     }
 
     toString(equalWeighting, termSettings){
-        let pct = this.calculateGrade(equalWeighting, termSettings).toString()
-        return this.name + " (Grade: " + pct + "%) (Weight: " + (this.weight).toFixed(2) + "%)"
+        try{
+            let pct = this.calculateGrade(equalWeighting, termSettings).toString()
+            return this.name + " (Grade: " + pct + "%) (Weight: " + (this.weight).toFixed(2) + "%)"
+        } catch(e){
+            return this.name
+        }
     }
 }
 
@@ -77,7 +81,7 @@ export class Assignment extends Grade{
             if(this.origional == this.toString()){
                 return ""
             }
-            return "(Origional: " + this.origional + "%)"
+            return "(Original: " + this.origional + "%)"
         }
         return "(New assignment)"
     }

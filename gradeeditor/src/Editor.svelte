@@ -3,6 +3,7 @@
     import { createEventDispatcher } from 'svelte'
 	import { slide } from 'svelte/transition'
     import { Category, Assignment, Term } from './helpers'
+    import Chart from 'svelte-frappe-charts'
 
     const dispatch = createEventDispatcher()
 
@@ -63,11 +64,9 @@
         courseSettings.termEnabled[term.termID] = newTerm.inRange()
 
         if(course.terms.length == 4){
-            console.log(newTerm.seq)
             if (newTerm.seq == 1 && newTerm.inRange()) d2 = true
             if (newTerm.seq == 3 && newTerm.inRange()) d4 = true
 
-            console.log(d2, d4)
             if((d2 && newTerm.seq == 2) || (d4 && newTerm.seq == 4)) 
                 courseSettings.termEnabled[term.termID] = true
         }
@@ -147,7 +146,6 @@
                 let c = copy(newAssig)
                 let t = new Assignment(c.score, c.outof, c.name)
                 categories[categories.indexOf(cat)].addAssignment(t)
-                console.log(t.toString())
                 newAssig = new Assignment(10, 10, "")
                 categories = categories
                 return
@@ -180,6 +178,20 @@
     })
 
     let moreToolsOpen = true
+
+    // charts data initialization
+    let gradesOverTime = {
+        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        datasets: [{
+            values: [10, 12, 3, 9, 8, 15, 9]
+        }]
+    }
+
+    chrome.storage.local.get(['GRADES'], (result) => {
+        if(result.GRADES != undefined){
+            console.log(result.GRADES)
+        }
+    })
 </script>
 
 <!-- Heading title and back button -->
@@ -194,12 +206,12 @@
 
 <!-- New and old grades display -->
 <div bind:this={sticky}>
-    <p><strong>Origional: </strong> {getCurrentGrade()} | <strong>New: </strong> {(newGrade*100).toFixed(2)}%</p>
+    <p><strong>Original: </strong> {getCurrentGrade()} | <strong>New: </strong> {(newGrade*100).toFixed(2)}%</p>
 </div>
 
 {#if issticky}
     <div class="sticky">
-        <p><strong>Origional: </strong> {getCurrentGrade()} | <strong>New: </strong> {(newGrade*100).toFixed(2)}%</p>
+        <p><strong>Original: </strong> {getCurrentGrade()} | <strong>New: </strong> {(newGrade*100).toFixed(2)}%</p>
     </div>
 {/if}
 
@@ -315,16 +327,27 @@
 <!-- Graph -->
 {#if showAreas.showGraph}
     <article transition:slide class="subcard">
-        <p>Show Graph</p>
+        <Chart data={gradesOverTime} type="line" />
     </article>
 {/if}
 
+<br><br>
 <!-- List of expandable categories -->
 <hr>
 {#each categories as cat}
     <details>
         <summary>{cat.toString(courseSettings.equalWeighting[cat.name], courseSettings.termEnabled)}</summary>
         <ul class="longlist">
+            <nav>
+                <ul><li>Weight: </li></ul>
+                <ul><li>
+                    <div class="grid">
+                        <input type="number" bind:value={cat.weight}> 
+                        <p>%</p>
+                    </div>
+                </li></ul>
+            </nav>
+            <br>
             {#each cat.assignments as assig}
                 <!-- Assignment inside category -->
                 {#if assig.isEnabled(courseSettings.termEnabled)}

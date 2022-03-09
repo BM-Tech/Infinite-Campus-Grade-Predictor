@@ -14,6 +14,7 @@
   --primary-hover: #00796b !important;
   --primary-focus: rgba(0, 137, 123, 0.125) !important;
   --primary-inverse: #FFF !important;
+  --accordion-open-summary-color: var(--color) !important;
 }
 
 small{
@@ -21,8 +22,10 @@ small{
 }
 
 summary{
-    font-size: medium;
+    font-size: large;
     font-weight: bold;
+    padding-top: 5px;
+    padding-bottom: 5px;
     color:--color !important;
 }
 
