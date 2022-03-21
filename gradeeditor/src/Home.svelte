@@ -20,20 +20,17 @@
                 pct = term.task.progressPercent
             }
         }
-        console.log(pct)
         return pct
     }
 
 	function openEditor(index){
         dispatch('message', {m: "openEditor", data: classes[index]})
 	}
-    console.log(classes)
     let storageGrades = {}
     for(let i = 0; i < classes.length; i++){
         let cname = classes[i].details[0].task.courseName
         storageGrades[cname] = getPercentFromClass(classes[i].details)
     }
-    console.log(storageGrades)
     chrome.storage.local.get(['GRADES'], function(result) {
         if(result.GRADES == undefined){
             result.GRADES = []
@@ -50,6 +47,10 @@
         chrome.storage.local.set({GRADES: []}, function() {
             console.log('Cleared grades')
         })
+    }
+    
+    window["getgrades"] = function(){
+        console.log(classes)
     }
 </script>
 

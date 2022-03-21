@@ -9,7 +9,19 @@
 
     let courseSettings = {
         equalWeighting: {},
-        termEnabled: {}
+        termEnabled: {},
+        allCategoriesWeightedSame: false
+    }
+
+    let key = 'courseSettings' + course.details[0].task.courseName
+    chrome.storage.local.get(key, (result) => {
+        if(result[key] != undefined) {
+            courseSettings = result[key]
+        }
+    })
+
+    $: {
+        chrome.storage.local.set({[key] : courseSettings})
     }
 
     // Returns default grade without changes
@@ -62,7 +74,6 @@
         let newTerm = new Term(term.termID, term.termName, term.termSeq, term.startDate, term.endDate)
         terms[term.termID] = newTerm
         courseSettings.termEnabled[term.termID] = newTerm.inRange()
-
         if(course.terms.length == 4){
             if (newTerm.seq == 1 && newTerm.inRange()) d2 = true
             if (newTerm.seq == 3 && newTerm.inRange()) d4 = true
@@ -89,10 +100,13 @@
         newGrade = 0
         let renormalize = false
         let subtractThisWeight = 0
+
         for(let cat of categories){
             let wieghtEqually = courseSettings.equalWeighting[cat.name]
             if(wieghtEqually == null) wieghtEqually = false
+            
             let wg = cat.getWeightedGrade(wieghtEqually, courseSettings.termEnabled)
+
             if(!isNaN(wg)){
                 newGrade += wg
             } else {
@@ -104,6 +118,21 @@
         // If a whole grade category is null, ignore it and renormalize 
         if(renormalize){
             newGrade /= (1 - subtractThisWeight/100)
+        }
+
+        // If all categories are weighted equally, recalculate accordingly
+        if(courseSettings.allCategoriesWeightedSame){
+            newGrade = 0 
+            let catCount = 0
+            for(let cat of categories){
+                let x = cat.calculateGrade(courseSettings.equalWeighting[cat.name], courseSettings.termEnabled).getPercent()
+                if(!isNaN(x)){
+                    newGrade += x
+                    catCount++
+                }
+            }
+
+            newGrade /= catCount
         }
         newGrade = newGrade
     }
@@ -189,6 +218,7 @@
 
     chrome.storage.local.get(['GRADES'], (result) => {
         if(result.GRADES != undefined){
+            console.log("Grades from storage:")
             console.log(result.GRADES)
         }
     })
@@ -200,7 +230,7 @@
         <li><h3>{course.details[0].task.courseName}</h3></li>
     </ul>
     <ul>
-        <li><a href="#/" on:click={() => {dispatch('message', {m: "goHome"})}}><strong>Back</strong></a></li>
+        <li><a role="button" class="outline" href="#/" on:click={() => {dispatch('message', {m: "goHome"})}}><strong>Back</strong></a></li>
     </ul>
 </nav>
 
@@ -248,6 +278,16 @@
                     </ul>
                 </nav>
             {/each}
+
+            <hr><br>
+            <nav style="width: 100%">
+                <ul><li>All categories weighted same</li></ul>
+                <ul><li>
+                    <label for="category">
+                        <input type="checkbox" name="category" role="switch" bind:checked={courseSettings.allCategoriesWeightedSame}>
+                    </label>
+                </li></ul>
+            </nav>
         </div>
     </article>
 {/if}

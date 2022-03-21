@@ -37,6 +37,10 @@ chrome.runtime.onMessage.addListener(
 
 			res(0)
 		}
+
+		if(req.m == "openEditor"){
+			chrome.tabs.create({url: '/gradeeditor/public/index.html'})
+		}
 	}
 )
 

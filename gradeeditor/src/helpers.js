@@ -105,8 +105,8 @@ export class Term{
         this.seq = seq
         let s = start.split('-')
         let e = end.split('-')
-        this.start = new Date(s[0], s[1]-1, s[2])
-        this.end = new Date(e[0], e[1]-1, e[2])
+        this.start = new Date(s[0], s[1], s[2])
+        this.end = new Date(e[0], e[1], e[2])
     }
 
     inRange(){
