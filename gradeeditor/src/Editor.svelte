@@ -68,19 +68,24 @@
 
     // Generate list of grading periods
     let terms = {}
-    let d2 = false
-    let d4 = false
+    let tids = []
     for(let term of course.terms){
         let newTerm = new Term(term.termID, term.termName, term.termSeq, term.startDate, term.endDate)
         terms[term.termID] = newTerm
         courseSettings.termEnabled[term.termID] = newTerm.inRange()
-        if(course.terms.length == 4){
-            if (newTerm.seq == 1 && newTerm.inRange()) d2 = true
-            if (newTerm.seq == 3 && newTerm.inRange()) d4 = true
+        tids.push(term.termID)
+    }
+    if(course.terms.length == 4){
+        console.log(courseSettings.termEnabled[tids[3]])
+        if(courseSettings.termEnabled[tids[1]]){
+            courseSettings.termEnabled[tids[0]] = true
 
-            if((d2 && newTerm.seq == 2) || (d4 && newTerm.seq == 4)) 
-                courseSettings.termEnabled[term.termID] = true
         }
+        if(courseSettings.termEnabled[tids[3]]){
+            courseSettings.termEnabled[tids[2]] = true
+        }
+
+        courseSettings = courseSettings
     }
 
     // Normalize weights
@@ -143,7 +148,8 @@
         newCategory : false,
         showGraph : false,
         equalWeighting: false,
-        gradingPeriods: false
+        gradingPeriods: false,
+        whatToMaintain: false
     }
 
     function toggleArea(area){
@@ -222,6 +228,39 @@
             console.log(result.GRADES)
         }
     })
+
+    // Minimum need
+    let gradeWanted = 90
+    let minNeedAssig = new Assignment(10, 10, "")
+    $: {
+        let gradeWoNewcat = newGrade
+        let categ = categories[0]
+        for(let cat of categories){
+            if(cat.name == minNeedAssig["catName"]){
+                gradeWoNewcat -= cat.getWeightedGrade(courseSettings.equalWeighting[cat.name], courseSettings.termEnabled)
+                categ = cat
+            }
+        }
+        let neededCatGrade = gradeWanted - gradeWoNewcat
+        /*
+            currScore + newScore 
+            ____________________ = neededCatGrade
+            currOutof + newOutof
+
+            newScore = neededCatGrade(currOutof + newOutof) - currScore
+        */
+        try{
+            let categGrade = categ.calculateGrade()
+            let newScore = neededCatGrade * (categGrade.outof + minNeedAssig.outof) - categGrade.score
+            minNeedAssig.score = newScore
+        } catch(e){}
+    }
+
+    function makeAssigVariable(outOf, cat){
+        minNeedAssig.outof = outOf
+        minNeedAssig["catName"] = cat
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 </script>
 
 <!-- Heading title and back button -->
@@ -249,13 +288,14 @@
 <div class="grid">
     <button on:click={() => {toggleArea("newAssig")}}>New Assignment</button>
     <button on:click={() => {toggleArea("newCategory")}}>New Category</button>
-    <!-- <button on:click={() => {toggleArea("showGraph")}}>Show graph</button> -->
+    <button on:click={() => {toggleArea("showGraph")}}>Show graph</button>
 </div>
 <small class="sidewayslist">
     <a href="#a" on:click={()=>{moreToolsOpen = !moreToolsOpen}}>More Tools</a>
     {#if moreToolsOpen}
         <a href="#a" on:click={()=>{toggleArea("equalWeighting")}}>Equal Weighting</a>
         <a href="#a" on:click={()=>{toggleArea("gradingPeriods")}}>Grading Periods</a>
+        <a href="#a" on:click={()=>{toggleArea("whatToMaintain")}}>Minimum Need</a>
     {/if}
 </small>
 
@@ -371,6 +411,34 @@
     </article>
 {/if}
 
+<!-- What do I need to maintain X grade? -->
+{#if showAreas.whatToMaintain}
+    <article transition:slide class="subcard">
+        <h4>What do I need to maintain X grade?</h4>
+        <p>Create a variable assignment or choose an existing one to predict the lowest score you need to maintain a certain grade.</p>
+        <div class="grid">
+            <p>Grade wanted (percent):</p>
+            <input type="number" placeholder="%" bind:value={gradeWanted}>
+        </div>
+        <p>Variable assignment:</p>
+        <div class="grid">
+            <label for="aCat">Category
+                <select name="aCat" required bind:value={minNeedAssig["catName"]}>
+                    {#each categories as cat}
+                        <option value={cat.name}>{cat.name}</option>
+                    {/each}
+                </select>
+            </label>
+
+            <label for="aOutOf">Out of
+                <input type="number" name="aOutOf" required bind:value={minNeedAssig.outof}>
+            </label>
+        </div>
+
+        <p>You need a minimum of <strong>{minNeedAssig.score}/{minNeedAssig.outof} ({minNeedAssig.toString()}%)</strong> on this assignment to maintain a grade of {gradeWanted}%.</p>
+    </article>
+{/if}
+
 <br><br>
 <!-- List of expandable categories -->
 <hr>
@@ -394,8 +462,13 @@
                     <li><nav>
                         <ul><li>
                             {assig.name} 
-                            {assig.toString()}% {assig.getOgGrade()}
-                            <a on:click|preventDefault={deleteAssignment(cat, assig)} href="/">delete</a>
+                            {assig.toString()}% {assig.getOgGrade()} &nbsp;
+                            <small class="modifiers">
+                                <a on:click|preventDefault={deleteAssignment(cat, assig)} href="#a">delete</a> &nbsp;
+                                {#if showAreas.whatToMaintain}
+                                    <a on:click|preventDefault={makeAssigVariable(assig.outof, cat.name)} href="#a">make variable</a>
+                                {/if}
+                            </small>
                         </li></ul>
                         <ul><li>
                             <div class="grid">

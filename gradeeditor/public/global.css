@@ -78,3 +78,7 @@ details[open] > *:not(summary) {
 .sidewayslist a:not(:first-child){
   color: lightgreen;
 }
+
+.modifiers a{
+  display: inline;
+}

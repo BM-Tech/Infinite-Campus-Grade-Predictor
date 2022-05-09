@@ -74,6 +74,7 @@ export class Assignment extends Grade{
         this.name = name
         this.origional = origional
         this.term = term
+        this.exclude = false
     }
 
     getOgGrade(){
@@ -93,6 +94,9 @@ export class Assignment extends Grade{
     isEnabled(termSettings){
         if(termSettings == undefined || this.term == undefined){
             return true
+        }
+        if(this.exclude){
+            return false
         }
         return termSettings[this.term]
     }
