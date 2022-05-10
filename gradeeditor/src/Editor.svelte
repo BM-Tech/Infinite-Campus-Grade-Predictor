@@ -288,14 +288,14 @@
 <div class="grid">
     <button on:click={() => {toggleArea("newAssig")}}>New Assignment</button>
     <button on:click={() => {toggleArea("newCategory")}}>New Category</button>
-    <button on:click={() => {toggleArea("showGraph")}}>Show graph</button>
+    <!-- <button on:click={() => {toggleArea("showGraph")}}>Show graph</button> -->
 </div>
 <small class="sidewayslist">
     <a href="#a" on:click={()=>{moreToolsOpen = !moreToolsOpen}}>More Tools</a>
     {#if moreToolsOpen}
         <a href="#a" on:click={()=>{toggleArea("equalWeighting")}}>Equal Weighting</a>
         <a href="#a" on:click={()=>{toggleArea("gradingPeriods")}}>Grading Periods</a>
-        <a href="#a" on:click={()=>{toggleArea("whatToMaintain")}}>Minimum Need</a>
+        <!-- <a href="#a" on:click={()=>{toggleArea("whatToMaintain")}}>Minimum Need</a> -->
     {/if}
 </small>
 
