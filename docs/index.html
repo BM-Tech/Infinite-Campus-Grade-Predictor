@@ -18,8 +18,15 @@
             background-repeat: no-repeat;
             background-color: #92c83e;
         }
-        img{border-radius: 10px;}
-        .imgbtn{background-color: #d1d1d1; margin-bottom: 10px;}
+        img{
+          border-radius: 10px;
+          border-color: white;
+          border-width: 10px;
+        }
+        .center{
+          display:flex; justify-content:center; align-items:center
+        }
+        .imgbtn{background-color: #abc0ce; margin-bottom: 10px;}
         .notblue li a{color: rgba(200, 200, 255, 1);}
     </style>
 
@@ -30,21 +37,12 @@
 
     <!-- Hero -->
     <div class="hero" data-theme="dark">
-      <nav class="container-fluid">
-        <ul>
-          <li><a href="./" class="contrast" onclick="event.preventDefault()"><strong>Infinite Campus Grade Predictor</strong></a></li>
-        </ul>
-        <ul class="notblue">
-          <li><a href="https://chrome.google.com/webstore/detail/infinite-campus-grade-pre/ggakloicnidnfjbdfeapcjdhoeikpmbc?hl=en&authuser=0">Chrome</a></li>
-          <li><a href="firefox-v4.xpi">Firefox</a></li>
-          <li><a href="https://github.com/benman604/Infinite-Campus-Grade-Predictor">Code</a></li>
-        </ul>
-      </nav>
       <header class="container">
         <br><br>
-        <h1>Take control of your grades</h1>
+        <small><strong>Infinite Campus Grade Predictor</strong></small>
+        <h1 style="margin-bottom:10px">Take control of your grades</h1>
         <p> <a role="button" href="https://chrome.google.com/webstore/detail/infinite-campus-grade-pre/ggakloicnidnfjbdfeapcjdhoeikpmbc?hl=en&authuser=0">Chrome</a>
-            <a role="button" href="firefox-v4.xpi">Firefox</a>
+            <a role="button" href="icgp-v1-0-5-firefox.xpi">Firefox</a>
             <a href="https://github.com/benman604/Infinite-Campus-Grade-Predictor" role="button" class="secondary">Code</a>
         </p>
       </header>
@@ -57,7 +55,7 @@
                 <h3>Fast and easy</h3>
                 <p>Stop using your calculator to add up every assignment in every category. ICGP instantly calculates your predictions.</p>
             </hgroup>
-            <img src="sc1.png" alt="Screenshot">
+            <img src="sc/sc1.png" alt="Screenshot">
         </div>
         <br><br>
 
@@ -66,7 +64,7 @@
                 <h3>Predict Anything</h3>
                 <p>Whether its a final, an assignment in a new category, extra credit, or a change to an old grade, ICGP does it for you.</p>
             </hgroup>
-            <img src="sc2.png" alt="Screenshot">
+            <img src="sc/sc2.png" alt="Screenshot">
         </div>
         <br><br>
 
@@ -74,26 +72,42 @@
             <hgroup>
                 <h3>Open Source</h3>
                 <p>Find an issue or bug? Fit it! Want a new feature? Build it!</p>
+                <a href="https://github.com/benman604/Infinite-Campus-Grade-Predictor" role="button" class="secondary">Github Repository</a>
+                <a href="https://forms.gle/rTvxsK9CFrAyapx68" role="button" class="secondary">Feedback/Feature Request</a>
+                <br><br>
             </hgroup>
-            <img src="sc3.png" alt="Screenshot">
+            <img src="sc/sc3.png" alt="Screenshot">
         </div>
+
     </main>
 
-    <!-- Subscribe -->
-    <section aria-label="Subscribe example">
+    <hr><br><br>
+    <div class="container">
+      <p class="center">"This is a google chrome extension that is saving my life! Whenever I want to check or predict my grades, this extension does the job and helps me calculate what my grade is going to be and it is much faster and convenient compared to just using a normal calculator. "</p>
+      <small class="center">Arnesh Kumar, ★★★★★</small>
+      <small class="center">Chrome Webstore</small>
+    </div>
+    <br>
+
+    <article>
+      <br>
       <div class="container">
-        <article>
-          <hgroup>
-            <h2>Download Now</h2>
-            <h3>Available on Google Chrome (including Chromium forks) and Firefox</h3>
-          </hgroup>
-          <div class="grid">
-            <a href="https://chrome.google.com/webstore/detail/infinite-campus-grade-pre/ggakloicnidnfjbdfeapcjdhoeikpmbc?hl=en&authuser=0"><img src="chromewebstore.png" alt="Install for Google Chrome" class="imgbtn"></a>
-            <a href="firefox-v4.xpi"><img src="firefoxaddon.png" alt="Install for Firefox" class="imgbtn"></a>
-          </div>
-        </article>
+        <hgroup>
+          <h2>Download Now</h2>
+          <h3>Available on Google Chrome (including Chromium forks) and Firefox</h3>
+        </hgroup>
+        <div style="display: inline">
+          <a href="https://chrome.google.com/webstore/detail/infinite-campus-grade-pre/ggakloicnidnfjbdfeapcjdhoeikpmbc?hl=en&authuser=0"><img src="chromewebstore.png" alt="Install for Google Chrome" class="imgbtn"></a>
+          <a href="icgp-v1-0-5-firefox.xpi"><img src="firefoxaddon.png" alt="Install for Firefox" class="imgbtn"></a>
+        </div>
       </div>
-    </section><!-- ./ Subscribe -->
+    </article>
+
+    <div class="container">
+      <small>&copy; BM Tech 2022</small>
+    </div>
+    <br>
+
   </body>
 
 </html>
