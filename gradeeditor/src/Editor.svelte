@@ -295,7 +295,7 @@
     {#if moreToolsOpen}
         <a href="#a" on:click={()=>{toggleArea("equalWeighting")}}>Equal Weighting</a>
         <a href="#a" on:click={()=>{toggleArea("gradingPeriods")}}>Grading Periods</a>
-        <!-- <a href="#a" on:click={()=>{toggleArea("whatToMaintain")}}>Minimum Need</a> -->
+        <a href="#a" on:click={()=>{toggleArea("whatToMaintain")}}>Minimum Need</a>
     {/if}
 </small>
 
