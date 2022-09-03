@@ -19,7 +19,7 @@ chrome.runtime.onMessage.addListener(
 							fetch(`https://${x.IC_subdomain}.infinitecampus.org/campus/resources/portal/grades/detail/${i.sectionID}?q=${Date.now()}`)
 							.then(data => data.json())
 							.then(data => {
-								console.log(data)
+								// console.log(data)
 								chrome.runtime.sendMessage({m: "recieveGrades", data: data})
 							})
 							.catch(e => {

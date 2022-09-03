@@ -65,6 +65,14 @@
                 categories.push(currentCategory)
         }
     }
+    // console.log(categories)
+    if(categories.length == 1){
+        categories[0].initialWeight = 100
+        categories[0].weight = 100
+        categories = categories
+        console.log(categories)
+
+    }
 
     // Generate list of grading periods
     let terms = {}
@@ -76,7 +84,7 @@
         tids.push(term.termID)
     }
     if(course.terms.length == 4){
-        console.log(courseSettings.termEnabled[tids[3]])
+        // console.log(courseSettings.termEnabled[tids[0]])
         if(courseSettings.termEnabled[tids[1]]){
             courseSettings.termEnabled[tids[0]] = true
 

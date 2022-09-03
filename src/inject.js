@@ -17,8 +17,9 @@ let rep = setInterval(() => {
     let littleMessages = [
         "Thanks for using Infinite Campus Grade Predictor! <br> <a href='https://chrome.google.com/webstore/detail/infinite-campus-grade-pre/ggakloicnidnfjbdfeapcjdhoeikpmbc?hl=en&authuser=0' target='_blank'> Leave us a review! </a>",
         "Found a bug? Have a feature in mind? <br> <a href='https://docs.google.com/forms/d/e/1FAIpQLSdDfQd5363XU4uyr-AIMLo-oKTjlxPSgJzK9tNknEFsXGCRag/viewform' target='_blank'> Let us know! </a>",
-        "Grades dont define you as a person <br> <a href='https://www.youtube.com/watch?v=QH2-TGUlwu4' target='_blank'> But they do help you get into college </a>",
+        "Grades don't define you as a person &#128588; &#128588; &#128588;",
         "Keep it up, you're doing great! <br> &#x1f4aa; &#x1f4aa; &#x1f4aa; &#x1f4aa; &#x1f4aa;",
+        "Those grades do be lookin mighty fine &#x1f60e;",
     ]
     let message = littleMessages[Math.floor(Math.random()*littleMessages.length)];
     let promo = document.createElement("small")

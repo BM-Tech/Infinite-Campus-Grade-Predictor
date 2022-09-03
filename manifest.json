@@ -1,9 +1,9 @@
 {
   "name": "Infinite Campus Grade Predictor",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "manifest_version": 3,
   "description": "Predict your future grades on Infinite Campus",
-  "homepage_url": "https://github.com/benman604/Infinite-Campus-Grade-Predictor",
+  "homepage_url": "https://github.com/BM-Tech/Infinite-Campus-Grade-Predictor",
   "icons": {
     "16": "icons/favicon-16x16.png",
     "48": "icons/favicon-32x32.png",
