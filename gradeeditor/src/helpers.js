@@ -69,12 +69,13 @@ export class Grade{
 }
 
 export class Assignment extends Grade{
-    constructor(score, outof, name, origional, term){
+    constructor(score, outof, name, origional, term, duedate){
         super(score, outof)
         this.name = name
         this.origional = origional
         this.term = term
         this.exclude = false
+        this.duedate = Date.parse(duedate)
     }
 
     getOgGrade(){

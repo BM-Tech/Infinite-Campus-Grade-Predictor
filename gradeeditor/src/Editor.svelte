@@ -60,7 +60,8 @@
                         assignment.totalPoints * assignment.multiplier,
                         assignment.assignmentName,
                         ((assignment.scorePoints * assignment.multiplier)/(assignment.totalPoints * assignment.multiplier)*100).toFixed(2),
-                        assignment.termID
+                        assignment.termID,
+                        assignment.dueDate
                     )
                 )
             }
