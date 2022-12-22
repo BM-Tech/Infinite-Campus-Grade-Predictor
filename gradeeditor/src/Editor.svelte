@@ -286,7 +286,9 @@
         }
         chrome.storage.local.get(['GRADES'], (result) => {
             if(result.GRADES == undefined){
-                chrome.storage.local.set({GRADES: {saveCourseName: course}})
+                let save = {}
+                save[saveCourseName] = course
+                chrome.storage.local.set({GRADES: save})
             } else {
                 let courses = result.GRADES
                 courses[saveCourseName] = course
@@ -364,6 +366,7 @@
     <!-- <button on:click={() => {toggleArea("showGraph")}}>Show graph</button> -->
 </div>
 
+<!-- More tools -->
 {#if !isPlayground}
     <small class="sidewayslist">
         <a href="#a" on:click={()=>{moreToolsOpen = !moreToolsOpen}}>More Tools</a>
@@ -480,6 +483,7 @@
     </article>
 {/if}
 
+<!-- Save/Load -->
 {#if showAreas.saveLoad}
     <article transition:slide class="subcard">
         <h4>Save & Load</h4>
@@ -559,13 +563,18 @@
 
             <nav>
                 <ul>
-                    <li><input type="text" placeholder="New Assignment Name..."></li>
-                    <li><a href="#1" role="button" class="primary outline">Add</a></li>
+                    <li><input type="text" placeholder="New Assignment Name..." bind:value={newAssig.name}></li>
+                    <li><a href="#1" role="button" class="primary outline" on:click={
+                        () => {
+                            newAssig.catName = cat.name
+                            submitAssignment()
+                        }
+                    }>Add</a></li>
                 </ul>
                 <ul><li>
                     <div class="grid">
-                        <input type="number" placeholder="Score">
-                        <input type="number" placeholder="Out Of">
+                        <input type="number" placeholder="Score" bind:value={newAssig.score}>
+                        <input type="number" placeholder="Out Of" bind:value={newAssig.outof}>
                     </div>
                 </li></ul>
             </nav>

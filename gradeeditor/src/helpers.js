@@ -8,7 +8,7 @@ export class Category{
     }
 
     addAssignment(assignment){
-        this.assignments.push(assignment)
+        this.assignments.unshift(assignment)
     }
 
     calculateGrade(equalWeighting, termSettings){
