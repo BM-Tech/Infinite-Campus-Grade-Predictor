@@ -4,6 +4,7 @@
 	import { slide } from 'svelte/transition'
     import { Category, Assignment, Term } from './helpers'
     import Chart from 'svelte-frappe-charts'
+    export let isPlayground = false
 
     const dispatch = createEventDispatcher()
 
@@ -13,15 +14,18 @@
         allCategoriesWeightedSame: false
     }
 
-    let key = 'courseSettings' + course.details[0].task.courseName
+    let key
+    key = 'courseSettings' + course.details[0].task.courseName
     chrome.storage.local.get(key, (result) => {
         if(result[key] != undefined) {
             courseSettings = result[key]
+            console.log(courseSettings)
         }
     })
 
     $: {
-        chrome.storage.local.set({[key] : courseSettings})
+        if(!isPlayground)
+            chrome.storage.local.set({[key] : courseSettings})
     }
 
     // Returns default grade without changes
@@ -152,12 +156,13 @@
 
     // Toggleable areas
     let showAreas = {
-        newAssig : false,
-        newCategory : false,
-        showGraph : false,
+        newAssig:       false,
+        newCategory:    false,
+        showGraph:      false,
         equalWeighting: false,
         gradingPeriods: false,
-        whatToMaintain: false
+        whatToMaintain: false,
+        saveLoad: false
     }
 
     function toggleArea(area){
@@ -237,11 +242,11 @@
         }
     })
 
-    // Minimum need
+    // Minimum need (doesnt work bruh)
     let gradeWanted = 90
     let minNeedAssig = new Assignment(10, 10, "")
     $: {
-        let gradeWoNewcat = newGrade
+        let gradeWoNewcat = copy(newGrade)
         let categ = categories[0]
         for(let cat of categories){
             if(cat.name == minNeedAssig["catName"]){
@@ -250,24 +255,81 @@
             }
         }
         let neededCatGrade = gradeWanted - gradeWoNewcat
+        // console.log("you need a " + neededCatGrade + " in " + categ.name + " to get a " + gradeWanted + " overall")
         /*
             currScore + newScore 
             ____________________ = neededCatGrade
             currOutof + newOutof
 
-            newScore = neededCatGrade(currOutof + newOutof) - currScore
+            newScore = (neededCatGrade)(currOutof + newOutof) - currScore
         */
         try{
             let categGrade = categ.calculateGrade()
             let newScore = neededCatGrade * (categGrade.outof + minNeedAssig.outof) - categGrade.score
             minNeedAssig.score = newScore
-        } catch(e){}
+        } catch(e){
+            console.log(e)
+        }
     }
 
     function makeAssigVariable(outOf, cat){
         minNeedAssig.outof = outOf
         minNeedAssig["catName"] = cat
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    let saveCourseName
+    function saveCourseAs(){
+        let course = {
+            name: saveCourseName,
+            categories: categories
+        }
+        chrome.storage.local.get(['GRADES'], (result) => {
+            if(result.GRADES == undefined){
+                chrome.storage.local.set({GRADES: {saveCourseName: course}})
+            } else {
+                let courses = result.GRADES
+                courses[saveCourseName] = course
+                chrome.storage.local.set({GRADES: courses})
+            }
+        })
+        dispatch('home')
+    }
+
+    let loadCourseName
+    let savedCourses = []
+
+    if(isPlayground) {
+        chrome.storage.local.get(['GRADES'], (result) => {
+            if(result.GRADES != undefined){
+                savedCourses = result.GRADES
+            }
+        })
+    }
+
+    function loadCourse(){
+        let course = savedCourses[loadCourseName]
+        console.log(course.categories)
+        categories = []
+        for(let i of course.categories){
+            let cat = new Category(i.weight, i.name)
+            for(let j of i.assignments){
+                let assig = new Assignment(j.score, j.outof, j.name)
+                cat.addAssignment(assig)
+            }
+            categories.push(cat)
+        }
+        saveCourseName = loadCourseName
+    }
+
+    function deleteCourse(){
+        try {        
+            delete savedCourses[saveCourseName]
+            chrome.storage.local.set({GRADES: savedCourses})
+            dispatch('home')
+        } catch(e){
+            console.log(e)
+        }
     }
 </script>
 
@@ -277,7 +339,7 @@
         <li><h3>{course.details[0].task.courseName}</h3></li>
     </ul>
     <ul>
-        <li><a role="button" class="outline" href="#/" on:click={() => {dispatch('message', {m: "goHome"})}}><strong>Back</strong></a></li>
+        <li><a role="button" class="outline" href="#/" on:click={() => {dispatch('home')}}><strong>Back</strong></a></li>
     </ul>
 </nav>
 
@@ -296,16 +358,22 @@
 <div class="grid">
     <button on:click={() => {toggleArea("newAssig")}}>New Assignment</button>
     <button on:click={() => {toggleArea("newCategory")}}>New Category</button>
+    {#if isPlayground}
+        <button on:click={() => {toggleArea("saveLoad")}}>Save/Load</button>
+    {/if}
     <!-- <button on:click={() => {toggleArea("showGraph")}}>Show graph</button> -->
 </div>
-<small class="sidewayslist">
-    <a href="#a" on:click={()=>{moreToolsOpen = !moreToolsOpen}}>More Tools</a>
-    {#if moreToolsOpen}
-        <a href="#a" on:click={()=>{toggleArea("equalWeighting")}}>Equal Weighting</a>
-        <a href="#a" on:click={()=>{toggleArea("gradingPeriods")}}>Grading Periods</a>
-        <a href="#a" on:click={()=>{toggleArea("whatToMaintain")}}>Minimum Need</a>
-    {/if}
-</small>
+
+{#if !isPlayground}
+    <small class="sidewayslist">
+        <a href="#a" on:click={()=>{moreToolsOpen = !moreToolsOpen}}>More Tools</a>
+        {#if moreToolsOpen}
+            <a href="#a" on:click={()=>{toggleArea("equalWeighting")}}>Equal Weighting</a>
+            <a href="#a" on:click={()=>{toggleArea("gradingPeriods")}}>Grading Periods</a>
+            <!-- <a href="#a" on:click={()=>{toggleArea("whatToMaintain")}}>Minimum Need</a> -->
+        {/if}
+    </small>
+{/if}
 
 <!-- Equal weighting setting -->
 {#if showAreas.equalWeighting}
@@ -383,10 +451,10 @@
 
             <div class="grid">
                 <label for="aScore">Score
-                    <input type="number" name="aScore" required bind:value={newAssig.score}>
+                    <input type="number" name="aScore" step="0.01" required bind:value={newAssig.score}>
                 </label>
                 <label for="aOutOf">Out of
-                    <input type="number" name="aOutOf" required bind:value={newAssig.outof}>
+                    <input type="number" name="aOutOf" step="0.01" required bind:value={newAssig.outof}>
                 </label>
             </div>
 
@@ -409,6 +477,31 @@
             </div>
             <input type="submit" value="Add">
         </form>
+    </article>
+{/if}
+
+{#if showAreas.saveLoad}
+    <article transition:slide class="subcard">
+        <h4>Save & Load</h4>
+        <p>Save your current course to a file, or load a course from a file.</p>
+        <form on:submit|preventDefault={saveCourseAs} style="margin-bottom: 0;">
+            <div class="grid">
+                <input type="text" placeholder="Save Name..." bind:value={saveCourseName}>
+                <input type="submit" value="Save As">
+            </div>
+        </form>
+        <div class="grid">
+            <select name="loadCourse" bind:value={loadCourseName}>
+                {#each Object.entries(savedCourses) as [name, course]}
+                    <option value={name}>{name}</option>
+                {/each}
+            </select>
+            <button on:click={loadCourse}>Load</button>
+        </div>
+
+        <div class="sidewayslist">
+            <a href="#1" role="button" class="secondary outline" on:click|preventDefault={deleteCourse}>Delete</a>
+        </div>
     </article>
 {/if}
 
@@ -460,6 +553,19 @@
                     <div class="grid">
                         <input type="number" bind:value={cat.weight}> 
                         <p>%</p>
+                    </div>
+                </li></ul>
+            </nav>
+
+            <nav>
+                <ul>
+                    <li><input type="text" placeholder="New Assignment Name..."></li>
+                    <li><a href="#1" role="button" class="primary outline">Add</a></li>
+                </ul>
+                <ul><li>
+                    <div class="grid">
+                        <input type="number" placeholder="Score">
+                        <input type="number" placeholder="Out Of">
                     </div>
                 </li></ul>
             </nav>

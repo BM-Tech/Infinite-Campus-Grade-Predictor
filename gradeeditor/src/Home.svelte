@@ -24,7 +24,7 @@
     }
 
 	function openEditor(index){
-        dispatch('message', {m: "openEditor", data: classes[index]})
+        dispatch('editor', {m: "openEditor", data: classes[index]})
 	}
     let storageGrades = {}
     for(let i = 0; i < classes.length; i++){
@@ -56,7 +56,12 @@
 
 <br>
 {#each classes as cl, i}
-    <button on:click={() => openEditor(i)} style="padding: 5 !important">
-        <strong>{cl.details[0].task.courseName}</strong> {getGradeFromClass(cl.details)}
+    <button on:click={() => openEditor(i)}>
+        <nav>
+            <ul><strong>{cl.details[0].task.courseName}</strong></ul>
+            <ul>{getGradeFromClass(cl.details)}</ul>
+        </nav>
     </button>
 {/each}
+
+<a href="#1" role="button" class="secondary" on:click={() => {dispatch('playground')}}>Open Playground</a>

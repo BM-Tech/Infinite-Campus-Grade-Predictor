@@ -1,6 +1,7 @@
 <script>
 	import Home from './Home.svelte'
 	import Editor from './Editor.svelte'
+	import { NullCourse } from './NullCourse.js'
 	import { slide } from 'svelte/transition'
 
 	// chrome.storage.local.get(['IC_subdomain'], (res) => {
@@ -47,6 +48,10 @@
 		currentCourse = event.detail.data
 		currentPage = "Editor"
 	}
+
+	function openPlayground(){
+		currentPage = "Playground"
+	}
 </script>
 
 <div class="container">
@@ -62,9 +67,11 @@
 		{/if}
 
 		{#if currentPage == "Home"}
-			<div transition:slide><Home classes={classes} on:message={openEditor}></Home></div>
+			<div transition:slide><Home classes={classes} on:editor={openEditor} on:playground={openPlayground}></Home></div>
+		{:else if currentPage == "Playground"}
+			<div transition:slide><Editor isPlayground={true} course={NullCourse} on:home={() => {currentPage="Home"}}></Editor></div>
 		{:else}
-			<div transition:slide><Editor course={currentCourse} on:message={() => {currentPage="Home"}}></Editor></div>
+			<div transition:slide><Editor course={currentCourse} on:home={() => {currentPage="Home"}}></Editor></div>
 		{/if}
 	</div>
 	<!-- </article> -->
@@ -75,7 +82,7 @@
 		</ul>
 		<ul>
 			<li><a href="https://benman604.github.io/Infinite-Campus-Grade-Predictor/"><small>About</small></a></li>
-			<li><a href="https://github.com/benman604/Infinite-Campus-Grade-Predictor"><small>Github</small></a></li>
+			<li><a href="https://github.com/bm-tech/Infinite-Campus-Grade-Predictor"><small>Github</small></a></li>
 		</ul>
 	</nav>
 </div>

@@ -46,6 +46,7 @@ chrome.runtime.onMessage.addListener(
 
 chrome.runtime.onInstalled.addListener((dt) => {
 	if(dt.reason == "install"){
+		chrome.storage.local.set({IC_subdomain: "fremontunifiedca"})
 		chrome.tabs.create({url: "/welcome/index.html"})
 	}
 })
