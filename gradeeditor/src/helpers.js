@@ -75,7 +75,7 @@ export class Assignment extends Grade{
         this.origional = origional
         this.term = term
         this.exclude = false
-        this.duedate = Date.parse(duedate)
+        this.duedate = new Date(duedate)
     }
 
     getOgGrade(){

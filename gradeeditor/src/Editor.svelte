@@ -39,6 +39,16 @@
         return text
 	}
 
+    // charts data initialization
+    let gradesOverTime = {
+        labels: [],
+        datasets: [{
+            values: []
+        }]
+    }
+
+    let SORTED_LIST_OF_ASSIGNMENTS = []
+
     // Reformat course object to list of categories 
     let newGrade = 100
     let categories = []
@@ -54,22 +64,31 @@
 
             // Add assignments to category
             for(let assignment of category.assignments){
-                currentCategory.addAssignment(
-                    new Assignment(
-                        parseFloat(assignment.scorePoints) * assignment.multiplier,
-                        assignment.totalPoints * assignment.multiplier,
-                        assignment.assignmentName,
-                        ((assignment.scorePoints * assignment.multiplier)/(assignment.totalPoints * assignment.multiplier)*100).toFixed(2),
-                        assignment.termID,
-                        assignment.dueDate
-                    )
+                let thisassig = new Assignment(
+                    parseFloat(assignment.scorePoints) * assignment.multiplier,
+                    assignment.totalPoints * assignment.multiplier,
+                    assignment.assignmentName,
+                    ((assignment.scorePoints * assignment.multiplier)/(assignment.totalPoints * assignment.multiplier)*100).toFixed(2),
+                    assignment.termID,
+                    assignment.dueDate
                 )
+                currentCategory.addAssignment(thisassig)
+                SORTED_LIST_OF_ASSIGNMENTS.push(thisassig)
             }
 
             if(!existance.true)
                 categories.push(currentCategory)
         }
     }
+
+    // Sort SORTED_LIST_OF_ASSIGNMENTS by i.duedate
+    SORTED_LIST_OF_ASSIGNMENTS.sort((a, b) => (a.dueDate > b.dueDate) ? 1 : -1)
+    for(let i of SORTED_LIST_OF_ASSIGNMENTS){
+        console.log(i)
+        gradesOverTime.labels.push(i.name + ", " + i.duedate.toLocaleString().split(',')[0])
+        gradesOverTime.datasets[0].values.push(i.score)
+    }
+
     // console.log(categories)
     if(categories.length == 1){
         categories[0].initialWeight = 100
@@ -163,7 +182,7 @@
         equalWeighting: false,
         gradingPeriods: false,
         whatToMaintain: false,
-        saveLoad: false
+        saveLoad:       false
     }
 
     function toggleArea(area){
@@ -228,21 +247,6 @@
 
     let moreToolsOpen = true
 
-    // charts data initialization
-    let gradesOverTime = {
-        labels: ["January", "February", "March", "April", "May", "June", "July"],
-        datasets: [{
-            values: [10, 12, 3, 9, 8, 15, 9]
-        }]
-    }
-
-    chrome.storage.local.get(['GRADES'], (result) => {
-        if(result.GRADES != undefined){
-            console.log("Grades from storage:")
-            console.log(result.GRADES)
-        }
-    })
-
     // Minimum need (doesnt work bruh)
     let gradeWanted = 90
     let minNeedAssig = new Assignment(10, 10, "")
@@ -279,6 +283,7 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // Save and load (Playground only)
     let saveCourseName
     function saveCourseAs(){
         let course = {
@@ -363,8 +368,9 @@
     <button on:click={() => {toggleArea("newCategory")}}>New Category</button>
     {#if isPlayground}
         <button on:click={() => {toggleArea("saveLoad")}}>Save/Load</button>
+    {:else}
+        <button on:click={() => {toggleArea("showGraph")}}>Show Graph</button>
     {/if}
-    <!-- <button on:click={() => {toggleArea("showGraph")}}>Show graph</button> -->
 </div>
 
 <!-- More tools -->
@@ -513,6 +519,7 @@
 <!-- Graph -->
 {#if showAreas.showGraph}
     <article transition:slide class="subcard">
+        <h4>Grade Trends</h4>
         <Chart data={gradesOverTime} type="line" />
     </article>
 {/if}

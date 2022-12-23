@@ -1120,7 +1120,7 @@ var app = (function () {
             this.origional = origional;
             this.term = term;
             this.exclude = false;
-            this.duedate = Date.parse(duedate);
+            this.duedate = new Date(duedate);
         }
 
         getOgGrade(){
@@ -1594,56 +1594,56 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[60] = list[i];
-    	child_ctx[61] = list;
-    	child_ctx[62] = i;
+    	child_ctx[62] = list[i];
+    	child_ctx[63] = list;
+    	child_ctx[64] = i;
     	return child_ctx;
     }
 
     function get_each_context_1(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[63] = list[i];
-    	child_ctx[64] = list;
-    	child_ctx[65] = i;
+    	child_ctx[65] = list[i];
+    	child_ctx[66] = list;
+    	child_ctx[67] = i;
     	return child_ctx;
     }
 
     function get_each_context_2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[60] = list[i];
+    	child_ctx[62] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_3(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[68] = list[i][0];
+    	child_ctx[70] = list[i][0];
     	child_ctx[1] = list[i][1];
     	return child_ctx;
     }
 
     function get_each_context_4(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[60] = list[i];
+    	child_ctx[62] = list[i];
     	return child_ctx;
     }
 
     function get_each_context_5(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[73] = list[i];
-    	child_ctx[74] = list;
-    	child_ctx[75] = i;
-    	return child_ctx;
-    }
-
-    function get_each_context_6(ctx, list, i) {
-    	const child_ctx = ctx.slice();
-    	child_ctx[60] = list[i];
+    	child_ctx[75] = list[i];
     	child_ctx[76] = list;
     	child_ctx[77] = i;
     	return child_ctx;
     }
 
-    // (354:0) {#if issticky}
+    function get_each_context_6(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[62] = list[i];
+    	child_ctx[78] = list;
+    	child_ctx[79] = i;
+    	return child_ctx;
+    }
+
+    // (359:0) {#if issticky}
     function create_if_block_12(ctx) {
     	let div;
     	let p;
@@ -1672,11 +1672,11 @@ var app = (function () {
     			t5 = space();
     			t6 = text(t6_value);
     			t7 = text("%");
-    			add_location(strong0, file$1, 355, 11, 11314);
-    			add_location(strong1, file$1, 355, 61, 11364);
-    			add_location(p, file$1, 355, 8, 11311);
+    			add_location(strong0, file$1, 360, 11, 11514);
+    			add_location(strong1, file$1, 360, 61, 11564);
+    			add_location(p, file$1, 360, 8, 11511);
     			attr_dev(div, "class", "sticky");
-    			add_location(div, file$1, 354, 4, 11281);
+    			add_location(div, file$1, 359, 4, 11481);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1702,14 +1702,53 @@ var app = (function () {
     		block,
     		id: create_if_block_12.name,
     		type: "if",
-    		source: "(354:0) {#if issticky}",
+    		source: "(359:0) {#if issticky}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (364:4) {#if isPlayground}
+    // (371:4) {:else}
+    function create_else_block$1(ctx) {
+    	let button;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			button = element("button");
+    			button.textContent = "Show Graph";
+    			add_location(button, file$1, 371, 8, 11974);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, button, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(button, "click", /*click_handler_4*/ ctx[34], false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(button);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block$1.name,
+    		type: "else",
+    		source: "(371:4) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (369:4) {#if isPlayground}
     function create_if_block_11(ctx) {
     	let button;
     	let mounted;
@@ -1719,7 +1758,7 @@ var app = (function () {
     		c: function create() {
     			button = element("button");
     			button.textContent = "Save/Load";
-    			add_location(button, file$1, 364, 8, 11683);
+    			add_location(button, file$1, 369, 8, 11883);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -1741,14 +1780,14 @@ var app = (function () {
     		block,
     		id: create_if_block_11.name,
     		type: "if",
-    		source: "(364:4) {#if isPlayground}",
+    		source: "(369:4) {#if isPlayground}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (371:0) {#if !isPlayground}
+    // (377:0) {#if !isPlayground}
     function create_if_block_9(ctx) {
     	let small;
     	let a;
@@ -1765,9 +1804,9 @@ var app = (function () {
     			t1 = space();
     			if (if_block) if_block.c();
     			attr_dev(a, "href", "#a");
-    			add_location(a, file$1, 372, 8, 11943);
+    			add_location(a, file$1, 378, 8, 12151);
     			attr_dev(small, "class", "sidewayslist");
-    			add_location(small, file$1, 371, 4, 11905);
+    			add_location(small, file$1, 377, 4, 12113);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, small, anchor);
@@ -1776,7 +1815,7 @@ var app = (function () {
     			if (if_block) if_block.m(small, null);
 
     			if (!mounted) {
-    				dispose = listen_dev(a, "click", /*click_handler_4*/ ctx[34], false, false, false);
+    				dispose = listen_dev(a, "click", /*click_handler_5*/ ctx[35], false, false, false);
     				mounted = true;
     			}
     		},
@@ -1806,14 +1845,14 @@ var app = (function () {
     		block,
     		id: create_if_block_9.name,
     		type: "if",
-    		source: "(371:0) {#if !isPlayground}",
+    		source: "(377:0) {#if !isPlayground}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (374:8) {#if moreToolsOpen}
+    // (380:8) {#if moreToolsOpen}
     function create_if_block_10(ctx) {
     	let a0;
     	let t1;
@@ -1829,9 +1868,9 @@ var app = (function () {
     			a1 = element("a");
     			a1.textContent = "Grading Periods";
     			attr_dev(a0, "href", "#a");
-    			add_location(a0, file$1, 374, 12, 12061);
+    			add_location(a0, file$1, 380, 12, 12269);
     			attr_dev(a1, "href", "#a");
-    			add_location(a1, file$1, 375, 12, 12153);
+    			add_location(a1, file$1, 381, 12, 12361);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a0, anchor);
@@ -1840,8 +1879,8 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(a0, "click", /*click_handler_5*/ ctx[35], false, false, false),
-    					listen_dev(a1, "click", /*click_handler_6*/ ctx[36], false, false, false)
+    					listen_dev(a0, "click", /*click_handler_6*/ ctx[36], false, false, false),
+    					listen_dev(a1, "click", /*click_handler_7*/ ctx[37], false, false, false)
     				];
 
     				mounted = true;
@@ -1861,14 +1900,14 @@ var app = (function () {
     		block,
     		id: create_if_block_10.name,
     		type: "if",
-    		source: "(374:8) {#if moreToolsOpen}",
+    		source: "(380:8) {#if moreToolsOpen}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (383:0) {#if showAreas.equalWeighting}
+    // (389:0) {#if showAreas.equalWeighting}
     function create_if_block_8(ctx) {
     	let article;
     	let div;
@@ -1928,25 +1967,25 @@ var app = (function () {
     			li1 = element("li");
     			label = element("label");
     			input = element("input");
-    			add_location(h4, file$1, 385, 12, 12510);
-    			add_location(p, file$1, 386, 12, 12548);
-    			add_location(hr, file$1, 401, 12, 13191);
-    			add_location(br, file$1, 401, 16, 13195);
-    			add_location(li0, file$1, 403, 20, 13260);
-    			add_location(ul0, file$1, 403, 16, 13256);
+    			add_location(h4, file$1, 391, 12, 12718);
+    			add_location(p, file$1, 392, 12, 12756);
+    			add_location(hr, file$1, 407, 12, 13399);
+    			add_location(br, file$1, 407, 16, 13403);
+    			add_location(li0, file$1, 409, 20, 13468);
+    			add_location(ul0, file$1, 409, 16, 13464);
     			attr_dev(input, "type", "checkbox");
     			attr_dev(input, "name", "category");
     			attr_dev(input, "role", "switch");
-    			add_location(input, file$1, 406, 24, 13398);
+    			add_location(input, file$1, 412, 24, 13606);
     			attr_dev(label, "for", "category");
-    			add_location(label, file$1, 405, 20, 13350);
-    			add_location(li1, file$1, 404, 20, 13324);
-    			add_location(ul1, file$1, 404, 16, 13320);
+    			add_location(label, file$1, 411, 20, 13558);
+    			add_location(li1, file$1, 410, 20, 13532);
+    			add_location(ul1, file$1, 410, 16, 13528);
     			set_style(nav, "width", "100%");
-    			add_location(nav, file$1, 402, 12, 13213);
-    			add_location(div, file$1, 384, 8, 12491);
+    			add_location(nav, file$1, 408, 12, 13421);
+    			add_location(div, file$1, 390, 8, 12699);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 383, 4, 12439);
+    			add_location(article, file$1, 389, 4, 12647);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -1976,7 +2015,7 @@ var app = (function () {
     			current = true;
 
     			if (!mounted) {
-    				dispose = listen_dev(input, "change", /*input_change_handler_1*/ ctx[38]);
+    				dispose = listen_dev(input, "change", /*input_change_handler_1*/ ctx[39]);
     				mounted = true;
     			}
     		},
@@ -2037,19 +2076,19 @@ var app = (function () {
     		block,
     		id: create_if_block_8.name,
     		type: "if",
-    		source: "(383:0) {#if showAreas.equalWeighting}",
+    		source: "(389:0) {#if showAreas.equalWeighting}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (388:12) {#each categories as cat}
+    // (394:12) {#each categories as cat}
     function create_each_block_6(ctx) {
     	let nav;
     	let ul0;
     	let li0;
-    	let t0_value = /*cat*/ ctx[60].name + "";
+    	let t0_value = /*cat*/ ctx[62].name + "";
     	let t0;
     	let t1;
     	let ul1;
@@ -2060,7 +2099,7 @@ var app = (function () {
     	let dispose;
 
     	function input_change_handler() {
-    		/*input_change_handler*/ ctx[37].call(input, /*cat*/ ctx[60]);
+    		/*input_change_handler*/ ctx[38].call(input, /*cat*/ ctx[62]);
     	}
 
     	const block = {
@@ -2074,19 +2113,19 @@ var app = (function () {
     			li1 = element("li");
     			label = element("label");
     			input = element("input");
-    			add_location(li0, file$1, 390, 24, 12761);
-    			add_location(ul0, file$1, 389, 20, 12731);
+    			add_location(li0, file$1, 396, 24, 12969);
+    			add_location(ul0, file$1, 395, 20, 12939);
     			attr_dev(input, "type", "checkbox");
     			attr_dev(input, "name", "switch");
     			attr_dev(input, "id", "switch");
     			attr_dev(input, "role", "switch");
-    			add_location(input, file$1, 394, 28, 12913);
+    			add_location(input, file$1, 400, 28, 13121);
     			attr_dev(label, "for", "switch");
-    			add_location(label, file$1, 393, 28, 12863);
-    			add_location(li1, file$1, 393, 24, 12859);
-    			add_location(ul1, file$1, 392, 20, 12829);
+    			add_location(label, file$1, 399, 28, 13071);
+    			add_location(li1, file$1, 399, 24, 13067);
+    			add_location(ul1, file$1, 398, 20, 13037);
     			set_style(nav, "width", "100%");
-    			add_location(nav, file$1, 388, 16, 12685);
+    			add_location(nav, file$1, 394, 16, 12893);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, nav, anchor);
@@ -2098,7 +2137,7 @@ var app = (function () {
     			append_dev(ul1, li1);
     			append_dev(li1, label);
     			append_dev(label, input);
-    			input.checked = /*courseSettings*/ ctx[2].equalWeighting[/*cat*/ ctx[60].name];
+    			input.checked = /*courseSettings*/ ctx[2].equalWeighting[/*cat*/ ctx[62].name];
 
     			if (!mounted) {
     				dispose = listen_dev(input, "change", input_change_handler);
@@ -2107,10 +2146,10 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty[0] & /*categories*/ 16 && t0_value !== (t0_value = /*cat*/ ctx[60].name + "")) set_data_dev(t0, t0_value);
+    			if (dirty[0] & /*categories*/ 16 && t0_value !== (t0_value = /*cat*/ ctx[62].name + "")) set_data_dev(t0, t0_value);
 
     			if (dirty[0] & /*courseSettings, categories*/ 20) {
-    				input.checked = /*courseSettings*/ ctx[2].equalWeighting[/*cat*/ ctx[60].name];
+    				input.checked = /*courseSettings*/ ctx[2].equalWeighting[/*cat*/ ctx[62].name];
     			}
     		},
     		d: function destroy(detaching) {
@@ -2124,14 +2163,14 @@ var app = (function () {
     		block,
     		id: create_each_block_6.name,
     		type: "each",
-    		source: "(388:12) {#each categories as cat}",
+    		source: "(394:12) {#each categories as cat}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (416:0) {#if showAreas.gradingPeriods}
+    // (422:0) {#if showAreas.gradingPeriods}
     function create_if_block_7(ctx) {
     	let article;
     	let div;
@@ -2164,11 +2203,11 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			add_location(h4, file$1, 418, 12, 13761);
-    			add_location(p, file$1, 419, 12, 13799);
-    			add_location(div, file$1, 417, 8, 13742);
+    			add_location(h4, file$1, 424, 12, 13969);
+    			add_location(p, file$1, 425, 12, 14007);
+    			add_location(div, file$1, 423, 8, 13950);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 416, 4, 13690);
+    			add_location(article, file$1, 422, 4, 13898);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -2235,19 +2274,19 @@ var app = (function () {
     		block,
     		id: create_if_block_7.name,
     		type: "if",
-    		source: "(416:0) {#if showAreas.gradingPeriods}",
+    		source: "(422:0) {#if showAreas.gradingPeriods}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (421:12) {#each Object.keys(terms) as term}
+    // (427:12) {#each Object.keys(terms) as term}
     function create_each_block_5(ctx) {
     	let nav;
     	let ul0;
     	let li0;
-    	let t0_value = /*terms*/ ctx[7][/*term*/ ctx[73]].name + "";
+    	let t0_value = /*terms*/ ctx[7][/*term*/ ctx[75]].name + "";
     	let t0;
     	let t1;
     	let ul1;
@@ -2259,7 +2298,7 @@ var app = (function () {
     	let dispose;
 
     	function input_change_handler_2() {
-    		/*input_change_handler_2*/ ctx[39].call(input, /*term*/ ctx[73]);
+    		/*input_change_handler_2*/ ctx[40].call(input, /*term*/ ctx[75]);
     	}
 
     	const block = {
@@ -2274,19 +2313,19 @@ var app = (function () {
     			label = element("label");
     			input = element("input");
     			t2 = space();
-    			add_location(li0, file$1, 423, 24, 14034);
-    			add_location(ul0, file$1, 422, 20, 14004);
+    			add_location(li0, file$1, 429, 24, 14242);
+    			add_location(ul0, file$1, 428, 20, 14212);
     			attr_dev(input, "type", "checkbox");
     			attr_dev(input, "name", "switch");
     			attr_dev(input, "id", "switch");
     			attr_dev(input, "role", "switch");
-    			add_location(input, file$1, 427, 28, 14194);
+    			add_location(input, file$1, 433, 28, 14402);
     			attr_dev(label, "for", "switch");
-    			add_location(label, file$1, 426, 28, 14144);
-    			add_location(li1, file$1, 426, 24, 14140);
-    			add_location(ul1, file$1, 425, 20, 14110);
+    			add_location(label, file$1, 432, 28, 14352);
+    			add_location(li1, file$1, 432, 24, 14348);
+    			add_location(ul1, file$1, 431, 20, 14318);
     			set_style(nav, "width", "100%");
-    			add_location(nav, file$1, 421, 16, 13958);
+    			add_location(nav, file$1, 427, 16, 14166);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, nav, anchor);
@@ -2298,7 +2337,7 @@ var app = (function () {
     			append_dev(ul1, li1);
     			append_dev(li1, label);
     			append_dev(label, input);
-    			input.checked = /*courseSettings*/ ctx[2].termEnabled[/*term*/ ctx[73].toString()];
+    			input.checked = /*courseSettings*/ ctx[2].termEnabled[/*term*/ ctx[75].toString()];
     			append_dev(nav, t2);
 
     			if (!mounted) {
@@ -2308,10 +2347,10 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty[0] & /*terms*/ 128 && t0_value !== (t0_value = /*terms*/ ctx[7][/*term*/ ctx[73]].name + "")) set_data_dev(t0, t0_value);
+    			if (dirty[0] & /*terms*/ 128 && t0_value !== (t0_value = /*terms*/ ctx[7][/*term*/ ctx[75]].name + "")) set_data_dev(t0, t0_value);
 
     			if (dirty[0] & /*courseSettings, terms*/ 132) {
-    				input.checked = /*courseSettings*/ ctx[2].termEnabled[/*term*/ ctx[73].toString()];
+    				input.checked = /*courseSettings*/ ctx[2].termEnabled[/*term*/ ctx[75].toString()];
     			}
     		},
     		d: function destroy(detaching) {
@@ -2325,14 +2364,14 @@ var app = (function () {
     		block,
     		id: create_each_block_5.name,
     		type: "each",
-    		source: "(421:12) {#each Object.keys(terms) as term}",
+    		source: "(427:12) {#each Object.keys(terms) as term}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (439:0) {#if showAreas.newAssig}
+    // (445:0) {#if showAreas.newAssig}
     function create_if_block_6(ctx) {
     	let article;
     	let form;
@@ -2397,40 +2436,40 @@ var app = (function () {
     			input3 = element("input");
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "name", "aName");
-    			add_location(input0, file$1, 443, 20, 14782);
+    			add_location(input0, file$1, 449, 20, 14990);
     			attr_dev(label0, "for", "aName");
-    			add_location(label0, file$1, 442, 16, 14726);
+    			add_location(label0, file$1, 448, 16, 14934);
     			attr_dev(select, "name", "aCat");
     			select.required = true;
-    			if (/*newAssig*/ ctx[9]["catName"] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[41].call(select));
-    			add_location(select, file$1, 447, 20, 14935);
+    			if (/*newAssig*/ ctx[9]["catName"] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[42].call(select));
+    			add_location(select, file$1, 453, 20, 15143);
     			attr_dev(label1, "for", "aCat");
-    			add_location(label1, file$1, 446, 16, 14887);
+    			add_location(label1, file$1, 452, 16, 15095);
     			attr_dev(div0, "class", "grid");
-    			add_location(div0, file$1, 441, 12, 14690);
+    			add_location(div0, file$1, 447, 12, 14898);
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "name", "aScore");
     			attr_dev(input1, "step", "0.01");
     			input1.required = true;
-    			add_location(input1, file$1, 457, 20, 15331);
+    			add_location(input1, file$1, 463, 20, 15539);
     			attr_dev(label2, "for", "aScore");
-    			add_location(label2, file$1, 456, 16, 15284);
+    			add_location(label2, file$1, 462, 16, 15492);
     			attr_dev(input2, "type", "number");
     			attr_dev(input2, "name", "aOutOf");
     			attr_dev(input2, "step", "0.01");
     			input2.required = true;
-    			add_location(input2, file$1, 460, 20, 15507);
+    			add_location(input2, file$1, 466, 20, 15715);
     			attr_dev(label3, "for", "aOutOf");
-    			add_location(label3, file$1, 459, 16, 15459);
+    			add_location(label3, file$1, 465, 16, 15667);
     			attr_dev(div1, "class", "grid");
-    			add_location(div1, file$1, 455, 12, 15248);
+    			add_location(div1, file$1, 461, 12, 15456);
     			attr_dev(input3, "type", "submit");
     			input3.value = "Add";
-    			add_location(input3, file$1, 464, 12, 15653);
+    			add_location(input3, file$1, 470, 12, 15861);
     			attr_dev(form, "action", "#");
-    			add_location(form, file$1, 440, 8, 14615);
+    			add_location(form, file$1, 446, 8, 14823);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 439, 4, 14563);
+    			add_location(article, file$1, 445, 4, 14771);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -2467,11 +2506,11 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[40]),
-    					listen_dev(select, "change", /*select_change_handler*/ ctx[41]),
-    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[42]),
-    					listen_dev(input2, "input", /*input2_input_handler*/ ctx[43]),
-    					listen_dev(form, "submit", prevent_default(/*submitAssignment*/ ctx[21]), false, true, false)
+    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[41]),
+    					listen_dev(select, "change", /*select_change_handler*/ ctx[42]),
+    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[43]),
+    					listen_dev(input2, "input", /*input2_input_handler*/ ctx[44]),
+    					listen_dev(form, "submit", prevent_default(/*submitAssignment*/ ctx[22]), false, true, false)
     				];
 
     				mounted = true;
@@ -2546,17 +2585,17 @@ var app = (function () {
     		block,
     		id: create_if_block_6.name,
     		type: "if",
-    		source: "(439:0) {#if showAreas.newAssig}",
+    		source: "(445:0) {#if showAreas.newAssig}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (449:24) {#each categories as cat}
+    // (455:24) {#each categories as cat}
     function create_each_block_4(ctx) {
     	let option;
-    	let t_value = /*cat*/ ctx[60].name + "";
+    	let t_value = /*cat*/ ctx[62].name + "";
     	let t;
     	let option_value_value;
 
@@ -2564,18 +2603,18 @@ var app = (function () {
     		c: function create() {
     			option = element("option");
     			t = text(t_value);
-    			option.__value = option_value_value = /*cat*/ ctx[60].name;
+    			option.__value = option_value_value = /*cat*/ ctx[62].name;
     			option.value = option.__value;
-    			add_location(option, file$1, 449, 28, 15078);
+    			add_location(option, file$1, 455, 28, 15286);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
     			append_dev(option, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*categories*/ 16 && t_value !== (t_value = /*cat*/ ctx[60].name + "")) set_data_dev(t, t_value);
+    			if (dirty[0] & /*categories*/ 16 && t_value !== (t_value = /*cat*/ ctx[62].name + "")) set_data_dev(t, t_value);
 
-    			if (dirty[0] & /*categories*/ 16 && option_value_value !== (option_value_value = /*cat*/ ctx[60].name)) {
+    			if (dirty[0] & /*categories*/ 16 && option_value_value !== (option_value_value = /*cat*/ ctx[62].name)) {
     				prop_dev(option, "__value", option_value_value);
     				option.value = option.__value;
     			}
@@ -2589,14 +2628,14 @@ var app = (function () {
     		block,
     		id: create_each_block_4.name,
     		type: "each",
-    		source: "(449:24) {#each categories as cat}",
+    		source: "(455:24) {#each categories as cat}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (471:0) {#if showAreas.newCategory}
+    // (477:0) {#if showAreas.newCategory}
     function create_if_block_5(ctx) {
     	let article;
     	let form;
@@ -2632,26 +2671,26 @@ var app = (function () {
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "name", "cName");
     			input0.required = true;
-    			add_location(input0, file$1, 475, 20, 16006);
+    			add_location(input0, file$1, 481, 20, 16214);
     			attr_dev(label0, "for", "cName");
-    			add_location(label0, file$1, 474, 16, 15952);
+    			add_location(label0, file$1, 480, 16, 16160);
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "min", "0");
     			attr_dev(input1, "max", "100");
     			attr_dev(input1, "name", "cWeight");
     			input1.required = true;
-    			add_location(input1, file$1, 478, 20, 16174);
+    			add_location(input1, file$1, 484, 20, 16382);
     			attr_dev(label1, "for", "cWeight");
-    			add_location(label1, file$1, 477, 16, 16121);
+    			add_location(label1, file$1, 483, 16, 16329);
     			attr_dev(div, "class", "grid");
-    			add_location(div, file$1, 473, 12, 15916);
+    			add_location(div, file$1, 479, 12, 16124);
     			attr_dev(input2, "type", "submit");
     			input2.value = "Add";
-    			add_location(input2, file$1, 481, 12, 16329);
+    			add_location(input2, file$1, 487, 12, 16537);
     			attr_dev(form, "action", "#");
-    			add_location(form, file$1, 472, 8, 15843);
+    			add_location(form, file$1, 478, 8, 16051);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 471, 4, 15791);
+    			add_location(article, file$1, 477, 4, 15999);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -2672,9 +2711,9 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input0, "input", /*input0_input_handler_1*/ ctx[44]),
-    					listen_dev(input1, "input", /*input1_input_handler_1*/ ctx[45]),
-    					listen_dev(form, "submit", prevent_default(/*submitCategory*/ ctx[22]), false, true, false)
+    					listen_dev(input0, "input", /*input0_input_handler_1*/ ctx[45]),
+    					listen_dev(input1, "input", /*input1_input_handler_1*/ ctx[46]),
+    					listen_dev(form, "submit", prevent_default(/*submitCategory*/ ctx[23]), false, true, false)
     				];
 
     				mounted = true;
@@ -2716,14 +2755,14 @@ var app = (function () {
     		block,
     		id: create_if_block_5.name,
     		type: "if",
-    		source: "(471:0) {#if showAreas.newCategory}",
+    		source: "(477:0) {#if showAreas.newCategory}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (488:0) {#if showAreas.saveLoad}
+    // (494:0) {#if showAreas.saveLoad}
     function create_if_block_4(ctx) {
     	let article;
     	let h4;
@@ -2784,32 +2823,32 @@ var app = (function () {
     			div2 = element("div");
     			a = element("a");
     			a.textContent = "Delete";
-    			add_location(h4, file$1, 489, 8, 16508);
-    			add_location(p, file$1, 490, 8, 16538);
+    			add_location(h4, file$1, 495, 8, 16716);
+    			add_location(p, file$1, 496, 8, 16746);
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "placeholder", "Save Name...");
-    			add_location(input0, file$1, 493, 16, 16742);
+    			add_location(input0, file$1, 499, 16, 16950);
     			attr_dev(input1, "type", "submit");
     			input1.value = "Save As";
-    			add_location(input1, file$1, 494, 16, 16834);
+    			add_location(input1, file$1, 500, 16, 17042);
     			attr_dev(div0, "class", "grid");
-    			add_location(div0, file$1, 492, 12, 16706);
+    			add_location(div0, file$1, 498, 12, 16914);
     			set_style(form, "margin-bottom", "0");
-    			add_location(form, file$1, 491, 8, 16620);
+    			add_location(form, file$1, 497, 8, 16828);
     			attr_dev(select, "name", "loadCourse");
-    			if (/*loadCourseName*/ ctx[15] === void 0) add_render_callback(() => /*select_change_handler_1*/ ctx[47].call(select));
-    			add_location(select, file$1, 498, 12, 16950);
-    			add_location(button, file$1, 503, 12, 17196);
+    			if (/*loadCourseName*/ ctx[15] === void 0) add_render_callback(() => /*select_change_handler_1*/ ctx[48].call(select));
+    			add_location(select, file$1, 504, 12, 17158);
+    			add_location(button, file$1, 509, 12, 17404);
     			attr_dev(div1, "class", "grid");
-    			add_location(div1, file$1, 497, 8, 16918);
+    			add_location(div1, file$1, 503, 8, 17126);
     			attr_dev(a, "href", "#1");
     			attr_dev(a, "role", "button");
     			attr_dev(a, "class", "secondary outline");
-    			add_location(a, file$1, 507, 12, 17307);
+    			add_location(a, file$1, 513, 12, 17515);
     			attr_dev(div2, "class", "sidewayslist");
-    			add_location(div2, file$1, 506, 8, 17267);
+    			add_location(div2, file$1, 512, 8, 17475);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 488, 4, 16456);
+    			add_location(article, file$1, 494, 4, 16664);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -2841,9 +2880,9 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input0, "input", /*input0_input_handler_2*/ ctx[46]),
+    					listen_dev(input0, "input", /*input0_input_handler_2*/ ctx[47]),
     					listen_dev(form, "submit", prevent_default(/*saveCourseAs*/ ctx[25]), false, true, false),
-    					listen_dev(select, "change", /*select_change_handler_1*/ ctx[47]),
+    					listen_dev(select, "change", /*select_change_handler_1*/ ctx[48]),
     					listen_dev(button, "click", /*loadCourse*/ ctx[26], false, false, false),
     					listen_dev(a, "click", prevent_default(/*deleteCourse*/ ctx[27]), false, true, false)
     				];
@@ -2912,17 +2951,17 @@ var app = (function () {
     		block,
     		id: create_if_block_4.name,
     		type: "if",
-    		source: "(488:0) {#if showAreas.saveLoad}",
+    		source: "(494:0) {#if showAreas.saveLoad}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (500:16) {#each Object.entries(savedCourses) as [name, course]}
+    // (506:16) {#each Object.entries(savedCourses) as [name, course]}
     function create_each_block_3(ctx) {
     	let option;
-    	let t_value = /*name*/ ctx[68] + "";
+    	let t_value = /*name*/ ctx[70] + "";
     	let t;
     	let option_value_value;
 
@@ -2930,18 +2969,18 @@ var app = (function () {
     		c: function create() {
     			option = element("option");
     			t = text(t_value);
-    			option.__value = option_value_value = /*name*/ ctx[68];
+    			option.__value = option_value_value = /*name*/ ctx[70];
     			option.value = option.__value;
-    			add_location(option, file$1, 500, 20, 17098);
+    			add_location(option, file$1, 506, 20, 17306);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
     			append_dev(option, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*savedCourses*/ 65536 && t_value !== (t_value = /*name*/ ctx[68] + "")) set_data_dev(t, t_value);
+    			if (dirty[0] & /*savedCourses*/ 65536 && t_value !== (t_value = /*name*/ ctx[70] + "")) set_data_dev(t, t_value);
 
-    			if (dirty[0] & /*savedCourses*/ 65536 && option_value_value !== (option_value_value = /*name*/ ctx[68])) {
+    			if (dirty[0] & /*savedCourses*/ 65536 && option_value_value !== (option_value_value = /*name*/ ctx[70])) {
     				prop_dev(option, "__value", option_value_value);
     				option.value = option.__value;
     			}
@@ -2955,23 +2994,25 @@ var app = (function () {
     		block,
     		id: create_each_block_3.name,
     		type: "each",
-    		source: "(500:16) {#each Object.entries(savedCourses) as [name, course]}",
+    		source: "(506:16) {#each Object.entries(savedCourses) as [name, course]}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (514:0) {#if showAreas.showGraph}
+    // (520:0) {#if showAreas.showGraph}
     function create_if_block_3$1(ctx) {
     	let article;
+    	let h4;
+    	let t1;
     	let chart;
     	let article_transition;
     	let current;
 
     	chart = new Base$1({
     			props: {
-    				data: /*gradesOverTime*/ ctx[23],
+    				data: /*gradesOverTime*/ ctx[19],
     				type: "line"
     			},
     			$$inline: true
@@ -2980,12 +3021,18 @@ var app = (function () {
     	const block = {
     		c: function create() {
     			article = element("article");
+    			h4 = element("h4");
+    			h4.textContent = "Grade Trends";
+    			t1 = space();
     			create_component(chart.$$.fragment);
+    			add_location(h4, file$1, 521, 8, 17759);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 514, 4, 17499);
+    			add_location(article, file$1, 520, 4, 17707);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
+    			append_dev(article, h4);
+    			append_dev(article, t1);
     			mount_component(chart, article, null);
     			current = true;
     		},
@@ -3018,14 +3065,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3$1.name,
     		type: "if",
-    		source: "(514:0) {#if showAreas.showGraph}",
+    		source: "(520:0) {#if showAreas.showGraph}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (521:0) {#if showAreas.whatToMaintain}
+    // (528:0) {#if showAreas.whatToMaintain}
     function create_if_block_2$1(ctx) {
     	let article;
     	let h4;
@@ -3119,33 +3166,33 @@ var app = (function () {
     			t20 = text(" on this assignment to maintain a grade of ");
     			t21 = text(/*gradeWanted*/ ctx[5]);
     			t22 = text("%.");
-    			add_location(h4, file$1, 522, 8, 17755);
-    			add_location(p0, file$1, 523, 8, 17809);
-    			add_location(p1, file$1, 525, 12, 17978);
+    			add_location(h4, file$1, 529, 8, 17994);
+    			add_location(p0, file$1, 530, 8, 18048);
+    			add_location(p1, file$1, 532, 12, 18217);
     			attr_dev(input0, "type", "number");
     			attr_dev(input0, "placeholder", "%");
-    			add_location(input0, file$1, 526, 12, 18022);
+    			add_location(input0, file$1, 533, 12, 18261);
     			attr_dev(div0, "class", "grid");
-    			add_location(div0, file$1, 524, 8, 17946);
-    			add_location(p2, file$1, 528, 8, 18110);
+    			add_location(div0, file$1, 531, 8, 18185);
+    			add_location(p2, file$1, 535, 8, 18349);
     			attr_dev(select, "name", "aCat");
     			select.required = true;
-    			if (/*minNeedAssig*/ ctx[6]["catName"] === void 0) add_render_callback(() => /*select_change_handler_2*/ ctx[49].call(select));
-    			add_location(select, file$1, 531, 16, 18223);
+    			if (/*minNeedAssig*/ ctx[6]["catName"] === void 0) add_render_callback(() => /*select_change_handler_2*/ ctx[50].call(select));
+    			add_location(select, file$1, 538, 16, 18462);
     			attr_dev(label0, "for", "aCat");
-    			add_location(label0, file$1, 530, 12, 18179);
+    			add_location(label0, file$1, 537, 12, 18418);
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "name", "aOutOf");
     			input1.required = true;
-    			add_location(input1, file$1, 539, 16, 18544);
+    			add_location(input1, file$1, 546, 16, 18783);
     			attr_dev(label1, "for", "aOutOf");
-    			add_location(label1, file$1, 538, 12, 18500);
+    			add_location(label1, file$1, 545, 12, 18739);
     			attr_dev(div1, "class", "grid");
-    			add_location(div1, file$1, 529, 8, 18147);
-    			add_location(strong, file$1, 543, 33, 18695);
-    			add_location(p3, file$1, 543, 8, 18670);
+    			add_location(div1, file$1, 536, 8, 18386);
+    			add_location(strong, file$1, 550, 33, 18934);
+    			add_location(p3, file$1, 550, 8, 18909);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 521, 4, 17703);
+    			add_location(article, file$1, 528, 4, 17942);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -3193,9 +3240,9 @@ var app = (function () {
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input0, "input", /*input0_input_handler_3*/ ctx[48]),
-    					listen_dev(select, "change", /*select_change_handler_2*/ ctx[49]),
-    					listen_dev(input1, "input", /*input1_input_handler_2*/ ctx[50])
+    					listen_dev(input0, "input", /*input0_input_handler_3*/ ctx[49]),
+    					listen_dev(select, "change", /*select_change_handler_2*/ ctx[50]),
+    					listen_dev(input1, "input", /*input1_input_handler_2*/ ctx[51])
     				];
 
     				mounted = true;
@@ -3271,17 +3318,17 @@ var app = (function () {
     		block,
     		id: create_if_block_2$1.name,
     		type: "if",
-    		source: "(521:0) {#if showAreas.whatToMaintain}",
+    		source: "(528:0) {#if showAreas.whatToMaintain}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (533:20) {#each categories as cat}
+    // (540:20) {#each categories as cat}
     function create_each_block_2(ctx) {
     	let option;
-    	let t_value = /*cat*/ ctx[60].name + "";
+    	let t_value = /*cat*/ ctx[62].name + "";
     	let t;
     	let option_value_value;
 
@@ -3289,18 +3336,18 @@ var app = (function () {
     		c: function create() {
     			option = element("option");
     			t = text(t_value);
-    			option.__value = option_value_value = /*cat*/ ctx[60].name;
+    			option.__value = option_value_value = /*cat*/ ctx[62].name;
     			option.value = option.__value;
-    			add_location(option, file$1, 533, 24, 18362);
+    			add_location(option, file$1, 540, 24, 18601);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
     			append_dev(option, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*categories*/ 16 && t_value !== (t_value = /*cat*/ ctx[60].name + "")) set_data_dev(t, t_value);
+    			if (dirty[0] & /*categories*/ 16 && t_value !== (t_value = /*cat*/ ctx[62].name + "")) set_data_dev(t, t_value);
 
-    			if (dirty[0] & /*categories*/ 16 && option_value_value !== (option_value_value = /*cat*/ ctx[60].name)) {
+    			if (dirty[0] & /*categories*/ 16 && option_value_value !== (option_value_value = /*cat*/ ctx[62].name)) {
     				prop_dev(option, "__value", option_value_value);
     				option.value = option.__value;
     			}
@@ -3314,26 +3361,26 @@ var app = (function () {
     		block,
     		id: create_each_block_2.name,
     		type: "each",
-    		source: "(533:20) {#each categories as cat}",
+    		source: "(540:20) {#each categories as cat}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (585:16) {#if assig.isEnabled(courseSettings.termEnabled)}
+    // (592:16) {#if assig.isEnabled(courseSettings.termEnabled)}
     function create_if_block$1(ctx) {
     	let li2;
     	let nav;
     	let ul0;
     	let li0;
-    	let t0_value = /*assig*/ ctx[63].name + "";
+    	let t0_value = /*assig*/ ctx[65].name + "";
     	let t0;
     	let t1;
-    	let t2_value = /*assig*/ ctx[63].toString() + "";
+    	let t2_value = /*assig*/ ctx[65].toString() + "";
     	let t2;
     	let t3;
-    	let t4_value = /*assig*/ ctx[63].getOgGrade() + "";
+    	let t4_value = /*assig*/ ctx[65].getOgGrade() + "";
     	let t4;
     	let t5;
     	let small;
@@ -3352,11 +3399,11 @@ var app = (function () {
     	let if_block = /*showAreas*/ ctx[8].whatToMaintain && create_if_block_1$1(ctx);
 
     	function input0_input_handler_5() {
-    		/*input0_input_handler_5*/ ctx[56].call(input0, /*each_value_1*/ ctx[64], /*assig_index*/ ctx[65]);
+    		/*input0_input_handler_5*/ ctx[57].call(input0, /*each_value_1*/ ctx[66], /*assig_index*/ ctx[67]);
     	}
 
     	function input1_input_handler_4() {
-    		/*input1_input_handler_4*/ ctx[57].call(input1, /*each_value_1*/ ctx[64], /*assig_index*/ ctx[65]);
+    		/*input1_input_handler_4*/ ctx[58].call(input1, /*each_value_1*/ ctx[66], /*assig_index*/ ctx[67]);
     	}
 
     	const block = {
@@ -3385,23 +3432,23 @@ var app = (function () {
     			input1 = element("input");
     			t10 = space();
     			attr_dev(a, "href", "#a");
-    			add_location(a, file$1, 590, 32, 20680);
+    			add_location(a, file$1, 597, 32, 20919);
     			attr_dev(small, "class", "modifiers");
-    			add_location(small, file$1, 589, 28, 20621);
-    			add_location(li0, file$1, 586, 28, 20467);
-    			add_location(ul0, file$1, 586, 24, 20463);
+    			add_location(small, file$1, 596, 28, 20860);
+    			add_location(li0, file$1, 593, 28, 20706);
+    			add_location(ul0, file$1, 593, 24, 20702);
     			attr_dev(input0, "type", "number");
     			attr_dev(input0, "placeholder", "Score");
-    			add_location(input0, file$1, 598, 32, 21193);
+    			add_location(input0, file$1, 605, 32, 21432);
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "placeholder", "Out Of");
-    			add_location(input1, file$1, 599, 32, 21293);
+    			add_location(input1, file$1, 606, 32, 21532);
     			attr_dev(div, "class", "grid");
-    			add_location(div, file$1, 597, 28, 21141);
-    			add_location(li1, file$1, 596, 28, 21107);
-    			add_location(ul1, file$1, 596, 24, 21103);
-    			add_location(nav, file$1, 585, 24, 20432);
-    			add_location(li2, file$1, 585, 20, 20428);
+    			add_location(div, file$1, 604, 28, 21380);
+    			add_location(li1, file$1, 603, 28, 21346);
+    			add_location(ul1, file$1, 603, 24, 21342);
+    			add_location(nav, file$1, 592, 24, 20671);
+    			add_location(li2, file$1, 592, 20, 20667);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li2, anchor);
@@ -3423,10 +3470,10 @@ var app = (function () {
     			append_dev(ul1, li1);
     			append_dev(li1, div);
     			append_dev(div, input0);
-    			set_input_value(input0, /*assig*/ ctx[63].score);
+    			set_input_value(input0, /*assig*/ ctx[65].score);
     			append_dev(div, t9);
     			append_dev(div, input1);
-    			set_input_value(input1, /*assig*/ ctx[63].outof);
+    			set_input_value(input1, /*assig*/ ctx[65].outof);
     			append_dev(nav, t10);
 
     			if (!mounted) {
@@ -3435,7 +3482,7 @@ var app = (function () {
     						a,
     						"click",
     						prevent_default(function () {
-    							if (is_function(/*deleteAssignment*/ ctx[20](/*cat*/ ctx[60], /*assig*/ ctx[63]))) /*deleteAssignment*/ ctx[20](/*cat*/ ctx[60], /*assig*/ ctx[63]).apply(this, arguments);
+    							if (is_function(/*deleteAssignment*/ ctx[21](/*cat*/ ctx[62], /*assig*/ ctx[65]))) /*deleteAssignment*/ ctx[21](/*cat*/ ctx[62], /*assig*/ ctx[65]).apply(this, arguments);
     						}),
     						false,
     						true,
@@ -3450,9 +3497,9 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty[0] & /*categories*/ 16 && t0_value !== (t0_value = /*assig*/ ctx[63].name + "")) set_data_dev(t0, t0_value);
-    			if (dirty[0] & /*categories*/ 16 && t2_value !== (t2_value = /*assig*/ ctx[63].toString() + "")) set_data_dev(t2, t2_value);
-    			if (dirty[0] & /*categories*/ 16 && t4_value !== (t4_value = /*assig*/ ctx[63].getOgGrade() + "")) set_data_dev(t4, t4_value);
+    			if (dirty[0] & /*categories*/ 16 && t0_value !== (t0_value = /*assig*/ ctx[65].name + "")) set_data_dev(t0, t0_value);
+    			if (dirty[0] & /*categories*/ 16 && t2_value !== (t2_value = /*assig*/ ctx[65].toString() + "")) set_data_dev(t2, t2_value);
+    			if (dirty[0] & /*categories*/ 16 && t4_value !== (t4_value = /*assig*/ ctx[65].getOgGrade() + "")) set_data_dev(t4, t4_value);
 
     			if (/*showAreas*/ ctx[8].whatToMaintain) {
     				if (if_block) {
@@ -3467,12 +3514,12 @@ var app = (function () {
     				if_block = null;
     			}
 
-    			if (dirty[0] & /*categories*/ 16 && to_number(input0.value) !== /*assig*/ ctx[63].score) {
-    				set_input_value(input0, /*assig*/ ctx[63].score);
+    			if (dirty[0] & /*categories*/ 16 && to_number(input0.value) !== /*assig*/ ctx[65].score) {
+    				set_input_value(input0, /*assig*/ ctx[65].score);
     			}
 
-    			if (dirty[0] & /*categories*/ 16 && to_number(input1.value) !== /*assig*/ ctx[63].outof) {
-    				set_input_value(input1, /*assig*/ ctx[63].outof);
+    			if (dirty[0] & /*categories*/ 16 && to_number(input1.value) !== /*assig*/ ctx[65].outof) {
+    				set_input_value(input1, /*assig*/ ctx[65].outof);
     			}
     		},
     		d: function destroy(detaching) {
@@ -3487,14 +3534,14 @@ var app = (function () {
     		block,
     		id: create_if_block$1.name,
     		type: "if",
-    		source: "(585:16) {#if assig.isEnabled(courseSettings.termEnabled)}",
+    		source: "(592:16) {#if assig.isEnabled(courseSettings.termEnabled)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (592:32) {#if showAreas.whatToMaintain}
+    // (599:32) {#if showAreas.whatToMaintain}
     function create_if_block_1$1(ctx) {
     	let a;
     	let mounted;
@@ -3505,7 +3552,7 @@ var app = (function () {
     			a = element("a");
     			a.textContent = "make variable";
     			attr_dev(a, "href", "#a");
-    			add_location(a, file$1, 592, 36, 20867);
+    			add_location(a, file$1, 599, 36, 21106);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -3515,7 +3562,7 @@ var app = (function () {
     					a,
     					"click",
     					prevent_default(function () {
-    						if (is_function(/*makeAssigVariable*/ ctx[24](/*assig*/ ctx[63].outof, /*cat*/ ctx[60].name))) /*makeAssigVariable*/ ctx[24](/*assig*/ ctx[63].outof, /*cat*/ ctx[60].name).apply(this, arguments);
+    						if (is_function(/*makeAssigVariable*/ ctx[24](/*assig*/ ctx[65].outof, /*cat*/ ctx[62].name))) /*makeAssigVariable*/ ctx[24](/*assig*/ ctx[65].outof, /*cat*/ ctx[62].name).apply(this, arguments);
     					}),
     					false,
     					true,
@@ -3539,16 +3586,16 @@ var app = (function () {
     		block,
     		id: create_if_block_1$1.name,
     		type: "if",
-    		source: "(592:32) {#if showAreas.whatToMaintain}",
+    		source: "(599:32) {#if showAreas.whatToMaintain}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (583:12) {#each cat.assignments as assig}
+    // (590:12) {#each cat.assignments as assig}
     function create_each_block_1(ctx) {
-    	let show_if = /*assig*/ ctx[63].isEnabled(/*courseSettings*/ ctx[2].termEnabled);
+    	let show_if = /*assig*/ ctx[65].isEnabled(/*courseSettings*/ ctx[2].termEnabled);
     	let if_block_anchor;
     	let if_block = show_if && create_if_block$1(ctx);
 
@@ -3562,7 +3609,7 @@ var app = (function () {
     			insert_dev(target, if_block_anchor, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*categories, courseSettings*/ 20) show_if = /*assig*/ ctx[63].isEnabled(/*courseSettings*/ ctx[2].termEnabled);
+    			if (dirty[0] & /*categories, courseSettings*/ 20) show_if = /*assig*/ ctx[65].isEnabled(/*courseSettings*/ ctx[2].termEnabled);
 
     			if (show_if) {
     				if (if_block) {
@@ -3587,18 +3634,18 @@ var app = (function () {
     		block,
     		id: create_each_block_1.name,
     		type: "each",
-    		source: "(583:12) {#each cat.assignments as assig}",
+    		source: "(590:12) {#each cat.assignments as assig}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (551:0) {#each categories as cat}
+    // (558:0) {#each categories as cat}
     function create_each_block(ctx) {
     	let details;
     	let summary;
-    	let t0_value = /*cat*/ ctx[60].toString(/*courseSettings*/ ctx[2].equalWeighting[/*cat*/ ctx[60].name], /*courseSettings*/ ctx[2].termEnabled) + "";
+    	let t0_value = /*cat*/ ctx[62].toString(/*courseSettings*/ ctx[2].equalWeighting[/*cat*/ ctx[62].name], /*courseSettings*/ ctx[2].termEnabled) + "";
     	let t0;
     	let t1;
     	let ul4;
@@ -3635,14 +3682,14 @@ var app = (function () {
     	let dispose;
 
     	function input0_input_handler_4() {
-    		/*input0_input_handler_4*/ ctx[51].call(input0, /*each_value*/ ctx[61], /*cat_index*/ ctx[62]);
+    		/*input0_input_handler_4*/ ctx[52].call(input0, /*each_value*/ ctx[63], /*cat_index*/ ctx[64]);
     	}
 
-    	function click_handler_7() {
-    		return /*click_handler_7*/ ctx[53](/*cat*/ ctx[60]);
+    	function click_handler_8() {
+    		return /*click_handler_8*/ ctx[54](/*cat*/ ctx[62]);
     	}
 
-    	let each_value_1 = /*cat*/ ctx[60].assignments;
+    	let each_value_1 = /*cat*/ ctx[62].assignments;
     	validate_each_argument(each_value_1);
     	let each_blocks = [];
 
@@ -3694,42 +3741,42 @@ var app = (function () {
     			}
 
     			t13 = space();
-    			add_location(summary, file$1, 552, 8, 18977);
-    			add_location(li0, file$1, 555, 20, 19151);
-    			add_location(ul0, file$1, 555, 16, 19147);
+    			add_location(summary, file$1, 559, 8, 19216);
+    			add_location(li0, file$1, 562, 20, 19390);
+    			add_location(ul0, file$1, 562, 16, 19386);
     			attr_dev(input0, "type", "number");
-    			add_location(input0, file$1, 558, 24, 19265);
-    			add_location(p, file$1, 559, 24, 19337);
+    			add_location(input0, file$1, 565, 24, 19504);
+    			add_location(p, file$1, 566, 24, 19576);
     			attr_dev(div0, "class", "grid");
-    			add_location(div0, file$1, 557, 20, 19221);
-    			add_location(li1, file$1, 556, 20, 19195);
-    			add_location(ul1, file$1, 556, 16, 19191);
-    			add_location(nav0, file$1, 554, 12, 19124);
+    			add_location(div0, file$1, 564, 20, 19460);
+    			add_location(li1, file$1, 563, 20, 19434);
+    			add_location(ul1, file$1, 563, 16, 19430);
+    			add_location(nav0, file$1, 561, 12, 19363);
     			attr_dev(input1, "type", "text");
     			attr_dev(input1, "placeholder", "New Assignment Name...");
-    			add_location(input1, file$1, 566, 24, 19490);
-    			add_location(li2, file$1, 566, 20, 19486);
+    			add_location(input1, file$1, 573, 24, 19729);
+    			add_location(li2, file$1, 573, 20, 19725);
     			attr_dev(a, "href", "#1");
     			attr_dev(a, "role", "button");
     			attr_dev(a, "class", "primary outline");
-    			add_location(a, file$1, 567, 24, 19604);
-    			add_location(li3, file$1, 567, 20, 19600);
-    			add_location(ul2, file$1, 565, 16, 19460);
+    			add_location(a, file$1, 574, 24, 19843);
+    			add_location(li3, file$1, 574, 20, 19839);
+    			add_location(ul2, file$1, 572, 16, 19699);
     			attr_dev(input2, "type", "number");
     			attr_dev(input2, "placeholder", "Score");
-    			add_location(input2, file$1, 576, 24, 19981);
+    			add_location(input2, file$1, 583, 24, 20220);
     			attr_dev(input3, "type", "number");
     			attr_dev(input3, "placeholder", "Out Of");
-    			add_location(input3, file$1, 577, 24, 20076);
+    			add_location(input3, file$1, 584, 24, 20315);
     			attr_dev(div1, "class", "grid");
-    			add_location(div1, file$1, 575, 20, 19937);
-    			add_location(li4, file$1, 574, 20, 19911);
-    			add_location(ul3, file$1, 574, 16, 19907);
-    			add_location(nav1, file$1, 564, 12, 19437);
-    			add_location(br, file$1, 581, 12, 20236);
+    			add_location(div1, file$1, 582, 20, 20176);
+    			add_location(li4, file$1, 581, 20, 20150);
+    			add_location(ul3, file$1, 581, 16, 20146);
+    			add_location(nav1, file$1, 571, 12, 19676);
+    			add_location(br, file$1, 588, 12, 20475);
     			attr_dev(ul4, "class", "longlist");
-    			add_location(ul4, file$1, 553, 8, 19089);
-    			add_location(details, file$1, 551, 4, 18958);
+    			add_location(ul4, file$1, 560, 8, 19328);
+    			add_location(details, file$1, 558, 4, 19197);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, details, anchor);
@@ -3745,7 +3792,7 @@ var app = (function () {
     			append_dev(ul1, li1);
     			append_dev(li1, div0);
     			append_dev(div0, input0);
-    			set_input_value(input0, /*cat*/ ctx[60].weight);
+    			set_input_value(input0, /*cat*/ ctx[62].weight);
     			append_dev(div0, t4);
     			append_dev(div0, p);
     			append_dev(ul4, t6);
@@ -3779,10 +3826,10 @@ var app = (function () {
     			if (!mounted) {
     				dispose = [
     					listen_dev(input0, "input", input0_input_handler_4),
-    					listen_dev(input1, "input", /*input1_input_handler_3*/ ctx[52]),
-    					listen_dev(a, "click", click_handler_7, false, false, false),
-    					listen_dev(input2, "input", /*input2_input_handler_1*/ ctx[54]),
-    					listen_dev(input3, "input", /*input3_input_handler*/ ctx[55])
+    					listen_dev(input1, "input", /*input1_input_handler_3*/ ctx[53]),
+    					listen_dev(a, "click", click_handler_8, false, false, false),
+    					listen_dev(input2, "input", /*input2_input_handler_1*/ ctx[55]),
+    					listen_dev(input3, "input", /*input3_input_handler*/ ctx[56])
     				];
 
     				mounted = true;
@@ -3790,10 +3837,10 @@ var app = (function () {
     		},
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
-    			if (dirty[0] & /*categories, courseSettings*/ 20 && t0_value !== (t0_value = /*cat*/ ctx[60].toString(/*courseSettings*/ ctx[2].equalWeighting[/*cat*/ ctx[60].name], /*courseSettings*/ ctx[2].termEnabled) + "")) set_data_dev(t0, t0_value);
+    			if (dirty[0] & /*categories, courseSettings*/ 20 && t0_value !== (t0_value = /*cat*/ ctx[62].toString(/*courseSettings*/ ctx[2].equalWeighting[/*cat*/ ctx[62].name], /*courseSettings*/ ctx[2].termEnabled) + "")) set_data_dev(t0, t0_value);
 
-    			if (dirty[0] & /*categories*/ 16 && to_number(input0.value) !== /*cat*/ ctx[60].weight) {
-    				set_input_value(input0, /*cat*/ ctx[60].weight);
+    			if (dirty[0] & /*categories*/ 16 && to_number(input0.value) !== /*cat*/ ctx[62].weight) {
+    				set_input_value(input0, /*cat*/ ctx[62].weight);
     			}
 
     			if (dirty[0] & /*newAssig, categories*/ 528 && input1.value !== /*newAssig*/ ctx[9].name) {
@@ -3808,8 +3855,8 @@ var app = (function () {
     				set_input_value(input3, /*newAssig*/ ctx[9].outof);
     			}
 
-    			if (dirty[0] & /*categories, makeAssigVariable, showAreas, deleteAssignment, courseSettings*/ 17826068) {
-    				each_value_1 = /*cat*/ ctx[60].assignments;
+    			if (dirty[0] & /*categories, makeAssigVariable, showAreas, deleteAssignment, courseSettings*/ 18874644) {
+    				each_value_1 = /*cat*/ ctx[62].assignments;
     				validate_each_argument(each_value_1);
     				let i;
 
@@ -3844,7 +3891,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(551:0) {#each categories as cat}",
+    		source: "(558:0) {#each categories as cat}",
     		ctx
     	});
 
@@ -3902,7 +3949,14 @@ var app = (function () {
     	let mounted;
     	let dispose;
     	let if_block0 = /*issticky*/ ctx[11] && create_if_block_12(ctx);
-    	let if_block1 = /*isPlayground*/ ctx[0] && create_if_block_11(ctx);
+
+    	function select_block_type(ctx, dirty) {
+    		if (/*isPlayground*/ ctx[0]) return create_if_block_11;
+    		return create_else_block$1;
+    	}
+
+    	let current_block_type = select_block_type(ctx);
+    	let if_block1 = current_block_type(ctx);
     	let if_block2 = !/*isPlayground*/ ctx[0] && create_if_block_9(ctx);
     	let if_block3 = /*showAreas*/ ctx[8].equalWeighting && create_if_block_8(ctx);
     	let if_block4 = /*showAreas*/ ctx[8].gradingPeriods && create_if_block_7(ctx);
@@ -3955,7 +4009,7 @@ var app = (function () {
     			button1 = element("button");
     			button1.textContent = "New Category";
     			t17 = space();
-    			if (if_block1) if_block1.c();
+    			if_block1.c();
     			t18 = space();
     			if (if_block2) if_block2.c();
     			t19 = space();
@@ -3984,28 +4038,28 @@ var app = (function () {
     			}
 
     			each_1_anchor = empty();
-    			add_location(h3, file$1, 341, 12, 10858);
-    			add_location(li0, file$1, 341, 8, 10854);
-    			add_location(ul0, file$1, 340, 4, 10840);
-    			add_location(strong0, file$1, 344, 91, 11021);
+    			add_location(h3, file$1, 346, 12, 11058);
+    			add_location(li0, file$1, 346, 8, 11054);
+    			add_location(ul0, file$1, 345, 4, 11040);
+    			add_location(strong0, file$1, 349, 91, 11221);
     			attr_dev(a, "role", "button");
     			attr_dev(a, "class", "outline");
     			attr_dev(a, "href", "#/");
-    			add_location(a, file$1, 344, 12, 10942);
-    			add_location(li1, file$1, 344, 8, 10938);
-    			add_location(ul1, file$1, 343, 4, 10924);
-    			add_location(nav, file$1, 339, 0, 10829);
-    			add_location(strong1, file$1, 350, 7, 11144);
-    			add_location(strong2, file$1, 350, 57, 11194);
-    			add_location(p, file$1, 350, 4, 11141);
-    			add_location(div0, file$1, 349, 0, 11111);
-    			add_location(button0, file$1, 361, 4, 11496);
-    			add_location(button1, file$1, 362, 4, 11575);
+    			add_location(a, file$1, 349, 12, 11142);
+    			add_location(li1, file$1, 349, 8, 11138);
+    			add_location(ul1, file$1, 348, 4, 11124);
+    			add_location(nav, file$1, 344, 0, 11029);
+    			add_location(strong1, file$1, 355, 7, 11344);
+    			add_location(strong2, file$1, 355, 57, 11394);
+    			add_location(p, file$1, 355, 4, 11341);
+    			add_location(div0, file$1, 354, 0, 11311);
+    			add_location(button0, file$1, 366, 4, 11696);
+    			add_location(button1, file$1, 367, 4, 11775);
     			attr_dev(div1, "class", "grid");
-    			add_location(div1, file$1, 360, 0, 11472);
-    			add_location(br0, file$1, 547, 0, 18871);
-    			add_location(br1, file$1, 547, 4, 18875);
-    			add_location(hr, file$1, 549, 0, 18921);
+    			add_location(div1, file$1, 365, 0, 11672);
+    			add_location(br0, file$1, 554, 0, 19110);
+    			add_location(br1, file$1, 554, 4, 19114);
+    			add_location(hr, file$1, 556, 0, 19160);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4041,7 +4095,7 @@ var app = (function () {
     			append_dev(div1, t15);
     			append_dev(div1, button1);
     			append_dev(div1, t17);
-    			if (if_block1) if_block1.m(div1, null);
+    			if_block1.m(div1, null);
     			insert_dev(target, t18, anchor);
     			if (if_block2) if_block2.m(target, anchor);
     			insert_dev(target, t19, anchor);
@@ -4099,17 +4153,16 @@ var app = (function () {
     				if_block0 = null;
     			}
 
-    			if (/*isPlayground*/ ctx[0]) {
+    			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block1) {
+    				if_block1.p(ctx, dirty);
+    			} else {
+    				if_block1.d(1);
+    				if_block1 = current_block_type(ctx);
+
     				if (if_block1) {
-    					if_block1.p(ctx, dirty);
-    				} else {
-    					if_block1 = create_if_block_11(ctx);
     					if_block1.c();
     					if_block1.m(div1, null);
     				}
-    			} else if (if_block1) {
-    				if_block1.d(1);
-    				if_block1 = null;
     			}
 
     			if (!/*isPlayground*/ ctx[0]) {
@@ -4286,7 +4339,7 @@ var app = (function () {
     				check_outros();
     			}
 
-    			if (dirty[0] & /*categories, makeAssigVariable, showAreas, deleteAssignment, courseSettings, newAssig, submitAssignment*/ 19923732) {
+    			if (dirty[0] & /*categories, makeAssigVariable, showAreas, deleteAssignment, courseSettings, newAssig, submitAssignment*/ 23069460) {
     				each_value = /*categories*/ ctx[4];
     				validate_each_argument(each_value);
     				let i;
@@ -4340,7 +4393,7 @@ var app = (function () {
     			if (if_block0) if_block0.d(detaching);
     			if (detaching) detach_dev(t13);
     			if (detaching) detach_dev(div1);
-    			if (if_block1) if_block1.d();
+    			if_block1.d();
     			if (detaching) detach_dev(t18);
     			if (if_block2) if_block2.d(detaching);
     			if (detaching) detach_dev(t19);
@@ -4421,6 +4474,11 @@ var app = (function () {
     		return text;
     	}
 
+    	// charts data initialization
+    	let gradesOverTime = { labels: [], datasets: [{ values: [] }] };
+
+    	let SORTED_LIST_OF_ASSIGNMENTS = [];
+
     	// Reformat course object to list of categories 
     	let newGrade = 100;
 
@@ -4440,11 +4498,22 @@ var app = (function () {
 
     			// Add assignments to category
     			for (let assignment of category.assignments) {
-    				currentCategory.addAssignment(new Assignment(parseFloat(assignment.scorePoints) * assignment.multiplier, assignment.totalPoints * assignment.multiplier, assignment.assignmentName, (assignment.scorePoints * assignment.multiplier / (assignment.totalPoints * assignment.multiplier) * 100).toFixed(2), assignment.termID, assignment.dueDate));
+    				let thisassig = new Assignment(parseFloat(assignment.scorePoints) * assignment.multiplier, assignment.totalPoints * assignment.multiplier, assignment.assignmentName, (assignment.scorePoints * assignment.multiplier / (assignment.totalPoints * assignment.multiplier) * 100).toFixed(2), assignment.termID, assignment.dueDate);
+    				currentCategory.addAssignment(thisassig);
+    				SORTED_LIST_OF_ASSIGNMENTS.push(thisassig);
     			}
 
     			if (!existance.true) categories.push(currentCategory);
     		}
+    	}
+
+    	// Sort SORTED_LIST_OF_ASSIGNMENTS by i.duedate
+    	SORTED_LIST_OF_ASSIGNMENTS.sort((a, b) => a.dueDate > b.dueDate ? 1 : -1);
+
+    	for (let i of SORTED_LIST_OF_ASSIGNMENTS) {
+    		console.log(i);
+    		gradesOverTime.labels.push(i.name + ", " + i.duedate.toLocaleString().split(',')[0]);
+    		gradesOverTime.datasets[0].values.push(i.score);
     	}
 
     	// console.log(categories)
@@ -4565,19 +4634,6 @@ var app = (function () {
 
     	let moreToolsOpen = true;
 
-    	// charts data initialization
-    	let gradesOverTime = {
-    		labels: ["January", "February", "March", "April", "May", "June", "July"],
-    		datasets: [{ values: [10, 12, 3, 9, 8, 15, 9] }]
-    	};
-
-    	chrome.storage.local.get(['GRADES'], result => {
-    		if (result.GRADES != undefined) {
-    			console.log("Grades from storage:");
-    			console.log(result.GRADES);
-    		}
-    	});
-
     	// Minimum need (doesnt work bruh)
     	let gradeWanted = 90;
 
@@ -4589,6 +4645,7 @@ var app = (function () {
     		window.scrollTo({ top: 0, behavior: 'smooth' });
     	}
 
+    	// Save and load (Playground only)
     	let saveCourseName;
 
     	function saveCourseAs() {
@@ -4679,14 +4736,18 @@ var app = (function () {
     	};
 
     	const click_handler_4 = () => {
-    		$$invalidate(13, moreToolsOpen = !moreToolsOpen);
+    		toggleArea("showGraph");
     	};
 
     	const click_handler_5 = () => {
-    		toggleArea("equalWeighting");
+    		$$invalidate(13, moreToolsOpen = !moreToolsOpen);
     	};
 
     	const click_handler_6 = () => {
+    		toggleArea("equalWeighting");
+    	};
+
+    	const click_handler_7 = () => {
     		toggleArea("gradingPeriods");
     	};
 
@@ -4780,7 +4841,7 @@ var app = (function () {
     		$$invalidate(4, categories);
     	}
 
-    	const click_handler_7 = cat => {
+    	const click_handler_8 = cat => {
     		$$invalidate(9, newAssig.catName = cat.name, newAssig);
     		submitAssignment();
     	};
@@ -4825,6 +4886,8 @@ var app = (function () {
     		courseSettings,
     		key,
     		getCurrentGrade,
+    		gradesOverTime,
+    		SORTED_LIST_OF_ASSIGNMENTS,
     		newGrade,
     		categories,
     		terms,
@@ -4841,7 +4904,6 @@ var app = (function () {
     		issticky,
     		sticky,
     		moreToolsOpen,
-    		gradesOverTime,
     		gradeWanted,
     		minNeedAssig,
     		makeAssigVariable,
@@ -4858,6 +4920,8 @@ var app = (function () {
     		if ('isPlayground' in $$props) $$invalidate(0, isPlayground = $$props.isPlayground);
     		if ('courseSettings' in $$props) $$invalidate(2, courseSettings = $$props.courseSettings);
     		if ('key' in $$props) $$invalidate(28, key = $$props.key);
+    		if ('gradesOverTime' in $$props) $$invalidate(19, gradesOverTime = $$props.gradesOverTime);
+    		if ('SORTED_LIST_OF_ASSIGNMENTS' in $$props) SORTED_LIST_OF_ASSIGNMENTS = $$props.SORTED_LIST_OF_ASSIGNMENTS;
     		if ('newGrade' in $$props) $$invalidate(3, newGrade = $$props.newGrade);
     		if ('categories' in $$props) $$invalidate(4, categories = $$props.categories);
     		if ('terms' in $$props) $$invalidate(7, terms = $$props.terms);
@@ -4868,7 +4932,6 @@ var app = (function () {
     		if ('issticky' in $$props) $$invalidate(11, issticky = $$props.issticky);
     		if ('sticky' in $$props) $$invalidate(12, sticky = $$props.sticky);
     		if ('moreToolsOpen' in $$props) $$invalidate(13, moreToolsOpen = $$props.moreToolsOpen);
-    		if ('gradesOverTime' in $$props) $$invalidate(23, gradesOverTime = $$props.gradesOverTime);
     		if ('gradeWanted' in $$props) $$invalidate(5, gradeWanted = $$props.gradeWanted);
     		if ('minNeedAssig' in $$props) $$invalidate(6, minNeedAssig = $$props.minNeedAssig);
     		if ('saveCourseName' in $$props) $$invalidate(14, saveCourseName = $$props.saveCourseName);
@@ -4986,11 +5049,11 @@ var app = (function () {
     		savedCourses,
     		dispatch,
     		getCurrentGrade,
+    		gradesOverTime,
     		toggleArea,
     		deleteAssignment,
     		submitAssignment,
     		submitCategory,
-    		gradesOverTime,
     		makeAssigVariable,
     		saveCourseAs,
     		loadCourse,
@@ -5004,6 +5067,7 @@ var app = (function () {
     		click_handler_4,
     		click_handler_5,
     		click_handler_6,
+    		click_handler_7,
     		input_change_handler,
     		input_change_handler_1,
     		input_change_handler_2,
@@ -5020,7 +5084,7 @@ var app = (function () {
     		input1_input_handler_2,
     		input0_input_handler_4,
     		input1_input_handler_3,
-    		click_handler_7,
+    		click_handler_8,
     		input2_input_handler_1,
     		input3_input_handler,
     		input0_input_handler_5,
