@@ -2,7 +2,7 @@
     export let course
     import { createEventDispatcher } from 'svelte'
 	import { slide } from 'svelte/transition'
-    import { Category, Assignment, Term } from './helpers'
+    import { Category, Assignment, Term, calculateGradeGivenList } from './helpers'
     import Chart from 'svelte-frappe-charts'
     export let isPlayground = false
 
@@ -84,7 +84,8 @@
     // Sort SORTED_LIST_OF_ASSIGNMENTS by i.duedate
     SORTED_LIST_OF_ASSIGNMENTS.sort((a, b) => (a.dueDate > b.dueDate) ? 1 : -1)
     for(let i of SORTED_LIST_OF_ASSIGNMENTS){
-        console.log(i)
+        let res = calculateGradeGivenList(SORTED_LIST_OF_ASSIGNMENTS, i)
+        console.log(res)
         gradesOverTime.labels.push(i.name + ", " + i.duedate.toLocaleString().split(',')[0])
         gradesOverTime.datasets[0].values.push(i.score)
     }
@@ -94,8 +95,7 @@
         categories[0].initialWeight = 100
         categories[0].weight = 100
         categories = categories
-        console.log(categories)
-
+        // console.log(categories)
     }
 
     // Generate list of grading periods

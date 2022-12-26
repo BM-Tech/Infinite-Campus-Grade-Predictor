@@ -15,6 +15,22 @@
 		icURL = `https://${x.IC_subdomain}.infinitecampus.org`
 	})
 
+	let isDarkTheme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+	chrome.storage.local.get(['Darkmode'], (x) => {
+		if(x.Darkmode != undefined){
+			isDarkTheme = x.Darkmode
+		}
+	})
+
+	function toggleDarkTheme(){
+		isDarkTheme = !isDarkTheme
+		chrome.storage.local.set({Darkmode: isDarkTheme})
+	}
+
+	$: {
+		document.querySelector('html').setAttribute('data-theme', isDarkTheme ? 'dark' : 'light')
+	}
+
 	chrome.runtime.sendMessage({m: "getGrades"})
 	let classes = []
 	chrome.runtime.onMessage.addListener(
@@ -54,6 +70,7 @@
 	}
 </script>
 
+
 <div class="container">
 	<br>
 
@@ -81,6 +98,7 @@
 			<li><small>Infinite Campus Grade Predictor</small></li>
 		</ul>
 		<ul>
+			<li><a href="#1" on:click={toggleDarkTheme}><small>Toggle Dark Theme</small></a></li>
 			<li><a href="https://benman604.github.io/Infinite-Campus-Grade-Predictor/"><small>About</small></a></li>
 			<li><a href="https://github.com/bm-tech/Infinite-Campus-Grade-Predictor"><small>Github</small></a></li>
 		</ul>

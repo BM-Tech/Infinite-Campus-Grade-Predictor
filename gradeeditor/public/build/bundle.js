@@ -1166,6 +1166,11 @@ var app = (function () {
         }
     }
 
+    function calculateGradeGivenList(list, uptill){
+        let sublist = list.splice(0, uptill);
+        return sublist
+    }
+
     var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
     function createCommonjsModule(fn) {
@@ -1672,11 +1677,11 @@ var app = (function () {
     			t5 = space();
     			t6 = text(t6_value);
     			t7 = text("%");
-    			add_location(strong0, file$1, 360, 11, 11514);
-    			add_location(strong1, file$1, 360, 61, 11564);
-    			add_location(p, file$1, 360, 8, 11511);
+    			add_location(strong0, file$1, 360, 11, 11616);
+    			add_location(strong1, file$1, 360, 61, 11666);
+    			add_location(p, file$1, 360, 8, 11613);
     			attr_dev(div, "class", "sticky");
-    			add_location(div, file$1, 359, 4, 11481);
+    			add_location(div, file$1, 359, 4, 11583);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -1719,7 +1724,7 @@ var app = (function () {
     		c: function create() {
     			button = element("button");
     			button.textContent = "Show Graph";
-    			add_location(button, file$1, 371, 8, 11974);
+    			add_location(button, file$1, 371, 8, 12076);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -1758,7 +1763,7 @@ var app = (function () {
     		c: function create() {
     			button = element("button");
     			button.textContent = "Save/Load";
-    			add_location(button, file$1, 369, 8, 11883);
+    			add_location(button, file$1, 369, 8, 11985);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -1804,9 +1809,9 @@ var app = (function () {
     			t1 = space();
     			if (if_block) if_block.c();
     			attr_dev(a, "href", "#a");
-    			add_location(a, file$1, 378, 8, 12151);
+    			add_location(a, file$1, 378, 8, 12253);
     			attr_dev(small, "class", "sidewayslist");
-    			add_location(small, file$1, 377, 4, 12113);
+    			add_location(small, file$1, 377, 4, 12215);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, small, anchor);
@@ -1868,9 +1873,9 @@ var app = (function () {
     			a1 = element("a");
     			a1.textContent = "Grading Periods";
     			attr_dev(a0, "href", "#a");
-    			add_location(a0, file$1, 380, 12, 12269);
+    			add_location(a0, file$1, 380, 12, 12371);
     			attr_dev(a1, "href", "#a");
-    			add_location(a1, file$1, 381, 12, 12361);
+    			add_location(a1, file$1, 381, 12, 12463);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a0, anchor);
@@ -1967,25 +1972,25 @@ var app = (function () {
     			li1 = element("li");
     			label = element("label");
     			input = element("input");
-    			add_location(h4, file$1, 391, 12, 12718);
-    			add_location(p, file$1, 392, 12, 12756);
-    			add_location(hr, file$1, 407, 12, 13399);
-    			add_location(br, file$1, 407, 16, 13403);
-    			add_location(li0, file$1, 409, 20, 13468);
-    			add_location(ul0, file$1, 409, 16, 13464);
+    			add_location(h4, file$1, 391, 12, 12820);
+    			add_location(p, file$1, 392, 12, 12858);
+    			add_location(hr, file$1, 407, 12, 13501);
+    			add_location(br, file$1, 407, 16, 13505);
+    			add_location(li0, file$1, 409, 20, 13570);
+    			add_location(ul0, file$1, 409, 16, 13566);
     			attr_dev(input, "type", "checkbox");
     			attr_dev(input, "name", "category");
     			attr_dev(input, "role", "switch");
-    			add_location(input, file$1, 412, 24, 13606);
+    			add_location(input, file$1, 412, 24, 13708);
     			attr_dev(label, "for", "category");
-    			add_location(label, file$1, 411, 20, 13558);
-    			add_location(li1, file$1, 410, 20, 13532);
-    			add_location(ul1, file$1, 410, 16, 13528);
+    			add_location(label, file$1, 411, 20, 13660);
+    			add_location(li1, file$1, 410, 20, 13634);
+    			add_location(ul1, file$1, 410, 16, 13630);
     			set_style(nav, "width", "100%");
-    			add_location(nav, file$1, 408, 12, 13421);
-    			add_location(div, file$1, 390, 8, 12699);
+    			add_location(nav, file$1, 408, 12, 13523);
+    			add_location(div, file$1, 390, 8, 12801);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 389, 4, 12647);
+    			add_location(article, file$1, 389, 4, 12749);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -2113,19 +2118,19 @@ var app = (function () {
     			li1 = element("li");
     			label = element("label");
     			input = element("input");
-    			add_location(li0, file$1, 396, 24, 12969);
-    			add_location(ul0, file$1, 395, 20, 12939);
+    			add_location(li0, file$1, 396, 24, 13071);
+    			add_location(ul0, file$1, 395, 20, 13041);
     			attr_dev(input, "type", "checkbox");
     			attr_dev(input, "name", "switch");
     			attr_dev(input, "id", "switch");
     			attr_dev(input, "role", "switch");
-    			add_location(input, file$1, 400, 28, 13121);
+    			add_location(input, file$1, 400, 28, 13223);
     			attr_dev(label, "for", "switch");
-    			add_location(label, file$1, 399, 28, 13071);
-    			add_location(li1, file$1, 399, 24, 13067);
-    			add_location(ul1, file$1, 398, 20, 13037);
+    			add_location(label, file$1, 399, 28, 13173);
+    			add_location(li1, file$1, 399, 24, 13169);
+    			add_location(ul1, file$1, 398, 20, 13139);
     			set_style(nav, "width", "100%");
-    			add_location(nav, file$1, 394, 16, 12893);
+    			add_location(nav, file$1, 394, 16, 12995);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, nav, anchor);
@@ -2203,11 +2208,11 @@ var app = (function () {
     				each_blocks[i].c();
     			}
 
-    			add_location(h4, file$1, 424, 12, 13969);
-    			add_location(p, file$1, 425, 12, 14007);
-    			add_location(div, file$1, 423, 8, 13950);
+    			add_location(h4, file$1, 424, 12, 14071);
+    			add_location(p, file$1, 425, 12, 14109);
+    			add_location(div, file$1, 423, 8, 14052);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 422, 4, 13898);
+    			add_location(article, file$1, 422, 4, 14000);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -2313,19 +2318,19 @@ var app = (function () {
     			label = element("label");
     			input = element("input");
     			t2 = space();
-    			add_location(li0, file$1, 429, 24, 14242);
-    			add_location(ul0, file$1, 428, 20, 14212);
+    			add_location(li0, file$1, 429, 24, 14344);
+    			add_location(ul0, file$1, 428, 20, 14314);
     			attr_dev(input, "type", "checkbox");
     			attr_dev(input, "name", "switch");
     			attr_dev(input, "id", "switch");
     			attr_dev(input, "role", "switch");
-    			add_location(input, file$1, 433, 28, 14402);
+    			add_location(input, file$1, 433, 28, 14504);
     			attr_dev(label, "for", "switch");
-    			add_location(label, file$1, 432, 28, 14352);
-    			add_location(li1, file$1, 432, 24, 14348);
-    			add_location(ul1, file$1, 431, 20, 14318);
+    			add_location(label, file$1, 432, 28, 14454);
+    			add_location(li1, file$1, 432, 24, 14450);
+    			add_location(ul1, file$1, 431, 20, 14420);
     			set_style(nav, "width", "100%");
-    			add_location(nav, file$1, 427, 16, 14166);
+    			add_location(nav, file$1, 427, 16, 14268);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, nav, anchor);
@@ -2436,40 +2441,40 @@ var app = (function () {
     			input3 = element("input");
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "name", "aName");
-    			add_location(input0, file$1, 449, 20, 14990);
+    			add_location(input0, file$1, 449, 20, 15092);
     			attr_dev(label0, "for", "aName");
-    			add_location(label0, file$1, 448, 16, 14934);
+    			add_location(label0, file$1, 448, 16, 15036);
     			attr_dev(select, "name", "aCat");
     			select.required = true;
     			if (/*newAssig*/ ctx[9]["catName"] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[42].call(select));
-    			add_location(select, file$1, 453, 20, 15143);
+    			add_location(select, file$1, 453, 20, 15245);
     			attr_dev(label1, "for", "aCat");
-    			add_location(label1, file$1, 452, 16, 15095);
+    			add_location(label1, file$1, 452, 16, 15197);
     			attr_dev(div0, "class", "grid");
-    			add_location(div0, file$1, 447, 12, 14898);
+    			add_location(div0, file$1, 447, 12, 15000);
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "name", "aScore");
     			attr_dev(input1, "step", "0.01");
     			input1.required = true;
-    			add_location(input1, file$1, 463, 20, 15539);
+    			add_location(input1, file$1, 463, 20, 15641);
     			attr_dev(label2, "for", "aScore");
-    			add_location(label2, file$1, 462, 16, 15492);
+    			add_location(label2, file$1, 462, 16, 15594);
     			attr_dev(input2, "type", "number");
     			attr_dev(input2, "name", "aOutOf");
     			attr_dev(input2, "step", "0.01");
     			input2.required = true;
-    			add_location(input2, file$1, 466, 20, 15715);
+    			add_location(input2, file$1, 466, 20, 15817);
     			attr_dev(label3, "for", "aOutOf");
-    			add_location(label3, file$1, 465, 16, 15667);
+    			add_location(label3, file$1, 465, 16, 15769);
     			attr_dev(div1, "class", "grid");
-    			add_location(div1, file$1, 461, 12, 15456);
+    			add_location(div1, file$1, 461, 12, 15558);
     			attr_dev(input3, "type", "submit");
     			input3.value = "Add";
-    			add_location(input3, file$1, 470, 12, 15861);
+    			add_location(input3, file$1, 470, 12, 15963);
     			attr_dev(form, "action", "#");
-    			add_location(form, file$1, 446, 8, 14823);
+    			add_location(form, file$1, 446, 8, 14925);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 445, 4, 14771);
+    			add_location(article, file$1, 445, 4, 14873);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -2605,7 +2610,7 @@ var app = (function () {
     			t = text(t_value);
     			option.__value = option_value_value = /*cat*/ ctx[62].name;
     			option.value = option.__value;
-    			add_location(option, file$1, 455, 28, 15286);
+    			add_location(option, file$1, 455, 28, 15388);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -2671,26 +2676,26 @@ var app = (function () {
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "name", "cName");
     			input0.required = true;
-    			add_location(input0, file$1, 481, 20, 16214);
+    			add_location(input0, file$1, 481, 20, 16316);
     			attr_dev(label0, "for", "cName");
-    			add_location(label0, file$1, 480, 16, 16160);
+    			add_location(label0, file$1, 480, 16, 16262);
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "min", "0");
     			attr_dev(input1, "max", "100");
     			attr_dev(input1, "name", "cWeight");
     			input1.required = true;
-    			add_location(input1, file$1, 484, 20, 16382);
+    			add_location(input1, file$1, 484, 20, 16484);
     			attr_dev(label1, "for", "cWeight");
-    			add_location(label1, file$1, 483, 16, 16329);
+    			add_location(label1, file$1, 483, 16, 16431);
     			attr_dev(div, "class", "grid");
-    			add_location(div, file$1, 479, 12, 16124);
+    			add_location(div, file$1, 479, 12, 16226);
     			attr_dev(input2, "type", "submit");
     			input2.value = "Add";
-    			add_location(input2, file$1, 487, 12, 16537);
+    			add_location(input2, file$1, 487, 12, 16639);
     			attr_dev(form, "action", "#");
-    			add_location(form, file$1, 478, 8, 16051);
+    			add_location(form, file$1, 478, 8, 16153);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 477, 4, 15999);
+    			add_location(article, file$1, 477, 4, 16101);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -2823,32 +2828,32 @@ var app = (function () {
     			div2 = element("div");
     			a = element("a");
     			a.textContent = "Delete";
-    			add_location(h4, file$1, 495, 8, 16716);
-    			add_location(p, file$1, 496, 8, 16746);
+    			add_location(h4, file$1, 495, 8, 16818);
+    			add_location(p, file$1, 496, 8, 16848);
     			attr_dev(input0, "type", "text");
     			attr_dev(input0, "placeholder", "Save Name...");
-    			add_location(input0, file$1, 499, 16, 16950);
+    			add_location(input0, file$1, 499, 16, 17052);
     			attr_dev(input1, "type", "submit");
     			input1.value = "Save As";
-    			add_location(input1, file$1, 500, 16, 17042);
+    			add_location(input1, file$1, 500, 16, 17144);
     			attr_dev(div0, "class", "grid");
-    			add_location(div0, file$1, 498, 12, 16914);
+    			add_location(div0, file$1, 498, 12, 17016);
     			set_style(form, "margin-bottom", "0");
-    			add_location(form, file$1, 497, 8, 16828);
+    			add_location(form, file$1, 497, 8, 16930);
     			attr_dev(select, "name", "loadCourse");
     			if (/*loadCourseName*/ ctx[15] === void 0) add_render_callback(() => /*select_change_handler_1*/ ctx[48].call(select));
-    			add_location(select, file$1, 504, 12, 17158);
-    			add_location(button, file$1, 509, 12, 17404);
+    			add_location(select, file$1, 504, 12, 17260);
+    			add_location(button, file$1, 509, 12, 17506);
     			attr_dev(div1, "class", "grid");
-    			add_location(div1, file$1, 503, 8, 17126);
+    			add_location(div1, file$1, 503, 8, 17228);
     			attr_dev(a, "href", "#1");
     			attr_dev(a, "role", "button");
     			attr_dev(a, "class", "secondary outline");
-    			add_location(a, file$1, 513, 12, 17515);
+    			add_location(a, file$1, 513, 12, 17617);
     			attr_dev(div2, "class", "sidewayslist");
-    			add_location(div2, file$1, 512, 8, 17475);
+    			add_location(div2, file$1, 512, 8, 17577);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 494, 4, 16664);
+    			add_location(article, file$1, 494, 4, 16766);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -2971,7 +2976,7 @@ var app = (function () {
     			t = text(t_value);
     			option.__value = option_value_value = /*name*/ ctx[70];
     			option.value = option.__value;
-    			add_location(option, file$1, 506, 20, 17306);
+    			add_location(option, file$1, 506, 20, 17408);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -3025,9 +3030,9 @@ var app = (function () {
     			h4.textContent = "Grade Trends";
     			t1 = space();
     			create_component(chart.$$.fragment);
-    			add_location(h4, file$1, 521, 8, 17759);
+    			add_location(h4, file$1, 521, 8, 17861);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 520, 4, 17707);
+    			add_location(article, file$1, 520, 4, 17809);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -3166,33 +3171,33 @@ var app = (function () {
     			t20 = text(" on this assignment to maintain a grade of ");
     			t21 = text(/*gradeWanted*/ ctx[5]);
     			t22 = text("%.");
-    			add_location(h4, file$1, 529, 8, 17994);
-    			add_location(p0, file$1, 530, 8, 18048);
-    			add_location(p1, file$1, 532, 12, 18217);
+    			add_location(h4, file$1, 529, 8, 18096);
+    			add_location(p0, file$1, 530, 8, 18150);
+    			add_location(p1, file$1, 532, 12, 18319);
     			attr_dev(input0, "type", "number");
     			attr_dev(input0, "placeholder", "%");
-    			add_location(input0, file$1, 533, 12, 18261);
+    			add_location(input0, file$1, 533, 12, 18363);
     			attr_dev(div0, "class", "grid");
-    			add_location(div0, file$1, 531, 8, 18185);
-    			add_location(p2, file$1, 535, 8, 18349);
+    			add_location(div0, file$1, 531, 8, 18287);
+    			add_location(p2, file$1, 535, 8, 18451);
     			attr_dev(select, "name", "aCat");
     			select.required = true;
     			if (/*minNeedAssig*/ ctx[6]["catName"] === void 0) add_render_callback(() => /*select_change_handler_2*/ ctx[50].call(select));
-    			add_location(select, file$1, 538, 16, 18462);
+    			add_location(select, file$1, 538, 16, 18564);
     			attr_dev(label0, "for", "aCat");
-    			add_location(label0, file$1, 537, 12, 18418);
+    			add_location(label0, file$1, 537, 12, 18520);
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "name", "aOutOf");
     			input1.required = true;
-    			add_location(input1, file$1, 546, 16, 18783);
+    			add_location(input1, file$1, 546, 16, 18885);
     			attr_dev(label1, "for", "aOutOf");
-    			add_location(label1, file$1, 545, 12, 18739);
+    			add_location(label1, file$1, 545, 12, 18841);
     			attr_dev(div1, "class", "grid");
-    			add_location(div1, file$1, 536, 8, 18386);
-    			add_location(strong, file$1, 550, 33, 18934);
-    			add_location(p3, file$1, 550, 8, 18909);
+    			add_location(div1, file$1, 536, 8, 18488);
+    			add_location(strong, file$1, 550, 33, 19036);
+    			add_location(p3, file$1, 550, 8, 19011);
     			attr_dev(article, "class", "subcard");
-    			add_location(article, file$1, 528, 4, 17942);
+    			add_location(article, file$1, 528, 4, 18044);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, article, anchor);
@@ -3338,7 +3343,7 @@ var app = (function () {
     			t = text(t_value);
     			option.__value = option_value_value = /*cat*/ ctx[62].name;
     			option.value = option.__value;
-    			add_location(option, file$1, 540, 24, 18601);
+    			add_location(option, file$1, 540, 24, 18703);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -3432,23 +3437,23 @@ var app = (function () {
     			input1 = element("input");
     			t10 = space();
     			attr_dev(a, "href", "#a");
-    			add_location(a, file$1, 597, 32, 20919);
+    			add_location(a, file$1, 597, 32, 21021);
     			attr_dev(small, "class", "modifiers");
-    			add_location(small, file$1, 596, 28, 20860);
-    			add_location(li0, file$1, 593, 28, 20706);
-    			add_location(ul0, file$1, 593, 24, 20702);
+    			add_location(small, file$1, 596, 28, 20962);
+    			add_location(li0, file$1, 593, 28, 20808);
+    			add_location(ul0, file$1, 593, 24, 20804);
     			attr_dev(input0, "type", "number");
     			attr_dev(input0, "placeholder", "Score");
-    			add_location(input0, file$1, 605, 32, 21432);
+    			add_location(input0, file$1, 605, 32, 21534);
     			attr_dev(input1, "type", "number");
     			attr_dev(input1, "placeholder", "Out Of");
-    			add_location(input1, file$1, 606, 32, 21532);
+    			add_location(input1, file$1, 606, 32, 21634);
     			attr_dev(div, "class", "grid");
-    			add_location(div, file$1, 604, 28, 21380);
-    			add_location(li1, file$1, 603, 28, 21346);
-    			add_location(ul1, file$1, 603, 24, 21342);
-    			add_location(nav, file$1, 592, 24, 20671);
-    			add_location(li2, file$1, 592, 20, 20667);
+    			add_location(div, file$1, 604, 28, 21482);
+    			add_location(li1, file$1, 603, 28, 21448);
+    			add_location(ul1, file$1, 603, 24, 21444);
+    			add_location(nav, file$1, 592, 24, 20773);
+    			add_location(li2, file$1, 592, 20, 20769);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, li2, anchor);
@@ -3552,7 +3557,7 @@ var app = (function () {
     			a = element("a");
     			a.textContent = "make variable";
     			attr_dev(a, "href", "#a");
-    			add_location(a, file$1, 599, 36, 21106);
+    			add_location(a, file$1, 599, 36, 21208);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -3741,42 +3746,42 @@ var app = (function () {
     			}
 
     			t13 = space();
-    			add_location(summary, file$1, 559, 8, 19216);
-    			add_location(li0, file$1, 562, 20, 19390);
-    			add_location(ul0, file$1, 562, 16, 19386);
+    			add_location(summary, file$1, 559, 8, 19318);
+    			add_location(li0, file$1, 562, 20, 19492);
+    			add_location(ul0, file$1, 562, 16, 19488);
     			attr_dev(input0, "type", "number");
-    			add_location(input0, file$1, 565, 24, 19504);
-    			add_location(p, file$1, 566, 24, 19576);
+    			add_location(input0, file$1, 565, 24, 19606);
+    			add_location(p, file$1, 566, 24, 19678);
     			attr_dev(div0, "class", "grid");
-    			add_location(div0, file$1, 564, 20, 19460);
-    			add_location(li1, file$1, 563, 20, 19434);
-    			add_location(ul1, file$1, 563, 16, 19430);
-    			add_location(nav0, file$1, 561, 12, 19363);
+    			add_location(div0, file$1, 564, 20, 19562);
+    			add_location(li1, file$1, 563, 20, 19536);
+    			add_location(ul1, file$1, 563, 16, 19532);
+    			add_location(nav0, file$1, 561, 12, 19465);
     			attr_dev(input1, "type", "text");
     			attr_dev(input1, "placeholder", "New Assignment Name...");
-    			add_location(input1, file$1, 573, 24, 19729);
-    			add_location(li2, file$1, 573, 20, 19725);
+    			add_location(input1, file$1, 573, 24, 19831);
+    			add_location(li2, file$1, 573, 20, 19827);
     			attr_dev(a, "href", "#1");
     			attr_dev(a, "role", "button");
     			attr_dev(a, "class", "primary outline");
-    			add_location(a, file$1, 574, 24, 19843);
-    			add_location(li3, file$1, 574, 20, 19839);
-    			add_location(ul2, file$1, 572, 16, 19699);
+    			add_location(a, file$1, 574, 24, 19945);
+    			add_location(li3, file$1, 574, 20, 19941);
+    			add_location(ul2, file$1, 572, 16, 19801);
     			attr_dev(input2, "type", "number");
     			attr_dev(input2, "placeholder", "Score");
-    			add_location(input2, file$1, 583, 24, 20220);
+    			add_location(input2, file$1, 583, 24, 20322);
     			attr_dev(input3, "type", "number");
     			attr_dev(input3, "placeholder", "Out Of");
-    			add_location(input3, file$1, 584, 24, 20315);
+    			add_location(input3, file$1, 584, 24, 20417);
     			attr_dev(div1, "class", "grid");
-    			add_location(div1, file$1, 582, 20, 20176);
-    			add_location(li4, file$1, 581, 20, 20150);
-    			add_location(ul3, file$1, 581, 16, 20146);
-    			add_location(nav1, file$1, 571, 12, 19676);
-    			add_location(br, file$1, 588, 12, 20475);
+    			add_location(div1, file$1, 582, 20, 20278);
+    			add_location(li4, file$1, 581, 20, 20252);
+    			add_location(ul3, file$1, 581, 16, 20248);
+    			add_location(nav1, file$1, 571, 12, 19778);
+    			add_location(br, file$1, 588, 12, 20577);
     			attr_dev(ul4, "class", "longlist");
-    			add_location(ul4, file$1, 560, 8, 19328);
-    			add_location(details, file$1, 558, 4, 19197);
+    			add_location(ul4, file$1, 560, 8, 19430);
+    			add_location(details, file$1, 558, 4, 19299);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, details, anchor);
@@ -4038,28 +4043,28 @@ var app = (function () {
     			}
 
     			each_1_anchor = empty();
-    			add_location(h3, file$1, 346, 12, 11058);
-    			add_location(li0, file$1, 346, 8, 11054);
-    			add_location(ul0, file$1, 345, 4, 11040);
-    			add_location(strong0, file$1, 349, 91, 11221);
+    			add_location(h3, file$1, 346, 12, 11160);
+    			add_location(li0, file$1, 346, 8, 11156);
+    			add_location(ul0, file$1, 345, 4, 11142);
+    			add_location(strong0, file$1, 349, 91, 11323);
     			attr_dev(a, "role", "button");
     			attr_dev(a, "class", "outline");
     			attr_dev(a, "href", "#/");
-    			add_location(a, file$1, 349, 12, 11142);
-    			add_location(li1, file$1, 349, 8, 11138);
-    			add_location(ul1, file$1, 348, 4, 11124);
-    			add_location(nav, file$1, 344, 0, 11029);
-    			add_location(strong1, file$1, 355, 7, 11344);
-    			add_location(strong2, file$1, 355, 57, 11394);
-    			add_location(p, file$1, 355, 4, 11341);
-    			add_location(div0, file$1, 354, 0, 11311);
-    			add_location(button0, file$1, 366, 4, 11696);
-    			add_location(button1, file$1, 367, 4, 11775);
+    			add_location(a, file$1, 349, 12, 11244);
+    			add_location(li1, file$1, 349, 8, 11240);
+    			add_location(ul1, file$1, 348, 4, 11226);
+    			add_location(nav, file$1, 344, 0, 11131);
+    			add_location(strong1, file$1, 355, 7, 11446);
+    			add_location(strong2, file$1, 355, 57, 11496);
+    			add_location(p, file$1, 355, 4, 11443);
+    			add_location(div0, file$1, 354, 0, 11413);
+    			add_location(button0, file$1, 366, 4, 11798);
+    			add_location(button1, file$1, 367, 4, 11877);
     			attr_dev(div1, "class", "grid");
-    			add_location(div1, file$1, 365, 0, 11672);
-    			add_location(br0, file$1, 554, 0, 19110);
-    			add_location(br1, file$1, 554, 4, 19114);
-    			add_location(hr, file$1, 556, 0, 19160);
+    			add_location(div1, file$1, 365, 0, 11774);
+    			add_location(br0, file$1, 554, 0, 19212);
+    			add_location(br1, file$1, 554, 4, 19216);
+    			add_location(hr, file$1, 556, 0, 19262);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4511,7 +4516,8 @@ var app = (function () {
     	SORTED_LIST_OF_ASSIGNMENTS.sort((a, b) => a.dueDate > b.dueDate ? 1 : -1);
 
     	for (let i of SORTED_LIST_OF_ASSIGNMENTS) {
-    		console.log(i);
+    		let res = calculateGradeGivenList(SORTED_LIST_OF_ASSIGNMENTS, i);
+    		console.log(res);
     		gradesOverTime.labels.push(i.name + ", " + i.duedate.toLocaleString().split(',')[0]);
     		gradesOverTime.datasets[0].values.push(i.score);
     	}
@@ -4521,8 +4527,7 @@ var app = (function () {
     		categories[0].initialWeight = 100;
     		categories[0].weight = 100;
     		categories = categories;
-    		console.log(categories);
-    	}
+    	} // console.log(categories)
 
     	// Generate list of grading periods
     	let terms = {};
@@ -4880,6 +4885,7 @@ var app = (function () {
     		Category,
     		Assignment,
     		Term,
+    		calculateGradeGivenList,
     		Chart: Base$1,
     		isPlayground,
     		dispatch,
@@ -5495,7 +5501,7 @@ var app = (function () {
     const { console: console_1 } = globals;
     const file = "src\\App.svelte";
 
-    // (64:36) 
+    // (81:36) 
     function create_if_block_3(ctx) {
     	let p0;
     	let strong;
@@ -5517,11 +5523,11 @@ var app = (function () {
     			a = element("a");
     			t3 = text("log in");
     			t4 = text(" to Infinite Campus?");
-    			add_location(strong, file, 64, 6, 1628);
-    			add_location(p0, file, 64, 3, 1625);
+    			add_location(strong, file, 81, 6, 2079);
+    			add_location(p0, file, 81, 3, 2076);
     			attr_dev(a, "href", /*icURL*/ ctx[1]);
-    			add_location(a, file, 65, 14, 1686);
-    			add_location(p1, file, 65, 3, 1675);
+    			add_location(a, file, 82, 14, 2137);
+    			add_location(p1, file, 82, 3, 2126);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p0, anchor);
@@ -5549,14 +5555,14 @@ var app = (function () {
     		block,
     		id: create_if_block_3.name,
     		type: "if",
-    		source: "(64:36) ",
+    		source: "(81:36) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (62:2) {#if loadingState == "loading"}
+    // (79:2) {#if loadingState == "loading"}
     function create_if_block_2(ctx) {
     	let a;
     	let t1;
@@ -5570,8 +5576,8 @@ var app = (function () {
     			br = element("br");
     			attr_dev(a, "href", "/#");
     			attr_dev(a, "aria-busy", "true");
-    			add_location(a, file, 62, 3, 1520);
-    			add_location(br, file, 62, 61, 1578);
+    			add_location(a, file, 79, 3, 1971);
+    			add_location(br, file, 79, 61, 2029);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, a, anchor);
@@ -5590,14 +5596,14 @@ var app = (function () {
     		block,
     		id: create_if_block_2.name,
     		type: "if",
-    		source: "(62:2) {#if loadingState == \\\"loading\\\"}",
+    		source: "(79:2) {#if loadingState == \\\"loading\\\"}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (73:2) {:else}
+    // (90:2) {:else}
     function create_else_block(ctx) {
     	let div;
     	let editor;
@@ -5609,13 +5615,13 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	editor.$on("home", /*home_handler_1*/ ctx[8]);
+    	editor.$on("home", /*home_handler_1*/ ctx[10]);
 
     	const block = {
     		c: function create() {
     			div = element("div");
     			create_component(editor.$$.fragment);
-    			add_location(div, file, 73, 3, 2081);
+    			add_location(div, file, 90, 3, 2532);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5655,14 +5661,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(73:2) {:else}",
+    		source: "(90:2) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (71:40) 
+    // (88:40) 
     function create_if_block_1(ctx) {
     	let div;
     	let editor;
@@ -5674,13 +5680,13 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	editor.$on("home", /*home_handler*/ ctx[7]);
+    	editor.$on("home", /*home_handler*/ ctx[9]);
 
     	const block = {
     		c: function create() {
     			div = element("div");
     			create_component(editor.$$.fragment);
-    			add_location(div, file, 71, 3, 1943);
+    			add_location(div, file, 88, 3, 2394);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5716,14 +5722,14 @@ var app = (function () {
     		block,
     		id: create_if_block_1.name,
     		type: "if",
-    		source: "(71:40) ",
+    		source: "(88:40) ",
     		ctx
     	});
 
     	return block;
     }
 
-    // (69:2) {#if currentPage == "Home"}
+    // (86:2) {#if currentPage == "Home"}
     function create_if_block(ctx) {
     	let div;
     	let home;
@@ -5735,14 +5741,14 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	home.$on("editor", /*openEditor*/ ctx[5]);
-    	home.$on("playground", /*openPlayground*/ ctx[6]);
+    	home.$on("editor", /*openEditor*/ ctx[6]);
+    	home.$on("playground", /*openPlayground*/ ctx[7]);
 
     	const block = {
     		c: function create() {
     			div = element("div");
     			create_component(home.$$.fragment);
-    			add_location(div, file, 69, 3, 1783);
+    			add_location(div, file, 86, 3, 2234);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -5782,7 +5788,7 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(69:2) {#if currentPage == \\\"Home\\\"}",
+    		source: "(86:2) {#if currentPage == \\\"Home\\\"}",
     		ctx
     	});
 
@@ -5811,7 +5817,13 @@ var app = (function () {
     	let li2;
     	let a1;
     	let small2;
+    	let t8;
+    	let li3;
+    	let a2;
+    	let small3;
     	let current;
+    	let mounted;
+    	let dispose;
 
     	function select_block_type(ctx, dirty) {
     		if (/*loadingState*/ ctx[0] == "loading") return create_if_block_2;
@@ -5852,30 +5864,39 @@ var app = (function () {
     			li1 = element("li");
     			a0 = element("a");
     			small1 = element("small");
-    			small1.textContent = "About";
+    			small1.textContent = "Toggle Dark Theme";
     			t6 = space();
     			li2 = element("li");
     			a1 = element("a");
     			small2 = element("small");
-    			small2.textContent = "Github";
-    			add_location(br, file, 57, 1, 1427);
+    			small2.textContent = "About";
+    			t8 = space();
+    			li3 = element("li");
+    			a2 = element("a");
+    			small3 = element("small");
+    			small3.textContent = "Github";
+    			add_location(br, file, 74, 1, 1878);
     			attr_dev(div0, "class", "container");
-    			add_location(div0, file, 60, 1, 1457);
-    			add_location(small0, file, 80, 7, 2253);
-    			add_location(li0, file, 80, 3, 2249);
-    			add_location(ul0, file, 79, 2, 2240);
-    			add_location(small1, file, 83, 78, 2401);
-    			attr_dev(a0, "href", "https://benman604.github.io/Infinite-Campus-Grade-Predictor/");
-    			add_location(a0, file, 83, 7, 2330);
-    			add_location(li1, file, 83, 3, 2326);
-    			add_location(small2, file, 84, 76, 2508);
-    			attr_dev(a1, "href", "https://github.com/bm-tech/Infinite-Campus-Grade-Predictor");
-    			add_location(a1, file, 84, 7, 2439);
-    			add_location(li2, file, 84, 3, 2435);
-    			add_location(ul1, file, 82, 2, 2317);
-    			add_location(nav, file, 78, 1, 2231);
+    			add_location(div0, file, 77, 1, 1908);
+    			add_location(small0, file, 97, 7, 2704);
+    			add_location(li0, file, 97, 3, 2700);
+    			add_location(ul0, file, 96, 2, 2691);
+    			add_location(small1, file, 100, 47, 2821);
+    			attr_dev(a0, "href", "#1");
+    			add_location(a0, file, 100, 7, 2781);
+    			add_location(li1, file, 100, 3, 2777);
+    			add_location(small2, file, 101, 78, 2942);
+    			attr_dev(a1, "href", "https://benman604.github.io/Infinite-Campus-Grade-Predictor/");
+    			add_location(a1, file, 101, 7, 2871);
+    			add_location(li2, file, 101, 3, 2867);
+    			add_location(small3, file, 102, 76, 3049);
+    			attr_dev(a2, "href", "https://github.com/bm-tech/Infinite-Campus-Grade-Predictor");
+    			add_location(a2, file, 102, 7, 2980);
+    			add_location(li3, file, 102, 3, 2976);
+    			add_location(ul1, file, 99, 2, 2768);
+    			add_location(nav, file, 95, 1, 2682);
     			attr_dev(div1, "class", "container");
-    			add_location(div1, file, 56, 0, 1401);
+    			add_location(div1, file, 73, 0, 1852);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5902,7 +5923,16 @@ var app = (function () {
     			append_dev(ul1, li2);
     			append_dev(li2, a1);
     			append_dev(a1, small2);
+    			append_dev(ul1, t8);
+    			append_dev(ul1, li3);
+    			append_dev(li3, a2);
+    			append_dev(a2, small3);
     			current = true;
+
+    			if (!mounted) {
+    				dispose = listen_dev(a0, "click", /*toggleDarkTheme*/ ctx[5], false, false, false);
+    				mounted = true;
+    			}
     		},
     		p: function update(ctx, [dirty]) {
     			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block0) {
@@ -5960,6 +5990,8 @@ var app = (function () {
     			}
 
     			if_blocks[current_block_type_index].d();
+    			mounted = false;
+    			dispose();
     		}
     	};
 
@@ -5983,6 +6015,19 @@ var app = (function () {
     	chrome.storage.local.get(['IC_subdomain'], x => {
     		$$invalidate(1, icURL = `https://${x.IC_subdomain}.infinitecampus.org`);
     	});
+
+    	let isDarkTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    	chrome.storage.local.get(['Darkmode'], x => {
+    		if (x.Darkmode != undefined) {
+    			$$invalidate(8, isDarkTheme = x.Darkmode);
+    		}
+    	});
+
+    	function toggleDarkTheme() {
+    		$$invalidate(8, isDarkTheme = !isDarkTheme);
+    		chrome.storage.local.set({ Darkmode: isDarkTheme });
+    	}
 
     	chrome.runtime.sendMessage({ m: "getGrades" });
     	let classes = [];
@@ -6049,6 +6094,8 @@ var app = (function () {
     		slide,
     		loadingState,
     		icURL,
+    		isDarkTheme,
+    		toggleDarkTheme,
     		classes,
     		currentPage,
     		currentCourse,
@@ -6059,6 +6106,7 @@ var app = (function () {
     	$$self.$inject_state = $$props => {
     		if ('loadingState' in $$props) $$invalidate(0, loadingState = $$props.loadingState);
     		if ('icURL' in $$props) $$invalidate(1, icURL = $$props.icURL);
+    		if ('isDarkTheme' in $$props) $$invalidate(8, isDarkTheme = $$props.isDarkTheme);
     		if ('classes' in $$props) $$invalidate(2, classes = $$props.classes);
     		if ('currentPage' in $$props) $$invalidate(3, currentPage = $$props.currentPage);
     		if ('currentCourse' in $$props) $$invalidate(4, currentCourse = $$props.currentCourse);
@@ -6068,14 +6116,24 @@ var app = (function () {
     		$$self.$inject_state($$props.$$inject);
     	}
 
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*isDarkTheme*/ 256) {
+    			{
+    				document.querySelector('html').setAttribute('data-theme', isDarkTheme ? 'dark' : 'light');
+    			}
+    		}
+    	};
+
     	return [
     		loadingState,
     		icURL,
     		classes,
     		currentPage,
     		currentCourse,
+    		toggleDarkTheme,
     		openEditor,
     		openPlayground,
+    		isDarkTheme,
     		home_handler,
     		home_handler_1
     	];

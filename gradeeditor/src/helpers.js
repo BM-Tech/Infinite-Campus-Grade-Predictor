@@ -120,3 +120,8 @@ export class Term{
         return (now >= this.start.getTime() && now < this.end.getTime())
     }
 }
+
+export function calculateGradeGivenList(list, uptill){
+    let sublist = list.splice(0, uptill)
+    return sublist
+}
