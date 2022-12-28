@@ -12,6 +12,10 @@
 	let icURL
 
 	chrome.storage.local.get(['IC_subdomain'], (x) => {
+		if(x.IC_subdomain == undefined){
+			console.log("No IC subdomain found. Please set one in the options page.")
+			x.IC_subdomain = "fremontunifiedca"
+		}
 		icURL = `https://${x.IC_subdomain}.infinitecampus.org`
 	})
 

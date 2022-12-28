@@ -1,10 +1,11 @@
 
 @media only screen and (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
+    /* :root:not([data-theme="light"]) {
       --card-background-color: #223341 !important;
-    }
-    .subcard{
+    } */
+    html[data-theme="dark"] .subcard{
       background-color: #002723;
+      /* background-color: #0c423e; */
       padding: 30px;
     }
 }

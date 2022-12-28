@@ -69,13 +69,14 @@ export class Grade{
 }
 
 export class Assignment extends Grade{
-    constructor(score, outof, name, origional, term, duedate){
+    constructor(score, outof, name, origional, term, duedate, category){
         super(score, outof)
         this.name = name
         this.origional = origional
         this.term = term
         this.exclude = false
         this.duedate = new Date(duedate)
+        this.category = category
     }
 
     getOgGrade(){
@@ -121,7 +122,57 @@ export class Term{
     }
 }
 
-export function calculateGradeGivenList(list, uptill){
-    let sublist = list.splice(0, uptill)
-    return sublist
+export function calculateGradeGivenList(list, uptill, courseSettings){
+    let sublist = list.slice(0, uptill+1)
+
+    let categories = []
+    for(let i of sublist){
+        let exists = i.category.alreadyExists(categories)
+        if(exists.true){
+            categories[exists.in].addAssignment(i)
+        } else{
+            let mycateg = new Category(i.category.weight, i.category.name)
+            mycateg.addAssignment(i)
+            categories.push(mycateg)
+        }
+    }
+
+    let newGrade = 0
+    let weightSum = 0
+
+    for(let cat of categories){
+        let wieghtEqually = courseSettings.equalWeighting[cat.name]
+        if(wieghtEqually == null) wieghtEqually = false
+        
+        if(cat.weight == 0 && categories.length == 1){
+            return cat.calculateGrade(wieghtEqually, courseSettings.termEnabled).getPercent()
+        } else {
+            let wg = cat.getWeightedGrade(wieghtEqually, courseSettings.termEnabled)
+            if(!isNaN(wg)){
+                newGrade += wg
+                weightSum += cat.weight
+            }
+        }
+    }
+
+    if(weightSum != 0) {
+        newGrade /= weightSum        
+    }
+
+    // If all categories are weighted equally, recalculate accordingly
+    if(courseSettings.allCategoriesWeightedSame){
+        newGrade = 0 
+        let catCount = 0
+        for(let cat of categories){
+            let x = cat.calculateGrade(courseSettings.equalWeighting[cat.name], courseSettings.termEnabled).getPercent()
+            if(!isNaN(x)){
+                newGrade += x
+                catCount++
+            }
+        }
+
+        newGrade /= catCount
+    }
+
+    return newGrade * 100
 }
